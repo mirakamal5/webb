@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Your Recipe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+   
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url('images/cakes.jpg'); 
+            background-size: 100%; 
+            background-position: center; 
+            color: #d46a7e; 
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px; 
+            margin: 50px auto; 
+            padding: 20px;
+            background-color: #fbf3ed; /* Light beige container background */
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem; /* Smaller heading */
+            font-weight: 600;
+            color: #d46a7e; /* Slightly darker pink for the heading */
+            margin-bottom: 20px; /* Reduced margin */
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #d46a7e; /* Slightly darker pink for labels */
+            font-size: 0.9rem; /* Smaller label text */
+        }
+        
+        .ingredient-group,
+        .step-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .ingredient-group input,
+        .step-group textarea {
+            flex: 1;
+            font-size: 0.9rem; /* Smaller input text */
+        }
+        
+        /* Updated Add Ingredient and Add Step buttons */
+        .btn-primary {
+            background-color: #c97688; /* Darker pink for the primary button */
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            color: #fbf3ed; /* Light beige text for contrast */
+        }
+        
+        .btn-primary:hover {
+            background-color: #b86476; /* Slightly darker pink on hover */
+        }
+        
+        .btn-secondary {
+            background-color: #c97688; /* Darker pink for the secondary button */
+            border: none;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            color: #fbf3ed; /* Light beige text for contrast */
+        }
+        
+        .btn-secondary:hover {
+            background-color: #b86476; /* Slightly darker pink on hover */
+        }
+        
+        /* Input and Textarea Styling */
+        .form-control {
+            border: 1px solid #d46a7e; /* Slightly darker pink border */
+            border-radius: 5px;
+            padding: 8px; /* Reduced padding */
+            font-family: 'Schola', serif;
+            color: #d46a7e; /* Slightly darker pink text for inputs */
+        }
+        
+        .form-control::placeholder {
+            color: #d46a7e; /* Slightly darker pink placeholder text */
+            opacity: 0.7; /* Slightly transparent */
+        }
+        
+        .form-control:focus {
+            border-color: #d68c45; /* Warm orange border on focus */
+            box-shadow: 0 0 5px rgba(214, 140, 69, 0.5); /* Orange glow */
+        }
+        
+        /* File Input Styling */
+        .form-control[type="file"] {
+            padding: 5px;
+        }
+        
+        /* Validation Styling */
+        .empty-warning {
+            color: red; /* Red text for error messages */
+            font-size: 0.8rem; /* Smaller error text */
+            display: none; /* Hide error messages by default */
+        }
+        
+        /* Light Pink Color for Categories */
+        .form-check-input:checked {
+            background-color: #d46a7e; /* Slightly darker pink */
+            border-color: #d46a7e;
+        }
+        
+        .form-check-label {
+            color: #d46a7e; /* Slightly darker pink */
+            font-size: 0.9rem; /* Smaller font size */
+        }
+        
+        .form-check {
+            margin-bottom: 0.5rem; /* Space between checkboxes */
+        }
+        
+        /* Updated Difficulty Level Dropdown */
+        .form-select {
+            border: 1px solid #d46a7e; /* Slightly darker pink border */
+            border-radius: 5px;
+            padding: 8px;
+            font-family: 'Schola', serif;
+            color: #d46a7e; /* Slightly darker pink text for the dropdown */
+            background-color: #ffffff; /* White background before pressing */
+        }
+        
+        .form-select:focus {
+            border-color: #d68c45; /* Warm orange border on focus */
+            box-shadow: 0 0 5px rgba(214, 140, 69, 0.5); /* Orange glow */
+            background-color: #fbf3ed; /* Light beige background on focus */
+        }
+        
+        /* Dropdown options styling */
+        .form-select option {
+            background-color: #fbf3ed; /* Light beige background */
+            color: #d46a7e; /* Slightly darker pink text */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Add Your Recipe</h1>
+        <form id="recipeForm">
+            <!-- Recipe Name -->
+            <div class="mb-3">
+                <label for="recipeName" class="form-label">Recipe Name</label>
+                <input type="text" class="form-control" id="recipeName" placeholder="Enter recipe name" required>
+                <div class="empty-warning">Please fill out this field.</div>
+            </div>
+
+            <!-- Recipe Description -->
+            <div class="mb-3">
+                <label for="recipeDescription" class="form-label">Description</label>
+                <textarea class="form-control" id="recipeDescription" rows="3" placeholder="Describe your recipe" required></textarea>
+                <div class="empty-warning">Please fill out this field.</div>
+            </div>
+
+            <!-- Category Selection -->
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <div class="row">
+                    <!-- First Column -->
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="diabeticFriendly" value="Diabetic-Friendly">
+                            <label class="form-check-label" for="diabeticFriendly">Diabetic-Friendly</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="eggFree" value="Egg-Free">
+                            <label class="form-check-label" for="eggFree">Egg-Free</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="glutenFree" value="Gluten-Free">
+                            <label class="form-check-label" for="glutenFree">Gluten-Free</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="highProtein" value="High-Protein">
+                            <label class="form-check-label" for="highProtein">High-Protein</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="keto" value="Keto">
+                            <label class="form-check-label" for="keto">Keto</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="lactoseFree" value="Lactose-Free">
+                            <label class="form-check-label" for="lactoseFree">Lactose-Free</label>
+                        </div>
+                    </div>
+
+                    <!-- Second Column -->
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="noBake" value="No-Bake">
+                            <label class="form-check-label" for="noBake">No-Bake</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="nutFree" value="Nut-Free">
+                            <label class="form-check-label" for="nutFree">Nut-Free</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="organic" value="Organic">
+                            <label class="form-check-label" for="organic">Organic</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sugarFree" value="Sugar-Free">
+                            <label class="form-check-label" for="sugarFree">Sugar-Free</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="vegan" value="Vegan">
+                            <label class="form-check-label" for="vegan">Vegan</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="vegetarian" value="Vegetarian">
+                            <label class="form-check-label" for="vegetarian">Vegetarian</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="empty-warning category-warning">Please select at least one category.</div>
+            </div>
+
+            <!-- Cooking Time and Preparing Time in the Same Row -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="preparingTime" class="form-label">Preparing Time (minutes)</label>
+                    <input type="number" class="form-control" id="preparingTime" placeholder="Enter preparing time" required>
+                    <div class="empty-warning">Please fill out this field.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="cookingTime" class="form-label">Cooking Time (minutes)</label>
+                    <input type="number" class="form-control" id="cookingTime" placeholder="Enter cooking time" required>
+                    <div class="empty-warning">Please fill out this field.</div>
+                </div>
+            </div>
+
+            <!-- Servings -->
+            <div class="mb-3">
+                <label for="servings" class="form-label">Servings</label>
+                <input type="number" class="form-control" id="servings" placeholder="Enter number of servings" required>
+                <div class="empty-warning">Please fill out this field.</div>
+            </div>
+
+            <!-- Difficulty -->
+            <div class="mb-3">
+                <label for="difficulty" class="form-label">Difficulty</label>
+                <select class="form-select" id="difficulty" required>
+                    <option value="" disabled selected>Select difficulty</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+                <div class="empty-warning">Please select difficulty.</div>
+            </div>
+
+            <!-- Upload Photos -->
+            <div class="mb-3">
+                <label for="recipePhotos" class="form-label">Upload Photos</label>
+                <input type="file" class="form-control" id="recipePhotos" accept="image/*" multiple>
+                <small class="text-muted">You can upload up to 5 photos.</small>
+            </div>
+
+            <!-- Video Tutorial -->
+            <div class="mb-3">
+                <label for="recipeVideo" class="form-label">Video Tutorial (Optional)</label>
+                <input type="file" class="form-control" id="recipeVideo" accept="video/*">
+                <small class="text-muted">Upload a video or paste a YouTube/Vimeo link.</small>
+            </div>
+
+            <!-- Ingredients -->
+            <div class="mb-3">
+                <label class="form-label">Ingredients</label>
+                <div id="ingredientsContainer">
+                    <div class="ingredient-group mb-2">
+                        <input type="text" class="form-control ingredient" placeholder="Ingredient (e.g., Flour)" required>
+                        <input type="text" class="form-control quantity" placeholder="Quantity (e.g., 200g)" required>
+                        <div class="empty-warning">Please fill in both fields.</div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" id="addIngredient">Add Ingredient</button>
+            </div>
+
+            <!-- Steps -->
+            <div class="mb-3">
+                <label class="form-label">Steps</label>
+                <div id="stepsContainer">
+                    <div class="step-group mb-2">
+                        <textarea class="form-control step" rows="2" placeholder="Step 1" required></textarea>
+                        <div class="empty-warning">Please enter a step.</div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" id="addStep">Add Step</button>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit Recipe</button>
+            </div>
+        </form>
+    </div>
+
+    
+    
+</body>
+</html>

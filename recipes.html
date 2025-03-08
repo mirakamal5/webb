@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+    <!-- Bootstrap JavaScript (Include first) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery (Include before your custom script) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- Your custom JavaScript -->
+    <script src="index.js"></script>
+
+
+    <style>
+        body {
+            background-color: #F2E3DA;
+            font-family: Arial, sans-serif;
+            
+            background-image: url('images/background\ .jpg'); 
+            background-size: cover;
+            background-size: 100% ;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        /* .img-wrapper {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        } */
+        
+        
+        
+        .img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        @media screen and (min-width: 576px) {
+        
+            .carousel-inner {
+                display: flex;
+            }
+        
+            .carousel-item {
+                display: block;
+                margin-right: 0;
+                flex: 0 0 calc(100% / 3);
+            }
+        
+            .img-wrapper {
+                height: 23vw;
+            }
+        }
+        
+        
+        .carousel-inner {
+            padding: 1em;
+        }
+        
+        .card {
+            margin: 0 .5em;
+            box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, .18);
+            border-radius: 0;
+        }
+        
+        
+        .img-wrapper img {
+            width: 100%; /* Ensures it takes full width of the card */
+            height: 100%;
+            object-fit: cover; /* Keeps the aspect ratio */
+        }
+        
+        .img-wrapper {
+            max-width: 100%;
+            height: 300px; /* Adjust this value to control the height */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+             overflow: hidden; 
+        }
+        
+        .carousel-control-prev, .carousel-control-next {
+            width: 6vh;
+            height: 6vh;
+            background-color: #e1e1e1;
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+        }
+        
+         /* @media screen and (min-width: 576px) {
+        
+            .carousel-inner {
+                display: flex;
+            }
+        
+            .carousel-item {
+                display: block;
+                margin-right: 0;
+                flex: 0 0 calc(100% / 3);
+            }
+        
+            .img-wrapper {
+                height: 250px; 
+            }
+        
+        } */</style>
+
+    
+    <!-- Bootstrap JavaScript -->
+    
+</head>
+<body>
+
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="card" >
+                    <div class="img-wrapper">
+                        <img src="images/im1.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="card" >
+                    <div class="img-wrapper">
+                        <img src="images/im2.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="card" >
+                    <div class="img-wrapper">
+                        <img src="images/im3.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="card" >
+                    <div class="img-wrapper">
+                        <img src="images/im4.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="card" >
+                    <div class="img-wrapper">
+                        <img src="images/im5.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="card" >
+                    <div class="img-wrapper">
+                        <img src="images/im6.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="card" >
+                    <div class="img-wrapper">
+                        <img src="images/im7.jpg" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Corrected Navigation Buttons -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <script  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="index.js"></script>
+
+</body>
+</html>

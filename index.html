@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+body {
+    line-height: 1.6;
+    font-family: 'Poppins', sans-serif;
+    color: #535353;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+/* Navbar Styles */
+.custom-navbar {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    background-color: #fbf3ed !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    position: relative;
+}
+.custom-navbar.sticky-top {
+    position: sticky;
+    top: 0;
+}
+.custom-navbar .navbar-nav .nav-link {
+    color: #dc889a !important;
+    font-size: 14px;
+    padding: 8px 12px;
+    transition: color 0.3s ease;
+}
+.custom-navbar .navbar-nav .nav-link.active,
+.custom-navbar .navbar-nav .nav-link:hover {
+    color: #c42348 !important;
+}
+.custom-navbar .dropdown-menu {
+    background-color: #fbf3ed !important;
+    border: 2px solid #dc889a;
+    border-radius: 8px;
+    padding: 5px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    min-width: 150px;
+}
+.custom-navbar .dropdown-menu .dropdown-item {
+    color: #dc889a !important;
+    font-size: 14px;
+    padding: 6px 12px;
+    transition: background-color 0.3s ease;
+}
+
+.custom-navbar .dropdown-menu .dropdown-item:hover {
+    background-color: rgba(220, 136, 154, 0.1);
+}
+
+.custom-navbar .navbar-brand {
+    color: #dc889a !important;
+    font-size: 18px;
+    margin-left: 20px;
+}
+
+.custom-navbar .navbar-toggler-icon {
+    background-color: #dc889a;
+}
+
+.btn-outline-danger {
+    border-color: #dc889a;
+    color: #dc889a;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc889a;
+    color: white;
+}
+
+#loginButton {
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border-width: 2px;
+}
+
+
+
+/* Recipe of the Day Card */
+.recipe-of-the-day {
+    background-color: #fbf3ed;
+    border: 2px solid #dc889a;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 110px; 
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recipe-of-the-day:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-of-the-day .image-container img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.recipe-of-the-day .col-md-5 {
+    margin-right: 40px;
+}
+
+.recipe-of-the-day h3 {
+    color: #dc889a;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.recipe-of-the-day h4 {
+    color: #dc889a;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.recipe-of-the-day .posted-by {
+    font-size: 16px;
+    color: #535353;
+    margin-bottom: 15px;
+}
+
+.recipe-of-the-day .posted-by .username {
+    font-weight: 500;
+    color: #dc889a;
+}
+
+.recipe-of-the-day .rating {
+    color: #dc889a;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.recipe-of-the-day .rating .star {
+    color: #dc889a;
+}
+
+.recipe-of-the-day .rating .rating-value {
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+.recipe-of-the-day .card-text {
+    color: #535353;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.recipe-of-the-day .btn-outline-danger {
+    border-color: #dc889a;
+    color: #dc889a;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 8px;
+}
+
+.recipe-of-the-day .btn-outline-danger:hover {
+    background-color: #dc889a;
+    color: white;
+}
+
+/* Circular Icons for Categories */
+.circle-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.circle-icon img {
+    width: 90%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.circle-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(240, 172, 172, 0.2);
+}
+
+/* Category Labels */
+.category-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #dc889a;
+    margin-top: 8px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Container for Circular Icons */
+.categories-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 0 10px;
+    max-width: 2000px;
+    margin: 0 auto;
+    margin-bottom: 110px; 
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #dc889a;
+    padding: 20px 0;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 80px; 
+}
+
+.container {
+    max-width: 1170px;
+    margin: auto;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.footer-col {
+    width: 25%;          
+    padding: 0 15px;
+}
+
+.footer-col h4 {
+    font-size: 16px;
+    color: #fbf3ed;
+    text-transform: capitalize;
+    margin-bottom: 15px;
+    font-weight: 500;
+    position: relative;
+}
+
+.footer-col h4::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    background-color: #fbf3ed;
+    height: 2px;
+    box-sizing: border-box;
+    width: 50px;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.footer-col ul li:not(:last-child) {
+    margin-bottom: 6px;
+}
+
+.footer-col ul li a {
+    font-size: 14px;
+    text-transform: capitalize;
+    color: #fbf3ed;
+    text-decoration: none;
+    font-weight: 300;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+    color: #ffffff;
+    padding-left: 8px;
+}
+
+.footer-col .social-links a {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    background-color: rgba(251, 243, 237, 0.2);
+    margin: 0 6px 6px 0;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 50%;
+    color: #fbf3ed;
+    transition: all 0.5s ease;
+}
+
+.footer-col .social-links a:hover {
+    color: #dc889a;
+    background-color: #ffffff;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .circle-icon {
+        width: 80px;
+        height: 80px;
+    }
+    .category-label {
+        font-size: 12px;
+    }
+    .categories-container {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .circle-icon {
+        width: 60px;
+        height: 60px;
+    }
+    .category-label {
+        font-size: 10px;
+    }
+    .categories-container {
+        gap: 20px;
+    }
+}</style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar custom-navbar sticky-top">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="images/final.png" alt="Website Logo" width="80" height="50" class="d-inline-block align-text-top">
+            </a>
+            <!-- Navigation Links -->
+            <ul class="navbar-nav d-flex flex-row">
+                <li class="nav-item me-3">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link" href="#">About Us</a>
+                </li>
+                <li class="nav-item dropdown me-3">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Recipes
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Add</a></li>
+                        <li><a class="dropdown-item" href="#">Explore</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Login Button and Profile Icon -->
+            <div class="d-flex">
+                <button id="loginButton" class="btn btn-outline-danger me-2">Log In</button>
+                <div id="profileIcon" class="d-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+   
+<div class="container my-5">
+        <!-- Recipe of the Day Section -->
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="recipe-of-the-day d-flex align-items-center">
+                    <!-- Image Column -->
+                    <div class="col-md-5 me-md-5">
+                        <div class="image-container">
+                            <img src="images/mm.jpg" alt="Recipe of the Day" class="img-fluid">
+                        </div>
+                    </div>
+                    <!-- Content Column -->
+                    <div class="col-md-7">
+                        <h3>Recipe of the Day</h3>
+                        <h4>White Chocolate Raspberry Cookies</h4>
+                        <div class="posted-by">
+                            <span>by:</span>
+                            <span class="username">someone</span>
+                        </div>
+                        <div class="rating mb-3">
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9734;</span>
+                            <span class="rating-value">4.5</span>
+                        </div>
+                        <p class="card-text">
+                            Indulge in the perfect blend of sweet and tangy with these soft, chewy cookies. Bursting with juicy raspberries and creamy white chocolate chunks, each bite is a delightful balance of flavors.
+                        </p>
+                        <a href="#" class="btn btn-outline-danger">View Recipe</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Section -->
+        <div class="col-md-12">
+            <h1 class="mb-4 text-center">Explore Recipes by Category</h1>
+            <div class="row justify-content-center g-1 categories-container">
+                <!-- Allergy-Friendly -->
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none">
+                        <div class="circle-icon mx-auto">
+                            <img src="images/c.jpg" alt="Diabetic-Friendly" class="img-fluid">
+                        </div>
+                        <p class="mt-2 category-label">Diabetic-Friendly</p>
+                    </a>
+                </div>
+                <!-- Dairy-Free -->
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none">
+                        <div class="circle-icon mx-auto">
+                            <img src="images/waffl.jpg" alt="Dairy-Free" class="img-fluid">
+                        </div>
+                        <p class="mt-2 category-label">Dairy-Free</p>
+                    </a>
+                </div>
+                <!-- Gluten-Free -->
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none">
+                        <div class="circle-icon mx-auto">
+                            <img src="images/choco.jpg" alt="Gluten-Free" class="img-fluid">
+                        </div>
+                        <p class="mt-2 category-label">Gluten-Free</p>
+                    </a>
+                </div>
+                <!-- Keto -->
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none">
+                        <div class="circle-icon mx-auto">
+                            <img src="images/cinnamon.jpg" alt="" class="img-fluid">
+                        </div>
+                        <p class="mt-2 category-label">Egg-Free</p>
+                    </a>
+                </div>
+                <!-- Vegan -->
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none">
+                        <div class="circle-icon mx-auto">
+                            <img src="images/yog.jpg" alt="Vegan" class="img-fluid">
+                        </div>
+                        <p class="mt-2 category-label">Vegan</p>
+                    </a>
+                </div>
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none">
+                        <div class="circle-icon mx-auto">
+                            <img src="images/cheese.jpg" alt="" class="img-fluid">
+                        </div>
+                        <p class="mt-2 category-label">Nut-Free</p>
+                    </a>
+                </div>
+                <!-- Sugar-Free -->
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none">
+                        <div class="circle-icon mx-auto">
+                            <img src="images/l.jpg" alt="Sugar-Free" class="img-fluid">
+                        </div>
+                        <p class="mt-2 category-label">Sugar-Free</p>
+                    </a>
+                </div>
+                <!-- High-Protein -->
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none">
+                        <div class="circle-icon mx-auto">
+                            <img src="images/pann.jpg" alt="High-Protein" class="img-fluid">
+                        </div>
+                        <p class="mt-2 category-label">High-Protein</p>
+                    </a>
+                </div>
+                <!-- No-Bake -->
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none">
+                        <div class="circle-icon mx-auto">
+                            <img src="images/s.jpg" alt="No-Bake" class="img-fluid">
+                        </div>
+                        <p class="mt-2 category-label">No-Bake</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col">
+                    <h4>company</h4>
+                    <ul>
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">privacy policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>get help</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">shipping</a></li>
+                        <li><a href="#">returns</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                </div>
+                <div class="footer-col">
+                    <h4>follow us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let isLoggedIn = false;
+        const loginButton = document.getElementById('loginButton');
+        const profileIcon = document.getElementById('profileIcon');
+        function updateUI() {
+            if (isLoggedIn) {
+                loginButton.classList.add('d-none');
+                profileIcon.classList.remove('d-none');
+            } else {
+                loginButton.classList.remove('d-none');
+                profileIcon.classList.add('d-none');
+            }
+        }
+        loginButton.addEventListener('click', () => {
+            isLoggedIn = true;
+            updateUI();
+        });
+        updateUI();
+    </script>
+</body>
+</html>
