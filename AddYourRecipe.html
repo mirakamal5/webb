@@ -4,170 +4,300 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Your Recipe</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-   
     <style>
-        body {
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('images/cakes.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #d46a7e;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Ensure body takes at least the full viewport height */
+    display: flex;
+    flex-direction: column; /* Make body a flex container for proper footer placement */
+}
+
+
+        /* Navbar Styles */
+        .custom-navbar {
             font-family: 'Poppins', sans-serif;
-            background-image: url('images/cakes.jpg'); 
-            background-size: 100%; 
-            background-position: center; 
-            color: #d46a7e; 
-            margin: 0;
-            padding: 0;
+            font-size: 20px;
+            background-color: #fbf3ed !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            position: relative;
+        }
+
+        .custom-navbar.sticky-top {
+            position: sticky;
+            top: 0;
+        }
+
+        .custom-navbar .navbar-nav .nav-link {
+            color: #dc889a !important;
+            font-size: 18px;
+            padding: 8px 12px;
+            transition: color 0.3s ease;
+        }
+
+        .custom-navbar .navbar-nav .nav-link.active,
+        .custom-navbar .navbar-nav .nav-link:hover {
+            color: #c42348 !important;
+        }
+
+        .custom-navbar .dropdown-menu {
+            background-color: #fbf3ed !important;
+            border: 2px solid #dc889a;
+            border-radius: 8px;
+            padding: 5px;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            min-width: 150px;
+        }
+
+        .custom-navbar .dropdown-menu .dropdown-item {
+            color: #dc889a !important;
+            font-size: 14px;
+            padding: 6px 12px;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-navbar .dropdown-menu .dropdown-item:hover {
+            background-color: rgba(220, 136, 154, 0.1);
+        }
+
+        .custom-navbar .navbar-brand {
+            color: #dc889a !important;
+            font-size: 18px;
+            margin-left: 20px;
+        }
+
+        .custom-navbar .navbar-toggler-icon {
+            background-color: #dc889a;
+        }
+
+        .btn-outline-danger {
+            border-color: #dc889a;
+            color: #dc889a;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #dc889a;
+            color: white;
+        }
+
+        #loginButton {
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border-width: 2px;
         }
         .container {
-            max-width: 600px; 
-            margin: 50px auto; 
-            padding: 20px;
-            background-color: #fbf3ed; /* Light beige container background */
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fbf3ed;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex: 1; 
+}
         h1 {
-            font-size: 2rem; /* Smaller heading */
+            font-size: 2rem;
             font-weight: 600;
-            color: #d46a7e; /* Slightly darker pink for the heading */
-            margin-bottom: 20px; /* Reduced margin */
+            color: #d46a7e;
+            margin-bottom: 20px;
         }
-        
         .form-label {
             font-weight: 500;
-            color: #d46a7e; /* Slightly darker pink for labels */
-            font-size: 0.9rem; /* Smaller label text */
+            color: #d46a7e;
+            font-size: 0.9rem;
         }
-        
         .ingredient-group,
         .step-group {
             display: flex;
             gap: 10px;
+            align-items: center;
         }
-        
         .ingredient-group input,
         .step-group textarea {
             flex: 1;
-            font-size: 0.9rem; /* Smaller input text */
+            font-size: 0.9rem;
         }
-        
-        /* Updated Add Ingredient and Add Step buttons */
         .btn-primary {
-            background-color: #c97688; /* Darker pink for the primary button */
+            background-color: #c97688;
             border: none;
             padding: 8px 16px;
             font-size: 0.9rem;
-            color: #fbf3ed; /* Light beige text for contrast */
+            color: #fbf3ed;
         }
-        
         .btn-primary:hover {
-            background-color: #b86476; /* Slightly darker pink on hover */
+            background-color: #b86476;
         }
-        
         .btn-secondary {
-            background-color: #c97688; /* Darker pink for the secondary button */
+            background-color: #c97688;
             border: none;
             padding: 4px 8px;
             font-size: 0.8rem;
-            color: #fbf3ed; /* Light beige text for contrast */
+            color: #fbf3ed;
         }
-        
         .btn-secondary:hover {
-            background-color: #b86476; /* Slightly darker pink on hover */
+            background-color: #b86476;
         }
-        
-        /* Input and Textarea Styling */
         .form-control {
-            border: 1px solid #d46a7e; /* Slightly darker pink border */
-            border-radius: 5px;
-            padding: 8px; /* Reduced padding */
-            font-family: 'Schola', serif;
-            color: #d46a7e; /* Slightly darker pink text for inputs */
-        }
-        
-        .form-control::placeholder {
-            color: #d46a7e; /* Slightly darker pink placeholder text */
-            opacity: 0.7; /* Slightly transparent */
-        }
-        
-        .form-control:focus {
-            border-color: #d68c45; /* Warm orange border on focus */
-            box-shadow: 0 0 5px rgba(214, 140, 69, 0.5); /* Orange glow */
-        }
-        
-        /* File Input Styling */
-        .form-control[type="file"] {
-            padding: 5px;
-        }
-        
-        /* Validation Styling */
-        .empty-warning {
-            color: red; /* Red text for error messages */
-            font-size: 0.8rem; /* Smaller error text */
-            display: none; /* Hide error messages by default */
-        }
-        
-        /* Light Pink Color for Categories */
-        .form-check-input:checked {
-            background-color: #d46a7e; /* Slightly darker pink */
-            border-color: #d46a7e;
-        }
-        
-        .form-check-label {
-            color: #d46a7e; /* Slightly darker pink */
-            font-size: 0.9rem; /* Smaller font size */
-        }
-        
-        .form-check {
-            margin-bottom: 0.5rem; /* Space between checkboxes */
-        }
-        
-        /* Updated Difficulty Level Dropdown */
-        .form-select {
-            border: 1px solid #d46a7e; /* Slightly darker pink border */
+            border: 1px solid #d46a7e;
             border-radius: 5px;
             padding: 8px;
             font-family: 'Schola', serif;
-            color: #d46a7e; /* Slightly darker pink text for the dropdown */
-            background-color: #ffffff; /* White background before pressing */
+            color: #d46a7e;
         }
-        
+        .form-control::placeholder {
+            color: #d46a7e;
+            opacity: 0.7;
+        }
+        .form-control:focus {
+            border-color: #d68c45;
+            box-shadow: 0 0 5px rgba(214, 140, 69, 0.5);
+        }
+        .form-control[type="file"] {
+            padding: 5px;
+        }
+        .empty-warning {
+            color: rgb(247, 170, 170);
+            font-size: 0.8rem;
+            display: none;
+        }
+        .btn-danger.btn-sm {
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            line-height: 1.2;
+            background-color: #d46a7e;
+            border-color: #d46a7e;
+            color: #fbf3ed;
+        }
+        .btn-danger.btn-sm:hover {
+            background-color: #c42348;
+            border-color: #c42348;
+        }
+        .form-check-input:checked {
+            background-color: #d46a7e;
+            border-color: #d46a7e;
+        }
+        .form-check-label {
+            color: #d46a7e;
+            font-size: 0.9rem;
+        }
+        .form-check {
+            margin-bottom: 0.5rem;
+        }
+        .form-select {
+            border: 1px solid #d46a7e;
+            border-radius: 5px;
+            padding: 8px;
+            font-family: 'Schola', serif;
+            color: #d46a7e;
+            background-color: #ffffff;
+        }
         .form-select:focus {
-            border-color: #d68c45; /* Warm orange border on focus */
-            box-shadow: 0 0 5px rgba(214, 140, 69, 0.5); /* Orange glow */
-            background-color: #fbf3ed; /* Light beige background on focus */
+            border-color: #d68c45;
+            box-shadow: 0 0 5px rgba(214, 140, 69, 0.5);
+            background-color: #fbf3ed;
         }
-        
-        /* Dropdown options styling */
         .form-select option {
-            background-color: #fbf3ed; /* Light beige background */
-            color: #d46a7e; /* Slightly darker pink text */
+            background-color: #fbf3ed;
+            color: #d46a7e;
+        }
+        .uploaded-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .uploaded-images img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 5px;
+        }
+        .image-container {
+            position: relative;
+        }
+        .remove-image {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <nav class="navbar custom-navbar sticky-top">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="images/final.png" alt="Website Logo" width="80" height="50" class="d-inline-block align-text-top">
+            </a>
+            <!-- Navigation Links -->
+            <ul class="navbar-nav d-flex flex-row">
+                <li class="nav-item me-3">
+                    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link" href="#">About Us</a>
+                </li>
+                <li class="nav-item dropdown me-3">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Recipes
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="AddYourRecipe.html">Add</a></li>
+                        <li><a class="dropdown-item" href="#">Explore</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="d-flex">
+                <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='loginpage.html'">Log In</button>
+                <div id="profileIcon" class="d-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mt-5">
         <h1 class="text-center mb-4">Add Your Recipe</h1>
         <form id="recipeForm">
-            <!-- Recipe Name -->
             <div class="mb-3">
                 <label for="recipeName" class="form-label">Recipe Name</label>
                 <input type="text" class="form-control" id="recipeName" placeholder="Enter recipe name" required>
                 <div class="empty-warning">Please fill out this field.</div>
             </div>
-
-            <!-- Recipe Description -->
             <div class="mb-3">
                 <label for="recipeDescription" class="form-label">Description</label>
                 <textarea class="form-control" id="recipeDescription" rows="3" placeholder="Describe your recipe" required></textarea>
                 <div class="empty-warning">Please fill out this field.</div>
             </div>
-
-            <!-- Category Selection -->
             <div class="mb-3">
                 <label class="form-label">Category</label>
                 <div class="row">
-                    <!-- First Column -->
                     <div class="col-md-6">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="diabeticFriendly" value="Diabetic-Friendly">
@@ -225,8 +355,6 @@
                 </div>
                 <div class="empty-warning category-warning">Please select at least one category.</div>
             </div>
-
-            <!-- Cooking Time and Preparing Time in the Same Row -->
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="preparingTime" class="form-label">Preparing Time (minutes)</label>
@@ -239,15 +367,11 @@
                     <div class="empty-warning">Please fill out this field.</div>
                 </div>
             </div>
-
-            <!-- Servings -->
             <div class="mb-3">
                 <label for="servings" class="form-label">Servings</label>
                 <input type="number" class="form-control" id="servings" placeholder="Enter number of servings" required>
                 <div class="empty-warning">Please fill out this field.</div>
             </div>
-
-            <!-- Difficulty -->
             <div class="mb-3">
                 <label for="difficulty" class="form-label">Difficulty</label>
                 <select class="form-select" id="difficulty" required>
@@ -258,54 +382,114 @@
                 </select>
                 <div class="empty-warning">Please select difficulty.</div>
             </div>
-
-            <!-- Upload Photos -->
             <div class="mb-3">
                 <label for="recipePhotos" class="form-label">Upload Photos</label>
                 <input type="file" class="form-control" id="recipePhotos" accept="image/*" multiple>
                 <small class="text-muted">You can upload up to 5 photos.</small>
+                <div class="uploaded-images" id="uploadedImages"></div>
             </div>
-
-            <!-- Video Tutorial -->
             <div class="mb-3">
                 <label for="recipeVideo" class="form-label">Video Tutorial (Optional)</label>
                 <input type="file" class="form-control" id="recipeVideo" accept="video/*">
                 <small class="text-muted">Upload a video or paste a YouTube/Vimeo link.</small>
             </div>
-
-            <!-- Ingredients -->
             <div class="mb-3">
                 <label class="form-label">Ingredients</label>
                 <div id="ingredientsContainer">
                     <div class="ingredient-group mb-2">
                         <input type="text" class="form-control ingredient" placeholder="Ingredient (e.g., Flour)" required>
                         <input type="text" class="form-control quantity" placeholder="Quantity (e.g., 200g)" required>
-                        <div class="empty-warning">Please fill in both fields.</div>
+                        <button type="button" class="btn btn-danger btn-sm remove-ingredient">Remove</button>
                     </div>
                 </div>
                 <button type="button" class="btn btn-secondary btn-sm" id="addIngredient">Add Ingredient</button>
             </div>
-
-            <!-- Steps -->
             <div class="mb-3">
                 <label class="form-label">Steps</label>
                 <div id="stepsContainer">
                     <div class="step-group mb-2">
                         <textarea class="form-control step" rows="2" placeholder="Step 1" required></textarea>
-                        <div class="empty-warning">Please enter a step.</div>
+                        <button type="button" class="btn btn-danger btn-sm remove-step">Remove</button>
                     </div>
                 </div>
                 <button type="button" class="btn btn-secondary btn-sm" id="addStep">Add Step</button>
             </div>
-
-            <!-- Submit Button -->
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Submit Recipe</button>
             </div>
         </form>
     </div>
+    
 
-    
-    
+    <script>
+        let isLoggedIn = false;
+        document.getElementById('addIngredient').addEventListener('click', () => {
+            const ingredientsContainer = document.getElementById('ingredientsContainer');
+            const newIngredientGroup = document.createElement('div');
+            newIngredientGroup.classList.add('ingredient-group', 'mb-2');
+            newIngredientGroup.innerHTML = `
+                <input type="text" class="form-control ingredient" placeholder="Ingredient (e.g., Flour)" required>
+                <input type="text" class="form-control quantity" placeholder="Quantity (e.g., 200g)" required>
+                <button type="button" class="btn btn-danger btn-sm remove-ingredient">Remove</button>
+            `;
+            ingredientsContainer.appendChild(newIngredientGroup);
+
+            newIngredientGroup.querySelector('.remove-ingredient').addEventListener('click', () => {
+                ingredientsContainer.removeChild(newIngredientGroup);
+            });
+        });
+
+        // Add Step
+        document.getElementById('addStep').addEventListener('click', () => {
+            const stepsContainer = document.getElementById('stepsContainer');
+            const newStepGroup = document.createElement('div');
+            newStepGroup.classList.add('step-group', 'mb-2');
+            newStepGroup.innerHTML = `
+                <textarea class="form-control step" rows="2" placeholder="Step ${stepsContainer.children.length + 1}" required></textarea>
+                <button type="button" class="btn btn-danger btn-sm remove-step">Remove</button>
+            `;
+            stepsContainer.appendChild(newStepGroup);
+
+            newStepGroup.querySelector('.remove-step').addEventListener('click', () => {
+                stepsContainer.removeChild(newStepGroup);
+            });
+        });
+        const uploadedImagesContainer = document.getElementById('uploadedImages');
+        const recipePhotosInput = document.getElementById('recipePhotos');
+
+        recipePhotosInput.addEventListener('change', (event) => {
+            const files = event.target.files;
+            for (const file of files) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const imageContainer = document.createElement('div');
+                    imageContainer.classList.add('image-container');
+                    imageContainer.innerHTML = `
+                        <img src="${e.target.result}" alt="Uploaded Image">
+                        <button type="button" class="remove-image">×</button>
+                    `;
+                    uploadedImagesContainer.appendChild(imageContainer);
+                    imageContainer.querySelector('.remove-image').addEventListener('click', () => {
+                        uploadedImagesContainer.removeChild(imageContainer);
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        document.getElementById('recipeForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (!isLoggedIn) {
+                alert('You must be logged in to submit a recipe.');
+                return;
+            }
+            alert('Recipe submitted successfully!');
+        });
+        function checkLoginStatus() {
+            const token = localStorage.getItem('authToken');
+            isLoggedIn = !!token;
+        }
+
+        checkLoginStatus();
+    </script>
 </body>
 </html>
