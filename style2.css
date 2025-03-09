@@ -10,12 +10,15 @@
 
 html {
   font-size: 12px;
+  height: 100%;
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  background: url(images/pg.jpg);
+  background-position: cover;
 }
 
 html, body{
@@ -28,10 +31,6 @@ html, body{
   align-items: center;  
   width: 100%;
   padding: 50px; 
-  box-sizing: border-box; 
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 25px rgba(0, 0, 0, 0.08);
-  background: url(images/pg.jpg);
-  background-size: cover;
 }
 
 .custom-navbar {
@@ -359,4 +358,112 @@ html, body{
   font-weight: bold;
   color: #333;
   text-align: center;
+}
+
+.footer {
+  background-color: #dc889a;
+  padding: 40px 0; /* Increased padding for better spacing */
+  font-family: 'Poppins', sans-serif;
+}
+
+.containerf {
+  max-width: 1170px;
+  margin: auto;
+  padding: 0 15px; /* Add padding to container for better spacing */
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Distribute columns evenly */
+  gap: 20px; /* Add gap between columns */
+}
+
+.footer-col {
+  flex: 1; /* Each column takes equal width */
+  min-width: 200px; /* Minimum width for responsiveness */
+  padding: 0 15px;
+}
+
+.footer-col h4 {
+  font-size: 18px; /* Slightly larger font size */
+  color: #fbf3ed;
+  text-transform: capitalize;
+  margin-bottom: 20px; /* Increased margin for better spacing */
+  font-weight: 600; /* Bold heading */
+  position: relative;
+}
+
+.footer-col h4::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  background-color: #fbf3ed;
+  height: 2px;
+  box-sizing: border-box;
+  width: 50px;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0; /* Remove default margin */
+}
+
+.footer-col ul li:not(:last-child) {
+  margin-bottom: 10px; /* Increased spacing between list items */
+}
+
+.footer-col ul li a {
+  font-size: 14px;
+  text-transform: capitalize;
+  color: #fbf3ed;
+  text-decoration: none;
+  font-weight: 400; /* Slightly bolder text */
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+  color: #ffffff;
+  padding-left: 8px;
+}
+
+.footer-col .social-links {
+  display: flex;
+  gap: 10px; /* Add gap between social icons */
+}
+
+.footer-col .social-links a {
+  display: inline-block;
+  height: 40px; /* Larger icons */
+  width: 40px;
+  background-color: rgba(251, 243, 237, 0.2);
+  text-align: center;
+  line-height: 40px; /* Center icons vertically */
+  border-radius: 50%;
+  color: #fbf3ed;
+  transition: all 0.5s ease;
+}
+
+.footer-col .social-links a:hover {
+  color: #dc889a;
+  background-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .footer-col {
+      flex: 1 1 100%; /* Full width on smaller screens */
+      text-align: center; /* Center align content */
+  }
+
+  .footer-col h4::before {
+      left: 50%; /* Center the underline */
+      transform: translateX(-50%);
+  }
+
+  .footer-col .social-links {
+      justify-content: center; /* Center social icons */
+  }
 }
