@@ -30,7 +30,7 @@ html, body{
   padding: 50px; 
   box-sizing: border-box; 
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 25px rgba(0, 0, 0, 0.08);
-  background: url(pg.jpg);
+  background: url(images/pg.jpg);
   background-size: cover;
 }
 
@@ -118,7 +118,7 @@ html, body{
   flex-direction: column;
   align-items: flex-start;
   margin: 20px 0;
-  width: 900px;
+  width: 700px;
   padding: 20px;
   backdrop-filter: blur(5px);
   border-radius: 8px;
@@ -324,9 +324,8 @@ html, body{
 .timeline_about .recipe-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
-  gap: 70px;
-  max-width: 900px;
-  margin-left: 40px;
+  gap: 20px;
+  max-width: 500px;
 }
 
 .timeline_about .recipe-card {
