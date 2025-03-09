@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ</title>
+    <style>
+        body {
+            background-image: url('https://i.pinimg.com/736x/ec/88/01/ec88011e4d940a6fbfde37d59b58b85b.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Schola', serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: #fbf3ed; 
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #d46a7e;
+            font-family:'Poppins', sans-serif;
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        h2 {
+            color: #d46a7e;
+            font-family:'Poppins', sans-serif;
+            font-size: 2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        .faq-item {
+            margin-bottom: 15px;
+        }
+
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            padding: 15px;
+            background: #FFF0F5;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1em;
+            color: #464343;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question:hover {
+            background: #fbf3ed;
+        }
+
+       
+        .faq-answer {
+            padding: 15px;
+            background: #FFF0F5;
+            border-radius: 10px;
+            margin-top: 5px;
+            display: none;
+            font-family: 'Poppins', sans-serif;
+            color: #6D6875;
+        }
+
+        .faq-answer p {
+            margin: 0;
+        }
+
+        .faq-answer.active {
+            display: block;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 1.5em;
+            color: #f175b9;/*hyde lal + - buttons*/
+        }
+
+        .faq-question.active::after {
+            content: '-';
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Lato&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Frequently Asked Questions</h1>
+
+   
+        <h2>General Questions</h2>
+        <div class="faq-item">
+            <button class="faq-question">What is this website about?</button>
+            <div class="faq-answer">
+                <p>This website is a place for baking enthusiasts to share recipes, tips, and stories. Whether you're a beginner or an expert, you'll find something sweet here!</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question">Who is this website for?</button>
+            <div class="faq-answer">
+                <p>This website is for anyone who loves baking, from beginners to seasoned bakers. If you enjoy creating delicious treats, you'll feel right at home.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question">Do I need to create an account to use this website?</button>
+            <div class="faq-answer">
+                <p>No, you don't need an account to browse recipes. However, creating an account allows you to save your favorite recipes, leave comments, and share your own creations.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question">Is this website free to use?</button>
+            <div class="faq-answer">
+                <p>
+                    Yes, this website is completely free to use. We believe baking should be accessible to everyone!</p>
+            </div>
+        </div>
+         <div class="faq-item">
+            <button class="faq-question">Can I contribute my own recipes?How?</button>
+            <div class="faq-answer">
+                <p>
+                    Absolutely! We encourage users to share their favorite recipes. 
+                    Simply create an account and submit your recipe through the "Add Your Recipe" page.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question">Do you offer baking classes or workshops?</button>
+            <div class="faq-answer">
+                <p>
+                    Not currently, but we’re planning to host virtual baking classes in the future, in addition to baking challenges between our users. Stay tuned!</p>
+            </div>
+        </div>
+       
+
+        <h2>Recipe Questions</h2>
+        <div class="faq-item">
+            <button class="faq-question">Can I substitute ingredients in your recipes?</button>
+            <div class="faq-answer">
+                <p>Yes, you can! We encourage experimentation. However, results may vary depending on the substitutions.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question">Are your recipes tested before being published?</button>
+            <div class="faq-answer">
+                <p>Our team works hard to make sure all the recipes posted by different bakers are legitemate; 
+                    however, we encourage reeading through the ingredients before preceding with baking. 
+                </p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question">Can I adjust the serving size of a recipe?</button>
+            <div class="faq-answer">
+                <p>Yes, most of our posted recipes include a serving size calculator. Simply input the number of servings you need, and the ingredient quantities will adjust automatically. 
+                </p>
+            </div>
+        </div>
+
+        <h2>Technical Questions</h2>
+        <div class="faq-item">
+            <button class="faq-question">How do I contact you?</button>
+            <div class="faq-answer">
+                <p>You can reach us via email at <a href="mailto:contact@BakeWBas.com">contact@BakeWBas.com</a>.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question">Can I share your recipes on social media?</button>
+            <div class="faq-answer">
+                <p>Yes, please do! We'd love for you to share our bakers' recipes. Just make sure to credit the baker and link back to our website.</p>
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <button class="faq-question">How do I reset my password?</button>
+            <div class="faq-answer">
+                <p>Click on the "Forgot Password" link on the login page and follow the instructions sent to your email.</p>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const answer = button.nextElementSibling;
+                button.classList.toggle('active');
+                answer.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Page</title>
+    <style>
+        body {
+            background-image: url('https://i.pinimg.com/736x/ec/88/01/ec88011e4d940a6fbfde37d59b58b85b.jpg');
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+            color: #d46a7e;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: #fbf3ed;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* hy mhemme lal heart, laino iza ma hatyta bisir 
+            l position taaulo hasab the whole page msh bs l container */
+        }
+        .recipe-header {
+            text-align: center;
+        }
+        .recipe-img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .categories {
+            text-align: center;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .category {
+            background: #fbf3ed;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .favorite-heart {
+            position: absolute; 
+            top: 20px;
+            right: 20px; 
+            font-size: 32px;
+            cursor: pointer;
+            color: red; 
+            transition: color 0.3s;
+        }
+        .favorite-heart.added {
+            color: red; 
+        }
+        .rating-section, .discussion-section {
+            margin-top: 20px;
+        }
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        .star {
+            cursor: pointer;
+            font-size: 24px;
+            color: #ccc;
+        }
+        .star.selected {
+            color: #ffcc00;
+        }
+        .average-rating {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .discussion-section input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .discussion-section button {
+            padding: 10px 20px;
+            background: #d46a7e;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .discussion-section button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .warning {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="favorite-heart" id="favoriteHeart" onclick="toggleFavorite()">
+            ♡ 
+        </div>
+
+        <div class="recipe-header">
+            <h1>Recipe Name</h1>
+            <img src="recipe-image.jpg" alt="Recipe Image" class="recipe-img">
+            <div class="categories">
+                <div class="category">Diabetic-Friendly</div>
+                <div class="category">Vegan</div>
+                <div class="category">Gluten-Free</div>
+            </div>
+        </div>
+
+        <div class="user-info">
+            <img src="user-profile.jpg" alt="User Picture" class="user-pic">
+            <p>Posted by: <strong>User Name</strong></p>
+        </div>
+
+        <p><strong>Description:</strong> A delightful and easy-to-make dessert perfect for any occasion.</p>
+        <p><strong>Prep Time:</strong> 15 min | <strong>Cook Time:</strong> 30 min | <strong>Servings:</strong> 8 | <strong>Difficulty:</strong> Medium</p>
+        
+        <div class="serving-calculator">
+            <label for="servingInput">Adjust servings:</label>
+            <input type="number" id="servingInput" value="8" min="1" onchange="adjustIngredients()">
+        </div>
+        
+        <h3>Ingredients</h3>
+        <ul id="ingredients-list">
+            <li data-quantity="200">200g Flour</li>
+            <li data-quantity="100">100g Sugar</li>
+            <li data-quantity="2">2 Eggs</li>
+        </ul>
+
+        <h3>Steps</h3>
+        <ol>
+            <li>Mix ingredients together.</li>
+            <li>Bake at 180°C for 30 minutes.</li>
+            <li>Let it cool and enjoy!</li>
+        </ol>
+
+        <div class="rating-section">
+            <h3>Rate this Recipe</h3>
+            <div class="star-rating">
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+            </div>
+            <div class="warning" id="ratingWarning">Please log in to rate this recipe.</div>
+            <div class="average-rating">
+                Average Rating: <span id="averageRating">4.5</span>
+            </div>
+        </div>
+
+    
+        <div class="discussion-section">
+            <h3>Discussions</h3>
+            <input type="text" placeholder="Add a comment..." id="commentInput">
+            <button id="submitCommentBtn" onclick="submitComment()">Submit</button>
+            <div class="warning" id="commentWarning">Please log in to submit a comment.</div>
+            <div id="commentsList">
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const favoriteHeart = document.getElementById('favoriteHeart');
+
+        function toggleFavorite() {
+            favoriteHeart.classList.toggle('added');
+            if (favoriteHeart.classList.contains('added')) {
+                favoriteHeart.innerHTML = '❤️'; 
+            } else {
+                favoriteHeart.innerHTML = '♡'; 
+            }
+        }
+
+        // Star Rating System
+        const stars = document.querySelectorAll('.star');
+        const ratingWarning = document.getElementById('ratingWarning');
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                ratingWarning.style.display = 'block'; // Show warning
+            });
+        });
+
+        // Discussion System
+        const commentInput = document.getElementById('commentInput');
+        const submitCommentBtn = document.getElementById('submitCommentBtn');
+        const commentWarning = document.getElementById('commentWarning');
+
+        submitCommentBtn.addEventListener('click', () => {
+            commentWarning.style.display = 'block'; 
+        });
+
+        // Serving Calculator
+        function adjustIngredients() {
+            let originalServings = 8;
+            let newServings = document.getElementById("servingInput").value;
+            let ingredients = document.querySelectorAll("#ingredients-list li");
+
+            ingredients.forEach(ingredient => {
+                let baseQuantity = ingredient.getAttribute("data-quantity");
+                let adjustedQuantity = (baseQuantity / originalServings) * newServings;
+                ingredient.innerHTML = `${adjustedQuantity.toFixed(1)} ${ingredient.innerHTML.split(' ').slice(1).join(' ')}`;
+            });
+        }
+    </script>
+</body>
+</html>
