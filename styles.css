@@ -32,7 +32,7 @@ body {
     display: flex;
     align-items: center;
     color: #9c4d4d;
-    font-family: 'Schola', serif;
+    font-family: 'Poppins', sans-serif;
     text-align: center;
     padding: 40px;
     z-index: 1;
@@ -73,7 +73,7 @@ form {
     border: none;
     outline: none;
     font-size: 18px;
-    font-family: 'Schola', serif;
+    font-family: 'Poppins', sans-serif;
     color: #333;
     font-weight: 500;
     text-align: left;
