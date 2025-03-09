@@ -1,0 +1,285 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+}
+
+html {
+  font-size: 12px;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+html, body{
+  height: auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+  width: 100%;
+  padding: 30px; 
+  box-sizing: border-box; 
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 25px rgba(0, 0, 0, 0.08);
+  background: url(pg.jpg);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 20px 0;
+  width: 900px;
+  padding: 20px;
+  backdrop-filter: blur(5px);
+  border-radius: 8px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.05);
+  background-color: #fbf3ed;
+}
+
+.userDetails {
+  padding: 15px 25px;
+  margin-bottom: 10px;
+}
+
+.userDetails .userName h1 {
+  font-size: 28px;
+  color: #d46a7e;
+  margin-bottom: 5px;
+  margin-top: 20px;
+}
+
+.userDetails .userName p {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.userDetails .rank {
+  position: relative;
+  margin-bottom: 25px;
+  color: #464343;
+}
+
+.userDetails .rank .heading {
+  font-size: 16px;
+  color: #464343;
+  text-transform: uppercase;
+  margin-top: 40px;
+}
+
+.userDetails .rank span {
+  font-size: 23px;
+  font-weight: 650;
+  color: #464343;
+}
+
+.userDetails .rank .rating {
+  position: absolute;
+  top: 1.9rem;
+  left: 1.8rem;
+  display: flex;
+  gap: 5px;
+  margin-top: 50px;
+  font-size: 22px;
+}
+
+.userDetails .rank .rating i {
+  color: #464343;
+  transition: color 0.3s;
+}
+
+.userDetails .user-rating{
+  margin-top: 20px; 
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.userDetails .user-rating h1{
+  font-size: 17px;
+  color: #464343;
+}
+.userDetails .user-rating div{
+  margin-bottom: 15px;
+  font-size: 17px;
+  color: #464343;
+}
+
+.userDetails .user-rating .rating i.active {
+  color: #f5a4b5;
+}
+
+.userDetails .rank .rating .rate {
+  font-size: 15px;
+}
+
+.userDetails .rank .rating .underrate {
+  color: #464343;
+}
+
+.profile {
+  position: absolute;
+  top: 20px; 
+  right: 20px;
+}
+
+.profile img {
+  border-radius: 20%;
+  object-fit: cover;
+  width: 17rem;    
+  height: 17rem; 
+  opacity: 80%;     
+}
+
+
+.bio .work .heading,
+.bio .skills .heading {
+  position: relative;
+  color: #d46a7e;
+  text-transform: uppercase;
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: 700;
+  margin-top: 30px;
+  margin-left: 10px;
+}
+
+.bio .work .heading::before,
+.bio .skills .heading::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 0.1rem;
+  width: 88%;
+  background: #3c3c3c;
+  font-weight: 700;
+  display: none;
+}
+
+
+
+.bio .work .primary p,
+.bio .skills ul li {
+  position: relative;
+  font-size: 15px;
+  line-height: 1.8rem;
+  color: #474444;
+  font-weight: 500;
+  margin-left: 40px;
+  margin-top: 10px;
+}
+
+.timeline_about {
+  padding: 30px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.timeline_about .tabs {
+  position: sticky;
+  top: 0; 
+  background-color: #f0dae1; 
+  z-index: 10; 
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transform: none;
+  margin-bottom: 30px;
+}
+
+
+.timeline_about .tabs ul {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+}
+
+.timeline_about .tabs ul::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+  background: #3c3c3c;
+}
+
+.timeline_about .tabs ul li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #dc889a;
+}
+
+.timeline_about .tabs ul li span {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 15px;
+  margin-left: 10px;
+}
+
+.timeline_about .tabs ul .active::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+}
+
+.timeline_about .recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 70px;
+  max-width: 900px;
+  margin-left: 40px;
+}
+
+.timeline_about .recipe-card {
+  position: relative;
+  overflow: hidden;
+  width: 200px;
+  min-height: 250px; 
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #ebc8cd;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+
+.timeline_about .recipe-card:hover {
+  transform: scale(1.1);
+}
+
+.timeline_about .recipe-card img {
+  width: 100%;  
+  height: 250px;            
+  object-fit: cover; 
+  display: block;
+  border-radius: 10px 10px 0 0;
+}
+
+.timeline_about .recipe-name {
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
