@@ -4,26 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Your Recipe</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('images/cakes.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #d46a7e;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Ensure body takes at least the full viewport height */
+    display: flex;
+    flex-direction: column; /* Make body a flex container for proper footer placement */
+}
+
+
+        /* Navbar Styles */
+        .custom-navbar {
             font-family: 'Poppins', sans-serif;
-            background-image: url('images/cakes.jpg');
-            background-size: 100%;
-            background-position: center;
-            color: #d46a7e;
-            margin: 0;
-            padding: 0;
+            font-size: 20px;
+            background-color: #fbf3ed !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            position: relative;
+        }
+
+        .custom-navbar.sticky-top {
+            position: sticky;
+            top: 0;
+        }
+
+        .custom-navbar .navbar-nav .nav-link {
+            color: #dc889a !important;
+            font-size: 18px;
+            padding: 8px 12px;
+            transition: color 0.3s ease;
+        }
+
+        .custom-navbar .navbar-nav .nav-link.active,
+        .custom-navbar .navbar-nav .nav-link:hover {
+            color: #c42348 !important;
+        }
+
+        .custom-navbar .dropdown-menu {
+            background-color: #fbf3ed !important;
+            border: 2px solid #dc889a;
+            border-radius: 8px;
+            padding: 5px;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            min-width: 150px;
+        }
+
+        .custom-navbar .dropdown-menu .dropdown-item {
+            color: #dc889a !important;
+            font-size: 14px;
+            padding: 6px 12px;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-navbar .dropdown-menu .dropdown-item:hover {
+            background-color: rgba(220, 136, 154, 0.1);
+        }
+
+        .custom-navbar .navbar-brand {
+            color: #dc889a !important;
+            font-size: 18px;
+            margin-left: 20px;
+        }
+
+        .custom-navbar .navbar-toggler-icon {
+            background-color: #dc889a;
+        }
+
+        .btn-outline-danger {
+            border-color: #dc889a;
+            color: #dc889a;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #dc889a;
+            color: white;
+        }
+
+        #loginButton {
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border-width: 2px;
         }
         .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fbf3ed;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fbf3ed;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex: 1; 
+}
         h1 {
             font-size: 2rem;
             font-weight: 600;
@@ -162,6 +247,43 @@
     </style>
 </head>
 <body>
+    <nav class="navbar custom-navbar sticky-top">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="images/final.png" alt="Website Logo" width="80" height="50" class="d-inline-block align-text-top">
+            </a>
+            <!-- Navigation Links -->
+            <ul class="navbar-nav d-flex flex-row">
+                <li class="nav-item me-3">
+                    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link" href="#">About Us</a>
+                </li>
+                <li class="nav-item dropdown me-3">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Recipes
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="AddYourRecipe.html">Add</a></li>
+                        <li><a class="dropdown-item" href="#">Explore</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Login Button and Profile Icon -->
+            <div class="d-flex">
+                <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='loginpage.html'">Log In</button>
+                <div id="profileIcon" class="d-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mt-5">
         <h1 class="text-center mb-4">Add Your Recipe</h1>
         <form id="recipeForm">
@@ -299,6 +421,7 @@
             </div>
         </form>
     </div>
+    
 
     <script>
         let isLoggedIn = false;
