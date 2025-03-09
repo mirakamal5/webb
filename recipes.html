@@ -1,232 +1,689 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipes</title>
-    
+
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
-    <link rel="stylesheet" href="styles.css">
-    <!-- Bootstrap JavaScript (Include first) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- jQuery (Include before your custom script) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <!-- Your custom JavaScript -->
-    <script src="index.js"></script>
 
-<style></style>
+    <!-- Framer Motion (For Animations) -->
+    <script src="https://unpkg.com/framer-motion@10.16.0/dist/framer-motion.umd.js"></script>
+
+    <!-- Custom Styles -->
     <style>
+        /* 🌟 General Styling */
         body {
             background-color: #F2E3DA;
-            font-family: Arial, sans-serif;
-            
-            background-image: url('images/background\ .jpg'); 
-            background-size: cover;
-            background-size: 100% ;
-            background-position: center;
-            background-repeat: no-repeat;
+            font-family: 'Poppins', sans-serif;
+            background-image: url('images/background.jpg'); 
         }
-        
-        /* .img-wrapper {
-            max-width: 100%;
-            height: auto;
-            max-height: 300px;
+
+        /* 🌟 Section Titles */
+        .category-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 30px 0 15px 20px;
+            color: #9c4d4d;
+            position: relative;
+            display: inline-block;
+            font-family: 'Poppins', sans-serif;
+        }
+        /* 🌟 "View Recipe" Button (Updated to match Login/Register style) */
+        /* 🌟 Custom "View Recipe" Button (Pink) */
+    .btn-pink {
+        background-color: #D27D92; /* Soft muted pink */
+        border: none;
+        padding: 10px 18px;
+        font-weight: bold;
+        color: white;
+        border-radius: 8px;
+        transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+        font-size: 14px;
+        display: inline-block;
+        text-align: center;
+        text-decoration: none;
+    }
+
+/* Hover Effect */
+    .btn-pink:hover {
+        background-color: #B55B73; /* Darker pink */
+        transform: scale(1.05);
+    }
+
+    /* Ensure Bootstrap does not override pink button */
+    .btn-pink:focus, .btn-pink:active {
+        background-color: #B55B73 !important;
+        color: white !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+
+
+        .category-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #FF6F61;
+            margin-top: 5px;
+            border-radius: 2px;
+        }
+
+        /* 🌟 Scrollable Wrapper */
+        .scroll-wrapper {
+            position: relative;
             display: flex;
-            justify-content: center;
             align-items: center;
-        } */
-        
-        
-        
-        .img {
-            max-width: 100%;
-            max-height: 100%;
+            padding: 10px 0;
         }
-        
-        @media screen and (min-width: 576px) {
-        
-            .carousel-inner {
-                display: flex;
-            }
-        
-            .carousel-item {
-                display: block;
-                margin-right: 0;
-                flex: 0 0 calc(100% / 3);
-            }
-        
-            .img-wrapper {
-                height: 23vw;
-            }
-        }
-        
-        
-        .carousel-inner {
-            padding: 1em;
-        }
-        
-        .card {
-            margin: 0 .5em;
-            box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, .18);
-            border-radius: 0;
-        }
-        
-        
-        .img-wrapper img {
-            width: 100%; /* Ensures it takes full width of the card */
-            height: 100%;
-            object-fit: cover; /* Keeps the aspect ratio */
-        }
-        
-        .img-wrapper {
-            max-width: 100%;
-            height: 300px; /* Adjust this value to control the height */
+
+        .scroll-container {
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
-             overflow: hidden; 
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #bbb #eee;
+            scroll-behavior: smooth;
         }
-        
-        .carousel-control-prev, .carousel-control-next {
-            width: 6vh;
-            height: 6vh;
-            background-color: #e1e1e1;
-            border-radius: 50%;
+
+        /* 🌟 Custom Scrollbar */
+        .scroll-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #FF6F61;
+            border-radius: 5px;
+        }
+
+        /* 🌟 Recipe Cards */
+        .recipe-card {
+            position: relative;
+            flex: 0 0 auto;
+            width: 320px;
+            height: 550px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin-right: 15px;
+            transform: scale(1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .recipe-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 🌟 Image Styling */
+        .recipe-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .recipe-card:hover img {
+            transform: scale(1.08);
+        }
+
+        /* 🌟 Card Text */
+        .recipe-card .card-body {
+        padding: 15px;
+        text-align: center;
+        position: relative;
+    }
+
+    .favorite-container {
+        position: absolute;
+        top: 10px;
+        right: 5px;
+        width: 35px;
+        height: 35px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+        z-index: 10; /* 🌟 Ensures heart is above the image */
+        pointer-events: auto; /* 🌟 Fixes clicking issue */
+    }
+
+    .favorite-icon {
+        font-size: 18px;
+        color: #bbb;
+        transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+        display: flex;  /* Ensure it's centered */
+        align-items: center;
+        justify-content: center;
+        width: 50%;
+        height: 50%;
+    }
+
+     /* 🌟 Active State - Red Heart */
+     .favorite-container.active {
+        background: #FFD1DC;
+    }
+
+    .favorite-container.active .favorite-icon {
+        color: red;
+        transform: scale(1.1);
+    }
+
+    /* Hover Effect */
+    .favorite-container:hover {
+        background: #F5B7B1;
+    }
+
+    .favorite-container:hover .favorite-icon {
+        transform: scale(1.2);
+    }
+
+        .recipe-card h5 {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #9c4d4d;
+        }
+
+        .recipe-card p {
+            font-size: 0.9rem;
+            color: #9c4d4d;;
+            margin-bottom: 5px;
+        }
+
+        .favorite-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 22px;
+            color: #bbb;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+        }
+
+    .favorite-icon.active {
+        color: #FF6F91; /* Pink when added to favorites */
+    }
+
+        /* 🌟 Star Rating */
+        /* p.stars {
+            color: #FFD700;
+            font-size: 14px;
+        } */
+
+        /* 🌟 Navigation Buttons */
+        .scroll-button {
+            position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            opacity: 0.5;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s ease-in-out;
+            z-index: 10;
+            opacity: 0;
         }
-        
-         /* @media screen and (min-width: 576px) {
-        
-            .carousel-inner {
-                display: flex;
-            }
-        
-            .carousel-item {
-                display: block;
-                margin-right: 0;
-                flex: 0 0 calc(100% / 3);
-            }
-        
-            .img-wrapper {
-                height: 250px; 
-            }
-        
-        } */</style>
 
-    
-    <!-- Bootstrap JavaScript -->
-    
+        .scroll-wrapper:hover .scroll-button {
+            opacity: 1;
+        }
+
+        .scroll-button:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .a {
+            color:#9c4d4d;
+            background-color: #FF6F61;
+            border-color: #FF6F61;
+        }
+
+        .scroll-left { left: 10px; }
+        .scroll-right { right: 10px; }
+
+    </style>
 </head>
 <body>
 
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="card" >
-                    <div class="img-wrapper">
-                        <img src="images/im1.jpg" alt="Card image cap">
+    <!-- 🌟 Recipe Category Section -->
+    <div class="container">
+        <h2 class="category-title">Best Weeknight Dinner Recipes</h2>
+        
+        <div class="scroll-wrapper">
+            <button class="scroll-button scroll-left" data-target="scroll1">&lt;</button>
+            <div class="scroll-container" id="scroll1">
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
                     </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time: 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>                        
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im2.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Honey-Habanero Pork Chops</h5>
+                        <p>By Ali Slagle</p>
+                        <p class="stars">★★★★☆ (953)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
             </div>
-            <div class="carousel-item">
-                <div class="card" >
-                    <div class="img-wrapper">
-                        <img src="images/im2.jpg" alt="Card image cap">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="card" >
-                    <div class="img-wrapper">
-                        <img src="images/im3.jpg" alt="Card image cap">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="card" >
-                    <div class="img-wrapper">
-                        <img src="images/im4.jpg" alt="Card image cap">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="card" >
-                    <div class="img-wrapper">
-                        <img src="images/im5.jpg" alt="Card image cap">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="card" >
-                    <div class="img-wrapper">
-                        <img src="images/im6.jpg" alt="Card image cap">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="card" >
-                    <div class="img-wrapper">
-                        <img src="images/im7.jpg" alt="Card image cap">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-
+            <button class="scroll-button scroll-right" data-target="scroll1">&gt;</button>
         </div>
-
-        <!-- Corrected Navigation Buttons -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
     </div>
-    <script  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="index.js"></script>
+
+    <br> <br>
+
+    <div class="container">
+        <h2 class="category-title">Best Weeknight Dinner Recipes</h2>
+        
+        <div class="scroll-wrapper">
+            <button class="scroll-button scroll-left" data-target="scroll2">&lt;</button>
+            <div class="scroll-container" id="scroll2">
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im2.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Honey-Habanero Pork Chops</h5>
+                        <p>By Ali Slagle</p>
+                        <p class="stars">★★★★☆ (953)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+            </div>
+            <button class="scroll-button scroll-right" data-target="scroll2">&gt;</button>
+        </div>
+    </div>
+
+    
+    <br> <br>
+
+
+    <div class="container">
+        <h2 class="category-title">Best Weeknight Dinner Recipes</h2>
+        
+        <div class="scroll-wrapper">
+            <button class="scroll-button scroll-left" data-target="scroll3">&lt;</button>
+            <div class="scroll-container" id="scroll3">
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im2.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Honey-Habanero Pork Chops</h5>
+                        <p>By Ali Slagle</p>
+                        <p class="stars">★★★★☆ (953)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+            </div>
+            <button class="scroll-button scroll-right" data-target="scroll3">&gt;</button>
+        </div>
+    </div>
+
+    
+    <br> <br>
+
+    <div class="container">
+        <h2 class="category-title">Best Weeknight Dinner Recipes</h2>
+        
+        <div class="scroll-wrapper">
+            <button class="scroll-button scroll-left" data-target="scroll4">&lt;</button>
+            <div class="scroll-container" id="scroll4">
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im1.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Ginger-Garlic Shrimp</h5>
+                        <p>By Yasmin Fahr</p>
+                        <p class="stars">★★★★★ (5,861)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon">
+                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                        </span>
+                    </div>
+                    <img src="images/im2.jpg" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5>Honey-Habanero Pork Chops</h5>
+                        <p>By Ali Slagle</p>
+                        <p class="stars">★★★★☆ (953)</p>
+                        <p>Prep time : 20 minutes</p>
+                        <p>Category : Sugar-Free</p>
+                        <a href="#" class="btn-pink">View Recipe</a>
+                    </div>
+                </div>
+            </div>
+            <button class="scroll-button scroll-right" data-target="scroll4">&gt;</button>
+        </div>
+    </div>
+    
+    <br> <br>
+    
+
+    <!-- 🌟 JavaScript for Custom Scrolling & Animations -->
+    <script>
+        $(document).ready(function () {
+            $(".scroll-container").each(function () {
+                let scrollContainer = $(this);
+
+                // Scroll with mouse wheel (smooth)
+                scrollContainer.on("wheel", function (event) {
+                    event.preventDefault();
+                    this.scrollLeft += event.originalEvent.deltaY * 1.5;
+                });
+            });
+
+            // Scroll with navigation buttons - Smooth animation
+            $(".scroll-button").on("click", function () {
+                let targetId = $(this).data("target");
+                let scrollContainer = $("#" + targetId);
+                let scrollAmount = $(this).hasClass("scroll-left") ? "-=400" : "+=400";
+
+                scrollContainer.animate({ scrollLeft: scrollAmount }, 400, "swing");
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const hearts = document.querySelectorAll(".favorite-container");
+
+            hearts.forEach(heartContainer => {
+                heartContainer.addEventListener("click", function () {
+                    const icon = this.querySelector("i");
+                    icon.classList.toggle("fa-regular"); // Outline heart
+                    icon.classList.toggle("fa-solid");   // Filled heart
+                    this.classList.toggle("active"); // Change background & heart color
+                });
+            });
+        });
+    </script>
+
 
 </body>
 </html>
