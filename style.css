@@ -2,7 +2,7 @@
     margin: 0;
     padding:0;
     box-sizing: border-box;
-    font-family: 'Schola', serif;
+    font-family: 'Poppins', serif;
 }
 
 .custom-navbar {
@@ -102,7 +102,7 @@
 
 .contact .content h2{
     font-size: 36px;
-    margin-top: -100px;
+    margin-top: 10px;
     margin-bottom: 10px;
     font-weight: 700;
     color: #464343;
@@ -306,7 +306,6 @@
     background-color: #ffffff;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
     .footer-col {
         flex: 1 1 100%; /* Full width on smaller screens */
@@ -320,5 +319,56 @@
 
     .footer-col .social-links {
         justify-content: center; /* Center social icons */
+    }
+}
+
+@media (max-width: 768px) {
+    .contact {
+        padding: 50px 20px;
+    }
+
+    .contact .content {
+        margin-right: 0; 
+    }
+
+    .contact .content h2 {
+        font-size: 28px;
+        margin-top: 20px;
+    }
+
+    .contact .content p {
+        margin-bottom: 50px; 
+    }
+
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container .contactInfo {
+        width: 100%;
+        margin-left: 0; 
+        align-items: center;
+    }
+
+    .container .contactInfo .box {
+        width: 100%; 
+        justify-content: center;
+    }
+
+    .contactForm {
+        width: 80%; 
+        margin-right: 0; 
+        margin-top: 40px;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .contactForm h2 {
+        font-size: 20px; 
+    }
+
+    .contactForm .inputBox {
+        width: 100%;
     }
 }
