@@ -6,142 +6,158 @@
     <title>Add Your Recipe</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-   
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-image: url('images/cakes.jpg'); 
-            background-size: 100%; 
-            background-position: center; 
-            color: #d46a7e; 
+            background-image: url('images/cakes.jpg');
+            background-size: 100%;
+            background-position: center;
+            color: #d46a7e;
             margin: 0;
             padding: 0;
         }
         .container {
-            max-width: 600px; 
-            margin: 50px auto; 
+            max-width: 600px;
+            margin: 50px auto;
             padding: 20px;
-            background-color: #fbf3ed; /* Light beige container background */
+            background-color: #fbf3ed;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
         h1 {
-            font-size: 2rem; /* Smaller heading */
+            font-size: 2rem;
             font-weight: 600;
-            color: #d46a7e; /* Slightly darker pink for the heading */
-            margin-bottom: 20px; /* Reduced margin */
+            color: #d46a7e;
+            margin-bottom: 20px;
         }
-        
         .form-label {
             font-weight: 500;
-            color: #d46a7e; /* Slightly darker pink for labels */
-            font-size: 0.9rem; /* Smaller label text */
+            color: #d46a7e;
+            font-size: 0.9rem;
         }
-        
         .ingredient-group,
         .step-group {
             display: flex;
             gap: 10px;
+            align-items: center;
         }
-        
         .ingredient-group input,
         .step-group textarea {
             flex: 1;
-            font-size: 0.9rem; /* Smaller input text */
+            font-size: 0.9rem;
         }
-        
-        /* Updated Add Ingredient and Add Step buttons */
         .btn-primary {
-            background-color: #c97688; /* Darker pink for the primary button */
+            background-color: #c97688;
             border: none;
             padding: 8px 16px;
             font-size: 0.9rem;
-            color: #fbf3ed; /* Light beige text for contrast */
+            color: #fbf3ed;
         }
-        
         .btn-primary:hover {
-            background-color: #b86476; /* Slightly darker pink on hover */
+            background-color: #b86476;
         }
-        
         .btn-secondary {
-            background-color: #c97688; /* Darker pink for the secondary button */
+            background-color: #c97688;
             border: none;
             padding: 4px 8px;
             font-size: 0.8rem;
-            color: #fbf3ed; /* Light beige text for contrast */
+            color: #fbf3ed;
         }
-        
         .btn-secondary:hover {
-            background-color: #b86476; /* Slightly darker pink on hover */
+            background-color: #b86476;
         }
-        
-        /* Input and Textarea Styling */
         .form-control {
-            border: 1px solid #d46a7e; /* Slightly darker pink border */
-            border-radius: 5px;
-            padding: 8px; /* Reduced padding */
-            font-family: 'Schola', serif;
-            color: #d46a7e; /* Slightly darker pink text for inputs */
-        }
-        
-        .form-control::placeholder {
-            color: #d46a7e; /* Slightly darker pink placeholder text */
-            opacity: 0.7; /* Slightly transparent */
-        }
-        
-        .form-control:focus {
-            border-color: #d68c45; /* Warm orange border on focus */
-            box-shadow: 0 0 5px rgba(214, 140, 69, 0.5); /* Orange glow */
-        }
-        
-        /* File Input Styling */
-        .form-control[type="file"] {
-            padding: 5px;
-        }
-        
-        /* Validation Styling */
-        .empty-warning {
-            color: red; /* Red text for error messages */
-            font-size: 0.8rem; /* Smaller error text */
-            display: none; /* Hide error messages by default */
-        }
-        
-        /* Light Pink Color for Categories */
-        .form-check-input:checked {
-            background-color: #d46a7e; /* Slightly darker pink */
-            border-color: #d46a7e;
-        }
-        
-        .form-check-label {
-            color: #d46a7e; /* Slightly darker pink */
-            font-size: 0.9rem; /* Smaller font size */
-        }
-        
-        .form-check {
-            margin-bottom: 0.5rem; /* Space between checkboxes */
-        }
-        
-        /* Updated Difficulty Level Dropdown */
-        .form-select {
-            border: 1px solid #d46a7e; /* Slightly darker pink border */
+            border: 1px solid #d46a7e;
             border-radius: 5px;
             padding: 8px;
             font-family: 'Schola', serif;
-            color: #d46a7e; /* Slightly darker pink text for the dropdown */
-            background-color: #ffffff; /* White background before pressing */
+            color: #d46a7e;
         }
-        
+        .form-control::placeholder {
+            color: #d46a7e;
+            opacity: 0.7;
+        }
+        .form-control:focus {
+            border-color: #d68c45;
+            box-shadow: 0 0 5px rgba(214, 140, 69, 0.5);
+        }
+        .form-control[type="file"] {
+            padding: 5px;
+        }
+        .empty-warning {
+            color: rgb(247, 170, 170);
+            font-size: 0.8rem;
+            display: none;
+        }
+        .btn-danger.btn-sm {
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            line-height: 1.2;
+            background-color: #d46a7e;
+            border-color: #d46a7e;
+            color: #fbf3ed;
+        }
+        .btn-danger.btn-sm:hover {
+            background-color: #c42348;
+            border-color: #c42348;
+        }
+        .form-check-input:checked {
+            background-color: #d46a7e;
+            border-color: #d46a7e;
+        }
+        .form-check-label {
+            color: #d46a7e;
+            font-size: 0.9rem;
+        }
+        .form-check {
+            margin-bottom: 0.5rem;
+        }
+        .form-select {
+            border: 1px solid #d46a7e;
+            border-radius: 5px;
+            padding: 8px;
+            font-family: 'Schola', serif;
+            color: #d46a7e;
+            background-color: #ffffff;
+        }
         .form-select:focus {
-            border-color: #d68c45; /* Warm orange border on focus */
-            box-shadow: 0 0 5px rgba(214, 140, 69, 0.5); /* Orange glow */
-            background-color: #fbf3ed; /* Light beige background on focus */
+            border-color: #d68c45;
+            box-shadow: 0 0 5px rgba(214, 140, 69, 0.5);
+            background-color: #fbf3ed;
         }
-        
-        /* Dropdown options styling */
         .form-select option {
-            background-color: #fbf3ed; /* Light beige background */
-            color: #d46a7e; /* Slightly darker pink text */
+            background-color: #fbf3ed;
+            color: #d46a7e;
+        }
+        .uploaded-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .uploaded-images img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 5px;
+        }
+        .image-container {
+            position: relative;
+        }
+        .remove-image {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -149,25 +165,19 @@
     <div class="container mt-5">
         <h1 class="text-center mb-4">Add Your Recipe</h1>
         <form id="recipeForm">
-            <!-- Recipe Name -->
             <div class="mb-3">
                 <label for="recipeName" class="form-label">Recipe Name</label>
                 <input type="text" class="form-control" id="recipeName" placeholder="Enter recipe name" required>
                 <div class="empty-warning">Please fill out this field.</div>
             </div>
-
-            <!-- Recipe Description -->
             <div class="mb-3">
                 <label for="recipeDescription" class="form-label">Description</label>
                 <textarea class="form-control" id="recipeDescription" rows="3" placeholder="Describe your recipe" required></textarea>
                 <div class="empty-warning">Please fill out this field.</div>
             </div>
-
-            <!-- Category Selection -->
             <div class="mb-3">
                 <label class="form-label">Category</label>
                 <div class="row">
-                    <!-- First Column -->
                     <div class="col-md-6">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="diabeticFriendly" value="Diabetic-Friendly">
@@ -225,8 +235,6 @@
                 </div>
                 <div class="empty-warning category-warning">Please select at least one category.</div>
             </div>
-
-            <!-- Cooking Time and Preparing Time in the Same Row -->
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="preparingTime" class="form-label">Preparing Time (minutes)</label>
@@ -239,15 +247,11 @@
                     <div class="empty-warning">Please fill out this field.</div>
                 </div>
             </div>
-
-            <!-- Servings -->
             <div class="mb-3">
                 <label for="servings" class="form-label">Servings</label>
                 <input type="number" class="form-control" id="servings" placeholder="Enter number of servings" required>
                 <div class="empty-warning">Please fill out this field.</div>
             </div>
-
-            <!-- Difficulty -->
             <div class="mb-3">
                 <label for="difficulty" class="form-label">Difficulty</label>
                 <select class="form-select" id="difficulty" required>
@@ -258,54 +262,113 @@
                 </select>
                 <div class="empty-warning">Please select difficulty.</div>
             </div>
-
-            <!-- Upload Photos -->
             <div class="mb-3">
                 <label for="recipePhotos" class="form-label">Upload Photos</label>
                 <input type="file" class="form-control" id="recipePhotos" accept="image/*" multiple>
                 <small class="text-muted">You can upload up to 5 photos.</small>
+                <div class="uploaded-images" id="uploadedImages"></div>
             </div>
-
-            <!-- Video Tutorial -->
             <div class="mb-3">
                 <label for="recipeVideo" class="form-label">Video Tutorial (Optional)</label>
                 <input type="file" class="form-control" id="recipeVideo" accept="video/*">
                 <small class="text-muted">Upload a video or paste a YouTube/Vimeo link.</small>
             </div>
-
-            <!-- Ingredients -->
             <div class="mb-3">
                 <label class="form-label">Ingredients</label>
                 <div id="ingredientsContainer">
                     <div class="ingredient-group mb-2">
                         <input type="text" class="form-control ingredient" placeholder="Ingredient (e.g., Flour)" required>
                         <input type="text" class="form-control quantity" placeholder="Quantity (e.g., 200g)" required>
-                        <div class="empty-warning">Please fill in both fields.</div>
+                        <button type="button" class="btn btn-danger btn-sm remove-ingredient">Remove</button>
                     </div>
                 </div>
                 <button type="button" class="btn btn-secondary btn-sm" id="addIngredient">Add Ingredient</button>
             </div>
-
-            <!-- Steps -->
             <div class="mb-3">
                 <label class="form-label">Steps</label>
                 <div id="stepsContainer">
                     <div class="step-group mb-2">
                         <textarea class="form-control step" rows="2" placeholder="Step 1" required></textarea>
-                        <div class="empty-warning">Please enter a step.</div>
+                        <button type="button" class="btn btn-danger btn-sm remove-step">Remove</button>
                     </div>
                 </div>
                 <button type="button" class="btn btn-secondary btn-sm" id="addStep">Add Step</button>
             </div>
-
-            <!-- Submit Button -->
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Submit Recipe</button>
             </div>
         </form>
     </div>
 
-    
-    
+    <script>
+        let isLoggedIn = false;
+        document.getElementById('addIngredient').addEventListener('click', () => {
+            const ingredientsContainer = document.getElementById('ingredientsContainer');
+            const newIngredientGroup = document.createElement('div');
+            newIngredientGroup.classList.add('ingredient-group', 'mb-2');
+            newIngredientGroup.innerHTML = `
+                <input type="text" class="form-control ingredient" placeholder="Ingredient (e.g., Flour)" required>
+                <input type="text" class="form-control quantity" placeholder="Quantity (e.g., 200g)" required>
+                <button type="button" class="btn btn-danger btn-sm remove-ingredient">Remove</button>
+            `;
+            ingredientsContainer.appendChild(newIngredientGroup);
+
+            newIngredientGroup.querySelector('.remove-ingredient').addEventListener('click', () => {
+                ingredientsContainer.removeChild(newIngredientGroup);
+            });
+        });
+
+        // Add Step
+        document.getElementById('addStep').addEventListener('click', () => {
+            const stepsContainer = document.getElementById('stepsContainer');
+            const newStepGroup = document.createElement('div');
+            newStepGroup.classList.add('step-group', 'mb-2');
+            newStepGroup.innerHTML = `
+                <textarea class="form-control step" rows="2" placeholder="Step ${stepsContainer.children.length + 1}" required></textarea>
+                <button type="button" class="btn btn-danger btn-sm remove-step">Remove</button>
+            `;
+            stepsContainer.appendChild(newStepGroup);
+
+            newStepGroup.querySelector('.remove-step').addEventListener('click', () => {
+                stepsContainer.removeChild(newStepGroup);
+            });
+        });
+        const uploadedImagesContainer = document.getElementById('uploadedImages');
+        const recipePhotosInput = document.getElementById('recipePhotos');
+
+        recipePhotosInput.addEventListener('change', (event) => {
+            const files = event.target.files;
+            for (const file of files) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const imageContainer = document.createElement('div');
+                    imageContainer.classList.add('image-container');
+                    imageContainer.innerHTML = `
+                        <img src="${e.target.result}" alt="Uploaded Image">
+                        <button type="button" class="remove-image">×</button>
+                    `;
+                    uploadedImagesContainer.appendChild(imageContainer);
+                    imageContainer.querySelector('.remove-image').addEventListener('click', () => {
+                        uploadedImagesContainer.removeChild(imageContainer);
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        document.getElementById('recipeForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (!isLoggedIn) {
+                alert('You must be logged in to submit a recipe.');
+                return;
+            }
+            alert('Recipe submitted successfully!');
+        });
+        function checkLoginStatus() {
+            const token = localStorage.getItem('authToken');
+            isLoggedIn = !!token;
+        }
+
+        checkLoginStatus();
+    </script>
 </body>
 </html>
