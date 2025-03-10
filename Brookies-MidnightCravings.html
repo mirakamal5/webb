@@ -119,40 +119,85 @@
         </div>
 
         <div class="recipe-header">
-            <h1>Recipe Name</h1>
-            <img src="recipe-image.jpg" alt="Recipe Image" class="recipe-img">
+            <h1>Brookies</h1>
+            <img src="C:\Users\USP\OneDrive\Documents\GitHub\webb\web project\brookies.png" alt="Recipe Image" class="recipe-img">
             <div class="categories">
-                <div class="category">Diabetic-Friendly</div>
-                <div class="category">Vegan</div>
-                <div class="category">Gluten-Free</div>
+              
+                <div class="category">Vegetarian</div>
+                <div class="category">Nut-Free</div>
             </div>
         </div>
 
         <div class="user-info">
-            <img src="user-profile.jpg" alt="User Picture" class="user-pic">
-            <p>Posted by: <strong>User Name</strong></p>
+            <img src="C:\Users\USP\OneDrive\Documents\GitHub\webb\web project\profilerim.png" alt="User Picture" class="user-pic">
+            <p>Posted by: <strong>RimBakes🌺</strong></p>
         </div>
 
-        <p><strong>Description:</strong> A delightful and easy-to-make dessert perfect for any occasion.</p>
-        <p><strong>Prep Time:</strong> 15 min | <strong>Cook Time:</strong> 30 min | <strong>Servings:</strong> 8 | <strong>Difficulty:</strong> Medium</p>
+        <p><strong>Description:</strong> These Brookies are rich, fudgy and decadent bars made with half brownie and half chocolate chip cookie. 
+            Easy to make with basic pantry ingredients this is the ultimate way to enjoy your two favorite sweet treats in one!</p>
+        <p><strong>Prep Time:</strong> 15 min | <strong>Cook Time:</strong> 40 min | <strong>Servings:</strong> 15 | <strong>Difficulty:</strong> Hard</p>
         
         <div class="serving-calculator">
             <label for="servingInput">Adjust servings:</label>
-            <input type="number" id="servingInput" value="8" min="1" onchange="adjustIngredients()">
+            <input type="number" id="servingInput" value="15" min="1" onchange="adjustIngredients()">
         </div>
         
-        <h3>Ingredients</h3>
+        <h3>Ingredients for the Cookie Dough</h3>
         <ul id="ingredients-list">
-            <li data-quantity="200">200g Flour</li>
-            <li data-quantity="100">100g Sugar</li>
-            <li data-quantity="2">2 Eggs</li>
+            <li data-quantity="100">100g unsalted butter room temperature </li>
+            <li data-quantity="50">100g packed light brown sugar</li>
+            <li data-quantity="4">4g vanilla extract</li>
+            <li data-quantity="1">1 large egg</li>
+            <li data-quantity="3">3g salt</li>
+            <li data-quantity="2">2g baking powder</li>
+            <li data-quantity="1">1g baking soda</li>
+            <li data-quantity="160">160g all-purpose flour</li>
+            <li data-quantity="170">170g semi-sweet chocolate chips</li>
+        </ul>
+
+        <h3>Ingredients for the Brownie Batter</h3>
+        <ul id="ingredients-list">
+            <li data-quantity="113">113g unsalted butter melted</li>
+            <li data-quantity="100">100g granulated sugar</li>
+            <li data-quantity="4">4g vanilla extract</li>
+            <li data-quantity="2">2 large egg</li>
+            <li data-quantity="3">3g salt</li>
+            <li data-quantity="65">65g all-purpose flour</li>
+            <li data-quantity="170">170g semi-sweet chocolate chips</li>
+            <li data-quantity="100">100g packed light brown sugar</li>
+            <li data-quantity="35">35g cocoa powder</li>
+            <li data-quantity="128">128g semisweet chocolate chips or roughly chopped chocolate</li>
         </ul>
 
         <h3>Steps</h3>
         <ol>
-            <li>Mix ingredients together.</li>
-            <li>Bake at 180°C for 30 minutes.</li>
-            <li>Let it cool and enjoy!</li>
+            <li>Line a 9x13 baking dish with parchment or foil and heat oven to 350F.</li>
+            <li>For the brownies melt butter then stir in cocoa powder. Whisk in both sugar
+                 and the salt then add the eggs and vanilla and beat well (secret to glossy 
+                 brownies is to beat the eggs and sugar very well.)</li>
+            <li>Add the flour and mix until almost combined then fold in the chocolate chips and 
+                finish the batter off by hand with a spatula scraping the bowl down and mixing in 
+                any errant flour etc.</li>
+            <li> 
+                Transfer the brownie batter to your prepared pan and spread into a thin layer then set aside.
+            </li>
+
+            <li>
+              For the cookie dough,Cream the butter, and sugars on high for 3-4 minutes
+               or until light and fluffy, scraping the bowl down as needed
+            </li>
+
+            <li> Mix in the vanilla and egg and scrape the bowl down once more.</li>
+
+            <li>Add salt baking soda and powder then mix until combined.</li>
+
+            <li> Pour in the flour and mix until almost combined then fold in the 
+                chocolate chips, reserving a handful to sprinkle on top later.
+                 Finish mixing the batter with your spatula then drop spoonfuls onto the
+                  brownie batter. You don't need full coverage, it will be nice to see the 
+                  brownie batter peaking through after baking.</li>
+            <li> Cover with foil and bake at 350F for 20 min then bake another 20 min uncovered.
+                 Allow to cool before removing from pan and cutting.</li>
         </ol>
 
         <div class="rating-section">
@@ -215,21 +260,34 @@
         });
 
         // Serving Calculator
-       // Serving Calculator
-function adjustIngredients() {
-    let originalServings = 8;
-    let newServings = document.getElementById("servingInput").value;
-    let ingredients = document.querySelectorAll("#ingredients-list li");
+        document.addEventListener("DOMContentLoaded", function () {
+    const servingInput = document.getElementById("servingInput");
+    const defaultServingSize = parseInt(servingInput.value); // Store default serving size
 
-    ingredients.forEach(ingredient => {
-        let baseQuantity = ingredient.getAttribute("data-quantity");
-
-        if (baseQuantity) { // Ensure it's not empty
-            let adjustedQuantity = (baseQuantity / originalServings) * newServings;
-            ingredient.innerHTML = `${adjustedQuantity.toFixed(1)} ${ingredient.textContent.replace(/^\d+(\.\d+)?\s*/, '')}`;
-        }
+    // Store original ingredient quantities
+    const ingredientList = document.querySelectorAll("#ingredients-list li");
+    ingredientList.forEach(item => {
+        item.dataset.originalQuantity = item.dataset.quantity; // Store original quantity
     });
-}
+
+    function adjustIngredients() {
+        let newServingSize = parseInt(servingInput.value);
+        if (isNaN(newServingSize) || newServingSize < 1) {
+            servingInput.value = defaultServingSize; // Reset to default if invalid input
+            return;
+        }
+
+        ingredientList.forEach(item => {
+            let originalQuantity = parseFloat(item.dataset.originalQuantity);
+            let adjustedQuantity = (originalQuantity * newServingSize) / defaultServingSize;
+            item.textContent = `${adjustedQuantity.toFixed(1)}g ${item.textContent.split(' ').slice(1).join(' ')}`;
+        });
+    }
+
+    // Ensure default serving size is correctly set at load
+    servingInput.addEventListener("change", adjustIngredients);
+});
+
 
 
     </script>

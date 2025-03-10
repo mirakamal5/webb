@@ -1,17 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us </title>
     <style>
-        body {
+        body {            
     background-image: url('https://i.pinimg.com/736x/ec/88/01/ec88011e4d940a6fbfde37d59b58b85b.jpg'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     font-family: 'Poppins', sans-serif;
 }
+
+/* Navbar Styles */
+.custom-navbar {
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            background-color: #fbf3ed !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            position: relative;
+        }
+
+        .custom-navbar.sticky-top {
+            position: sticky;
+            top: 0;
+        }
+
+        .custom-navbar .navbar-nav .nav-link {
+            color: #dc889a !important;
+            font-size: 18px;
+            padding: 8px 12px;
+            transition: color 0.3s ease;
+        }
+
+        .custom-navbar .navbar-nav .nav-link.active,
+        .custom-navbar .navbar-nav .nav-link:hover {
+            color: #c42348 !important;
+        }
+
+        .custom-navbar .dropdown-menu {
+            background-color: #fbf3ed !important;
+            border: 2px solid #dc889a;
+            border-radius: 8px;
+            padding: 5px;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            min-width: 150px;
+        }
+
+        .custom-navbar .dropdown-menu .dropdown-item {
+            color: #dc889a !important;
+            font-size: 14px;
+            padding: 6px 12px;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-navbar .dropdown-menu .dropdown-item:hover {
+            background-color: rgba(220, 136, 154, 0.1);
+        }
+
+        .custom-navbar .navbar-brand {
+            color: #dc889a !important;
+            font-size: 18px;
+            margin-left: 20px;
+        }
+
+        .custom-navbar .navbar-toggler-icon {
+            background-color: #dc889a;
+        }
+
+        .btn-outline-danger {
+            border-color: #dc889a;
+            color: #dc889a;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #dc889a;
+            color: white;
+        }
+
+        #loginButton {
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border-width: 2px;
+        }
+
+        .search-bar-section {
+            padding: 20px 10px; 
+            background-image: url('images/five.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #f8f9fa;
+            height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        .search-bar-section h1 {
+            font-size: 32px; 
+            font-weight: 600;
+            margin-bottom: 15px; 
+            color: white;
+            text-align: center;
+        }
+
+        .search-bar-section .input-group {
+            max-width: 100%;
+            width: 40%; 
+            margin: 0 auto;
+        }
+
+        .search-bar-section .form-control {
+            font-size: 16px; /* Reduced font size */
+            padding: 10px 14px; /* Reduced padding */
+            border: 2px solid #dc889a;
+            border-radius: 12px 0 0 12px;
+            width: 100%;
+            flex: 1;
+        }
+
+        .search-bar-section .btn-outline-danger {
+            padding: 12px 16px; /* Reduced padding */
+            border-radius: 0 12px 12px 0;
+            font-size: 16px; /* Reduced font size */
+            border: 2px solid #dc889a;
+            border-left: none;
+        }
+
+        @media (max-width: 768px) {
+            .search-bar-section .input-group {
+                width: 90%; /* Adjusted width for smaller screens */
+            }
+        }
+
 .container {
     max-width: 800px;
     margin: 30px auto;
@@ -112,22 +243,22 @@
         </p>
         <div class="team">
             <div class="member">
-                <img src="team1.jpg">
+                <img src="C:\Users\USP\Downloads\ranim1.jpg">
                 <p><strong>Ranim</strong></p>
                 <p>The Adventurer Baker</p>
             </div>
             <div class="member">
-                <img src="team2.jpg">
+                <img src="C:\Users\USP\Downloads\yassine.jpg">
                 <p><strong>Yassine</strong></p>
                 <p>The Messy Baker</p>
             </div>
             <div class="member">
-                <img src="team3.jpg">
+                <img src="C:\Users\USP\Downloads\rim.jpg">
                 <p><strong>Rim</strong></p>
                 <p>The Health-Conscious Baker</p>
             </div>
             <div class="member">
-                <img src="team3.jpg">
+                <img src="C:\Users\USP\Downloads\mira.jpg">
                 <p><strong>Mira</strong></p>
                 <p>The Perfectionist Baker</p>
             </div>
@@ -143,3 +274,4 @@
     </div>
 </body>
 </html>
+
