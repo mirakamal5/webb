@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranime Profile Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Schola&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style2.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <section class="userDetails card">
+
+            <div class="profile">
+                <figure><img src="images/profileranime.png" alt="profile" width="150px" height="200px" ></figure>
+            </div>
+
+            <div class="userName">
+                <h1 class="name">RanimeScoops🍨</h1>
+                <p style="color: #dc889a">IceCream Maker</p>
+            </div>
+
+            <div class="rank">
+                <h1 class="heading">Ratings</h1>
+                <span>5</span>
+                <div class="rating">
+                    <i class="fa fa-star rate" aria-hidden="true" style="color:#f5a4b5;"></i>
+                    <i class="fa fa-star rate" aria-hidden="true" style="color:#f5a4b5;"></i>
+                    <i class="fa fa-star rate" aria-hidden="true" style="color:#f5a4b5;"></i>
+                    <i class="fa fa-star rate" aria-hidden="true" style="color:#f5a4b5;"></i>
+                    <i class="fa fa-star rate" aria-hidden="true" style="color:#f5a4b5;"></i>
+                </div>
+            </div>
+
+            <div class="user-rating">
+                <h1 class="heading">Submit Rating: </h1>
+                <div class="rating" id="user-rating">
+                    <i class="fas fa-star" data-value="1"></i>
+                    <i class="fas fa-star" data-value="2"></i>
+                    <i class="fas fa-star" data-value="3"></i>
+                    <i class="fas fa-star" data-value="4"></i>
+                    <i class="fas fa-star" data-value="5"></i>
+                </div>
+                <button id="submit-rating" title="Submit Rating">Rate</button>
+                <div id="warning-message" style="color: red; margin-top: 10px;display: none;">Please log in to rate this page</div>
+            </div>
+        </section>
+
+
+        <section class="bio card">
+            <div class="work">
+                <h1 class="heading">Bio</h1>
+                <div class="primary">
+                    <p> Scoop, swirl, repeat🍦🥄</p>
+                </div>
+            </div>
+            <div class="skills">
+                <h1 class="heading">Hobbies</h1>
+                <ul>
+                    <li>Writing</li>
+                    <li>Swimming</li>
+                    <li>Baking</li>
+                </ul>
+            </div>
+        </section>
+
+
+        <section class="timeline_about card">
+            <div class="tabs">
+                <ul>
+                    <li class="timeline">
+                        <i class="ri-eye-fill ri"></i>
+                        <span>Recipes Posted</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="basic_info">
+                <div class="recipe-grid">
+                    <div class="recipe-card">
+                        <img src="images/bananasplit.png" alt="Recipe 1">
+                        <div class="recipe-name">Banana Split</div>
+                    </div>
+
+                    <div class="recipe-card">
+                        <img src="images/sugarchocolate.png" alt="Recipe 2">
+                        <div class="recipe-name">Choco</div>
+                    </div>
+
+                    <div class="recipe-card">
+                        <img src="images/oreo.png" alt="Recipe 3">
+                        <div class="recipe-name">Oreo</div>
+                    </div>
+
+                    <div class="recipe-card">
+                        <img src="images/cerise.png" alt="Recipe 4">
+                        <div class="recipe-name">Cerise</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const stars = document.querySelectorAll('.rating i');
+        const ratingValue = document.getElementById('user-rating-value');
+        const submitButton = document.getElementById('submit-rating');
+        const userStars = document.querySelectorAll('#user-rating i');
+        const warningMessage = document.getElementById('warning-message');
+        let lastClickTime = 0;
+        let userRating = 0;
+        
+        let isLoggedIn = false;
+
+        userStars.forEach(star => {
+            star.addEventListener('click', function () {
+                if (!isLoggedIn) {
+                    warningMessage.style.display = 'block';
+                } else {
+                    warningMessage.style.display = 'none';
+                }
+
+                let rating = parseInt(this.getAttribute('data-value'));
+
+                userStars.forEach(s => s.classList.remove('active'));
+
+                for (let i = 0; i < rating; i++) {
+                    userStars[i].classList.add('active');
+                }
+
+                userRating = rating;
+                ratingValue.textContent = `Your rating: ${rating}`;
+            });
+        });
+
+        submitButton.addEventListener('click', function () {
+            if (!isLoggedIn) {
+                warningMessage.style.display = 'block';
+                return;
+            }
+            
+            const customPopup = document.createElement('div');
+            customPopup.textContent = `Rating of ${userRating} submitted!🩷`;
+            customPopup.style.position = 'fixed';
+            customPopup.style.top = '50%';
+            customPopup.style.left = '50%'; 
+            customPopup.style.transform = 'translate(-50%, -50%)';
+            customPopup.style.background = 'white';
+            customPopup.style.padding = '15px';
+            customPopup.style.border = '1px solid black';
+            customPopup.style.borderRadius = '5px';
+            customPopup.style.boxShadow = '0px 4px 6px #737373';
+            document.body.appendChild(customPopup);
+
+            setTimeout(() => {
+                customPopup.remove();
+            }, 1000);
+            });
+    </script>
+
+</body>
+
+</html>
