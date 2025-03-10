@@ -11,6 +11,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+
+    <!-- mira -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
@@ -25,6 +30,83 @@
             background-color: #F2E3DA;
             font-family: 'Poppins', sans-serif;
             background-image: url('images/background.jpg'); 
+        }
+
+        .custom-navbar {
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            background-color: #fbf3ed !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            position: relative;
+        }
+
+        .custom-navbar.sticky-top {
+            position: sticky;
+            top: 0;
+        }
+
+        .custom-navbar .navbar-nav .nav-link {
+            color: #dc889a !important;
+            font-size: 18px;
+            padding: 8px 12px;
+            transition: color 0.3s ease;
+        }
+
+        .custom-navbar .navbar-nav .nav-link.active,
+        .custom-navbar .navbar-nav .nav-link:hover {
+            color: #c42348 !important;
+        }
+
+        .custom-navbar .dropdown-menu {
+            background-color: #fbf3ed !important;
+            border: 2px solid #dc889a;
+            border-radius: 8px;
+            padding: 5px;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            min-width: 150px;
+        }
+
+        .custom-navbar .dropdown-menu .dropdown-item {
+            color: #dc889a !important;
+            font-size: 14px;
+            padding: 6px 12px;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-navbar .dropdown-menu .dropdown-item:hover {
+            background-color: rgba(220, 136, 154, 0.1);
+        }
+
+        .custom-navbar .navbar-brand {
+            color: #dc889a !important;
+            font-size: 18px;
+            margin-left: 20px;
+        }
+
+        .custom-navbar .navbar-toggler-icon {
+            background-color: #dc889a;
+        }
+
+        .btn-outline-danger {
+            border-color: #dc889a;
+            color: #dc889a;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #dc889a;
+            color: white;
+        }
+
+        #loginButton {
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border-width: 2px;
         }
 
         /* 🌟 Section Titles */
@@ -111,7 +193,7 @@
             position: relative;
             flex: 0 0 auto;
             width: 320px;
-            height: 550px;
+            height: 380px;
             background: #fff;
             border-radius: 10px;
             overflow: hidden;
@@ -129,7 +211,7 @@
         /* 🌟 Image Styling */
         .recipe-card img {
             width: 100%;
-            height: 350px;
+            height: 210px;
             object-fit: cover;
             transition: transform 0.3s ease-in-out;
         }
@@ -261,12 +343,146 @@
             border-color: #FF6F61;
         }
 
+        .footer {
+            background-color: #dc889a;
+            padding: 40px 0; /* Increased padding for better spacing */
+            font-family: 'Poppins', sans-serif;
+            margin-top: 80px;
+        }
+
+        .footer-col {
+            flex: 1; /* Each column takes equal width */
+            min-width: 200px; /* Minimum width for responsiveness */
+            padding: 0 15px;
+        }
+
+        .footer-col h4 {
+            font-size: 18px; /* Slightly larger font size */
+            color: #fbf3ed;
+            text-transform: capitalize;
+            margin-bottom: 20px; /* Increased margin for better spacing */
+            font-weight: 600; /* Bold heading */
+            position: relative;
+        }
+
+        .footer-col h4::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            background-color: #fbf3ed;
+            height: 2px;
+            box-sizing: border-box;
+            width: 50px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0; /* Remove default margin */
+        }
+
+        .footer-col ul li:not(:last-child) {
+            margin-bottom: 10px; /* Increased spacing between list items */
+        }
+
+        .footer-col ul li a {
+            font-size: 14px;
+            text-transform: capitalize;
+            color: #fbf3ed;
+            text-decoration: none;
+            font-weight: 400; /* Slightly bolder text */
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .footer-col ul li a:hover {
+            color: #ffffff;
+            padding-left: 8px;
+        }
+
+        .footer-col .social-links {
+            display: flex;
+            gap: 10px; /* Add gap between social icons */
+        }
+
+        .footer-col .social-links a {
+            display: inline-block;
+            height: 40px; /* Larger icons */
+            width: 40px;
+            background-color: rgba(251, 243, 237, 0.2);
+            text-align: center;
+            line-height: 40px; /* Center icons vertically */
+            border-radius: 50%;
+            color: #fbf3ed;
+            transition: all 0.5s ease;
+        }
+
+        .footer-col .social-links a:hover {
+            color: #dc889a;
+            background-color: #ffffff;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .footer-col {
+                flex: 1 1 100%; /* Full width on smaller screens */
+                text-align: center; /* Center align content */
+            }
+
+            .footer-col h4::before {
+                left: 50%; /* Center the underline */
+                transform: translateX(-50%);
+            }
+
+            .footer-col .social-links {
+                justify-content: center; /* Center social icons */
+            }
+        }
+
         .scroll-left { left: 10px; }
         .scroll-right { right: 10px; }
 
     </style>
 </head>
 <body>
+
+    <nav class="navbar custom-navbar sticky-top">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="images/final.png" alt="Website Logo" width="80" height="50" class="d-inline-block align-text-top">
+            </a>
+            <!-- Navigation Links -->
+            <ul class="navbar-nav d-flex flex-row">
+                <li class="nav-item me-3">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link" href="about us.html">About Us</a>
+                </li>
+                <li class="nav-item dropdown me-3">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Recipes
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="AddYourRecipe.html">Add</a></li>
+                        <li><a class="dropdown-item" href="#">Explore</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Login Button and Profile Icon -->
+            <div class="d-flex">
+                <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='loginpage.html'">Log In</button>
+                <div id="profileIcon" class="d-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <!-- 🌟 Recipe Category Section -->
     <div class="container">
@@ -287,7 +503,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time: 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -303,7 +518,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -319,7 +533,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -335,7 +548,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>                        
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -351,7 +563,6 @@
                         <p>By Ali Slagle</p>
                         <p class="stars">★★★★☆ (953)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -380,7 +591,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -396,7 +606,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -412,7 +621,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -428,7 +636,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -444,7 +651,6 @@
                         <p>By Ali Slagle</p>
                         <p class="stars">★★★★☆ (953)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -475,7 +681,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -491,7 +696,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -507,7 +711,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -523,7 +726,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -539,7 +741,6 @@
                         <p>By Ali Slagle</p>
                         <p class="stars">★★★★☆ (953)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -569,7 +770,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -585,7 +785,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -601,7 +800,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -617,7 +815,6 @@
                         <p>By Yasmin Fahr</p>
                         <p class="stars">★★★★★ (5,861)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -633,7 +830,6 @@
                         <p>By Ali Slagle</p>
                         <p class="stars">★★★★☆ (953)</p>
                         <p>Prep time : 20 minutes</p>
-                        <p>Category : Sugar-Free</p>
                         <a href="#" class="btn-pink">View Recipe</a>
                     </div>
                 </div>
@@ -643,6 +839,43 @@
     </div>
     
     <br> <br>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col">
+                    <h4>About Us</h4>
+                    <ul>
+                        <li><a href="about us.html">About us</a></li>
+                        <li><a href="contactUs.html">Contact us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Help & Policies</h4>
+                    <ul>
+                        <li><a href="#faqpage.html">FAQ</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="#">My Profile</a></li>
+                        <li><a href="#">All Recipes</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     
 
     <!-- 🌟 JavaScript for Custom Scrolling & Animations -->
