@@ -18,9 +18,9 @@
             color: #d46a7e;
             margin: 0;
             padding: 0;
-            min-height: 100vh; /* Ensure body takes at least the full viewport height */
+            min-height: 100vh; 
             display: flex;
-            flex-direction: column; /* Make body a flex container for proper footer placement */
+            flex-direction: column; 
         }
 
         .custom-navbar {
@@ -763,8 +763,6 @@
                 ingredientsContainer.removeChild(newIngredientGroup);
             });
         });
-
-        // Add Step
         document.getElementById('addStep').addEventListener('click', () => {
             const stepsContainer = document.getElementById('stepsContainer');
             const newStepGroup = document.createElement('div');

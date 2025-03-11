@@ -4,28 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipes</title>
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-
-    <!-- mira -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-
-    <!-- Framer Motion (For Animations) -->
     <script src="https://unpkg.com/framer-motion@10.16.0/dist/framer-motion.umd.js"></script>
-
-    <!-- Custom Styles -->
     <style>
-        /* Navbar Styles */
 .custom-navbar {
     font-family: 'Poppins', sans-serif;
     font-size: 20px;
@@ -102,8 +89,6 @@
     border-radius: 8px;
     border-width: 2px;
 }
-
-/* Responsive Navbar Styles */
 @media (max-width: 768px) {
     .custom-navbar .navbar-brand,
     .custom-navbar .navbar-nav .nav-link,
@@ -195,7 +180,7 @@
             font-family: 'Poppins', sans-serif;
         }
     .btn-pink {
-        background-color: #D27D92; /* Soft muted pink */
+        background-color: #D27D92; 
         border: none;
         padding: 10px 18px;
         font-weight: bold;
@@ -229,8 +214,6 @@
             margin-top: 5px;
             border-radius: 2px;
         }
-
-        /* 🌟 Scrollable Wrapper */
         .scroll-wrapper {
             position: relative;
             display: flex;
@@ -247,8 +230,6 @@
             scrollbar-color: #bbb #eee;
             scroll-behavior: smooth;
         }
-
-        /* 🌟 Custom Scrollbar */
         .scroll-container::-webkit-scrollbar {
             height: 6px;
         }
@@ -256,8 +237,6 @@
             background: #FF6F61;
             border-radius: 5px;
         }
-
-        /* 🌟 Recipe Cards */
         .recipe-card {
             position: relative;
             flex: 0 0 auto;
@@ -276,8 +255,6 @@
             transform: scale(1.05);
             box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
         }
-
-        /* 🌟 Image Styling */
         .recipe-card img {
             width: 100%;
             height: 210px;
@@ -288,8 +265,6 @@
         .recipe-card:hover img {
             transform: scale(1.08);
         }
-
-        /* 🌟 Card Text */
         .recipe-card .card-body {
         padding: 15px;
         text-align: center;
@@ -310,22 +285,20 @@
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         cursor: pointer;
         transition: background-color 0.3s ease-in-out;
-        z-index: 10; /* 🌟 Ensures heart is above the image */
-        pointer-events: auto; /* 🌟 Fixes clicking issue */
+        z-index: 10; 
+        pointer-events: auto; 
     }
 
     .favorite-icon {
         font-size: 18px;
         color: #bbb;
         transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
-        display: flex;  /* Ensure it's centered */
+        display: flex;
         align-items: center;
         justify-content: center;
         width: 50%;
         height: 50%;
     }
-
-     /* 🌟 Active State - Red Heart */
      .favorite-container.active {
         background: #FFD1DC;
     }
@@ -334,8 +307,6 @@
         color: red;
         transform: scale(1.1);
     }
-
-    /* Hover Effect */
     .favorite-container:hover {
         background: #F5B7B1;
     }
@@ -367,16 +338,8 @@
         }
 
     .favorite-icon.active {
-        color: #FF6F91; /* Pink when added to favorites */
+        color: #FF6F91;
     }
-
-        /* 🌟 Star Rating */
-        /* p.stars {
-            color: #FFD700;
-            font-size: 14px;
-        } */
-
-        /* 🌟 Navigation Buttons */
         .scroll-button {
             position: absolute;
             top: 50%;
@@ -411,8 +374,6 @@
             background-color: #FF6F61;
             border-color: #FF6F61;
         }
-
-        /* Footer Styles */
 .footer {
     background-color: #dc889a;
     padding: 40px 0;
@@ -511,8 +472,6 @@
     color: #dc889a;
     background-color: #ffffff;
 }
-
-/* Responsive Footer Styles */
 @media (max-width: 768px) {
     .footer-col {
         flex: 1 1 100%;
@@ -582,7 +541,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/bananasplit.png" alt="Recipe Image">
@@ -597,7 +556,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i>
                         </span>
                     </div>
                     <img src="images/Frozen Pavlova.webp" alt="Recipe Image">
@@ -612,7 +571,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/icepumpkin-pie-ice-cream-sandwiches-DSC_6307-1x1-1200-360x480.jpg" alt="Recipe Image">
@@ -627,7 +586,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/icepretzel-crust-peanut-butter-ice-cream-pie-DSC_1917-1x1-1200-360x480.jpg" alt="Recipe Image">
@@ -642,7 +601,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/icechai-spiced-ice-cream-parfait-DSC_0063-1x1-1200-360x480.jpg" alt="Recipe Image">
@@ -670,7 +629,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/brookies.png" alt="Recipe Image">
@@ -685,7 +644,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/nightdeep-fried-mars-bars-recipe.webp" alt="Recipe Image">
@@ -700,7 +659,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/nightpeanut-butter-chocolate-brownies-xlarge-ori-jpg-515651-1.jpg" alt="Recipe Image">
@@ -715,7 +674,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/nightsalted-caramel-popcorn-sundae-recipe-509089-1.jpeg" alt="Recipe Image">
@@ -730,7 +689,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/night-nutella-croissants-recipe-519887-1.jpg" alt="Recipe Image">
@@ -760,7 +719,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/mugcake.png" alt="Recipe Image">
@@ -775,7 +734,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/micro-chocolate peanut butter Mug cake.jpg" alt="Recipe Image">
@@ -790,7 +749,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/micro-Mug-cakes-nutella.jpg" alt="Recipe Image">
@@ -805,7 +764,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/mirco-biscoff Mug cake.jpg" alt="Recipe Image">
@@ -820,7 +779,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/mircro-red velvet mug cake.jpg" alt="Recipe Image">
@@ -849,7 +808,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/chococake.png" alt="Recipe Image">
@@ -864,7 +823,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/5minmolten-lava-bites.jpg" alt="Recipe Image">
@@ -879,7 +838,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i>
                         </span>
                     </div>
                     <img src="images/5minhealthymugcake.jpg" alt="Recipe Image">
@@ -894,7 +853,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/5minfudgechocolate.jpg" alt="Recipe Image">
@@ -909,7 +868,7 @@
                 <div class="recipe-card">
                     <div class="favorite-container">
                         <span class="favorite-icon">
-                            <i class="fa-regular fa-heart"></i> <!-- Default heart (outline) -->
+                            <i class="fa-regular fa-heart"></i> 
                         </span>
                     </div>
                     <img src="images/5minswissrollcake.jpg" alt="Recipe Image">
@@ -964,22 +923,15 @@
             </div>
         </div>
     </footer>
-    
-
-    <!-- 🌟 JavaScript for Custom Scrolling & Animations -->
     <script>
         $(document).ready(function () {
             $(".scroll-container").each(function () {
                 let scrollContainer = $(this);
-
-                // Scroll with mouse wheel (smooth)
                 scrollContainer.on("wheel", function (event) {
                     event.preventDefault();
                     this.scrollLeft += event.originalEvent.deltaY * 1.5;
                 });
             });
-
-            // Scroll with navigation buttons - Smooth animation
             $(".scroll-button").on("click", function () {
                 let targetId = $(this).data("target");
                 let scrollContainer = $("#" + targetId);
@@ -997,9 +949,9 @@
             hearts.forEach(heartContainer => {
                 heartContainer.addEventListener("click", function () {
                     const icon = this.querySelector("i");
-                    icon.classList.toggle("fa-regular"); // Outline heart
-                    icon.classList.toggle("fa-solid");   // Filled heart
-                    this.classList.toggle("active"); // Change background & heart color
+                    icon.classList.toggle("fa-regular"); 
+                    icon.classList.toggle("fa-solid");  
+                    this.classList.toggle("active"); 
                 });
             });
         });
