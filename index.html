@@ -128,8 +128,8 @@
         }
 
         .search-bar-section .form-control {
-            font-size: 16px; /* Reduced font size */
-            padding: 10px 14px; /* Reduced padding */
+            font-size: 16px; 
+            padding: 10px 14px; 
             border: 2px solid #dc889a;
             border-radius: 12px 0 0 12px;
             width: 100%;
@@ -137,103 +137,168 @@
         }
 
         .search-bar-section .btn-outline-danger {
-            padding: 12px 16px; /* Reduced padding */
+            padding: 12px 16px; 
             border-radius: 0 12px 12px 0;
-            font-size: 16px; /* Reduced font size */
+            font-size: 16px; 
             border: 2px solid #dc889a;
             border-left: none;
         }
-
         @media (max-width: 768px) {
             .search-bar-section .input-group {
-                width: 90%; /* Adjusted width for smaller screens */
+                width: 90%;
             }
         }
+       .recipe-of-the-day {
+    background-color: #fbf3ed;
+    border: 2px solid #dc889a;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 110px;
+    width: 100%;
+    max-width: 800px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    position: relative; /* Needed for positioning the tag */
+}
 
-        /* Recipe of the Day Card */
-        .recipe-of-the-day {
-            background-color: #fbf3ed;
-            border: 2px solid #dc889a;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 110px;
-            width: 100%;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+.recipe-of-the-day .image-container {
+    flex: 0 0 300px;
+    max-width: 300px;
+    margin-right: 20px;
+}
 
-        .recipe-of-the-day:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
+.recipe-of-the-day .image-container img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+}
 
-        .recipe-of-the-day .image-container img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            border-radius: 10px;
-        }
+.recipe-of-the-day .col-md-5 {
+    flex: 1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
 
-        .recipe-of-the-day .col-md-5 {
-            margin-right: 40px;
-        }
+.recipe-of-the-day h3 {
+    color: #dc889a;
+    font-size: 24px;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+}
 
-        .recipe-of-the-day h3 {
-            color: #dc889a;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
+.recipe-of-the-day h4 {
+    color: #dc889a;
+    font-size: 20px;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+}
 
-        .recipe-of-the-day h4 {
-            color: #dc889a;
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
+.recipe-of-the-day .posted-by {
+    font-size: 16px;
+    color: #535353;
+    margin-bottom: 15px;
+}
 
-        .recipe-of-the-day .posted-by {
-            font-size: 16px;
-            color: #535353;
-            margin-bottom: 15px;
-        }
+.recipe-of-the-day .posted-by .username {
+    font-weight: 500;
+    color: #dc889a;
+}
 
-        .recipe-of-the-day .posted-by .username {
-            font-weight: 500;
-            color: #dc889a;
-        }
+.recipe-of-the-day .rating {
+    color: #dc889a;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
 
-        .recipe-of-the-day .rating {
-            color: #dc889a;
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
+.recipe-of-the-day .rating .star {
+    color: #dc889a;
+}
 
-        .recipe-of-the-day .rating .star {
-            color: #dc889a;
-        }
+.recipe-of-the-day .rating .rating-value {
+    font-size: 16px;
+    margin-left: 5px;
+}
 
-        .recipe-of-the-day .rating .rating-value {
-            font-size: 16px;
-            margin-left: 5px;
-        }
+.recipe-of-the-day .card-text {
+    color: #535353;
+    font-size: 14px;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
 
-        .recipe-of-the-day .card-text {
-            color: #535353;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
+.recipe-of-the-day .btn-outline-danger {
+    border-color: #dc889a;
+    color: #dc889a;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 8px;
+}
 
-        .recipe-of-the-day .btn-outline-danger {
-            border-color: #dc889a;
-            color: #dc889a;
-            font-size: 16px;
-            padding: 8px 16px;
-            border-radius: 8px;
-        }
+.recipe-of-the-day .btn-outline-danger:hover {
+    background-color: #dc889a;
+    color: white;
+}
 
-        .recipe-of-the-day .btn-outline-danger:hover {
-            background-color: #dc889a;
-            color: white;
-        }
+/* Tag styling */
+.recipe-of-the-day .tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #dc889a;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+@media (max-width: 768px) {
+    .recipe-of-the-day {
+        padding: 15px;
+        max-width: 100%;
+        flex-direction: column;
+    }
+
+    .recipe-of-the-day .image-container {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .recipe-of-the-day .col-md-5 {
+        width: 100%;
+    }
+
+    .recipe-of-the-day h3 {
+        font-size: 20px;
+    }
+
+    .recipe-of-the-day h4 {
+        font-size: 18px;
+    }
+
+    .recipe-of-the-day .card-text {
+        font-size: 12px;
+    }
+
+    .recipe-of-the-day .tag {
+        top: 5px;
+        right: 5px;
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+}
         /* Circular Icons for Categories */
         .circle-icon {
             width: 100px;
@@ -439,19 +504,17 @@
         <div class="row">
             <div class="col-md-10 offset-md-1">
                 <div class="recipe-of-the-day d-flex align-items-center">
-                    <!-- Image Column -->
                     <div class="col-md-5 me-md-5">
                         <div class="image-container">
-                            <img src="images/mm.jpg" alt="Recipe of the Day" class="img-fluid">
+                            <img src="images/mugcake.png" alt="Recipe of the Day" class="img-fluid">
                         </div>
                     </div>
-                    <!-- Content Column -->
                     <div class="col-md-7">
                         <h3>Recipe of the Day</h3>
-                        <h4>White Chocolate Raspberry Cookies</h4>
+                        <h4>Mug Cake</h4>
                         <div class="posted-by">
                             <span>by:</span>
-                            <span class="username">someone</span>
+                            <a href="userpage mira.html" class="username">MiraCooks🍰</a>
                         </div>
                         <div class="rating mb-3">
                             <span class="star">&#9733;</span>
@@ -462,9 +525,10 @@
                             <span class="rating-value">4.5</span>
                         </div>
                         <p class="card-text">
-                            Indulge in the perfect blend of sweet and tangy with these soft, chewy cookies. Bursting with juicy raspberries and creamy white chocolate chunks, each bite is a delightful balance of flavors.
+                            This chocolate mug cake is made in the microwave for a fudgy, chocolaty treat that is truly decadent.
+            It's a great recipe for nights when I need a yummy dessert that's ready in less than 10 minutes! Add a few chocolate chips to make it extra rich and gooey.
                         </p>
-                        <a href="#" class="btn btn-outline-danger">View Recipe</a>
+                        <a href="MugCake-Microwavable.html" class="btn btn-outline-danger">View Recipe</a>
                     </div>
                 </div>
             </div>
@@ -474,7 +538,6 @@
         <div class="col-md-12">
             <h1 class="mb-4 text-center">Explore Recipes by Category</h1>
             <div class="row justify-content-center g-1 categories-container">
-                <!-- Diabetic-Friendly -->
                 <div class="col-auto">
                     <a href="#" class="text-decoration-none">
                         <div class="circle-icon mx-auto">
@@ -483,7 +546,6 @@
                         <p class="mt-2 category-label">Diabetic-Friendly</p>
                     </a>
                 </div>
-                <!-- Dairy-Free -->
                 <div class="col-auto">
                     <a href="#" class="text-decoration-none">
                         <div class="circle-icon mx-auto">
@@ -492,7 +554,6 @@
                         <p class="mt-2 category-label">Dairy-Free</p>
                     </a>
                 </div>
-                <!-- Gluten-Free -->
                 <div class="col-auto">
                     <a href="#" class="text-decoration-none">
                         <div class="circle-icon mx-auto">
@@ -501,7 +562,6 @@
                         <p class="mt-2 category-label">Gluten-Free</p>
                     </a>
                 </div>
-                <!-- Egg-Free -->
                 <div class="col-auto">
                     <a href="#" class="text-decoration-none">
                         <div class="circle-icon mx-auto">
@@ -510,7 +570,6 @@
                         <p class="mt-2 category-label">Egg-Free</p>
                     </a>
                 </div>
-                <!-- Vegan -->
                 <div class="col-auto">
                     <a href="#" class="text-decoration-none">
                         <div class="circle-icon mx-auto">
@@ -519,7 +578,6 @@
                         <p class="mt-2 category-label">Vegan</p>
                     </a>
                 </div>
-                <!-- Nut-Free -->
                 <div class="col-auto">
                     <a href="#" class="text-decoration-none">
                         <div class="circle-icon mx-auto">
@@ -528,7 +586,6 @@
                         <p class="mt-2 category-label">Nut-Free</p>
                     </a>
                 </div>
-                <!-- Sugar-Free -->
                 <div class="col-auto">
                     <a href="#" class="text-decoration-none">
                         <div class="circle-icon mx-auto">
@@ -537,7 +594,6 @@
                         <p class="mt-2 category-label">Sugar-Free</p>
                     </a>
                 </div>
-                <!-- High-Protein -->
                 <div class="col-auto">
                     <a href="#" class="text-decoration-none">
                         <div class="circle-icon mx-auto">
@@ -546,7 +602,6 @@
                         <p class="mt-2 category-label">High-Protein</p>
                     </a>
                 </div>
-                <!-- No-Bake -->
                 <div class="col-auto">
                     <a href="#" class="text-decoration-none">
                         <div class="circle-icon mx-auto">
