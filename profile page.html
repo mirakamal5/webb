@@ -14,11 +14,9 @@
 <body>
     <nav class="navbar custom-navbar sticky-top">
         <div class="container-fluid">
-            <!-- Logo -->
             <a class="navbar-brand" href="#">
                 <img src="images/final.png" alt="Website Logo" width="80" height="50" class="d-inline-block align-text-top">
             </a>
-            <!-- Navigation Links -->
             <ul class="navbar-nav d-flex flex-row">
                 <li class="nav-item me-3">
                     <a class="nav-link active" aria-current="page" href=" index.html">Home</a>
@@ -37,7 +35,6 @@
                 </li>
             </ul>
 
-            <!-- Login Button and Profile Icon -->
             <div class="d-flex">
                 <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='loginpage.html'">Log In</button>
                 <div id="profileIcon" class="d-none">
@@ -114,7 +111,7 @@
 
             <div class="basic_info">
                 <br>
-                <a href="" class="custom-link">
+                <a href="AddYourRecipe.html">
                     <button class="heart-button" id="upload-btn">🩷</button>
                     <span>Add recipe</span>
                 </a>
@@ -164,7 +161,8 @@
             const basicInfo = document.querySelector(".basic_info");
     
             const recipesContent = `
-                <a href="">
+                <br>
+                <a href="AddYourRecipe.html">
                     <button class="heart-button" id="upload-btn">🩷</button>
                     <span>Add recipe</span>
                 </a>
