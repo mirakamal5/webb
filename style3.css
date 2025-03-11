@@ -13,6 +13,7 @@ html {
   height: 100%;
 }
 
+
 body {
   margin: 0;
   padding: 0;
@@ -119,13 +120,23 @@ html, body{
   flex-direction: column;
   align-items: flex-start;
   margin: 20px 0;
-  width: 700px;
+  width: 900px;
   padding: 20px;
   backdrop-filter: blur(5px);
   border-radius: 8px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.05);
   background-color: #fbf3ed;
+  overflow: auto;
 }
+
+.heart-button {
+  vertical-align: middle; 
+}
+
+.cf{
+  display: inline-block;
+}
+
 
 .userDetails {
   padding: 15px 25px;
@@ -206,6 +217,15 @@ html, body{
   color: #464343;
 }
 
+.heart-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 0;
+  line-height: 1;
+}
+
 .profile {
   position: absolute;
   top: 20px; 
@@ -246,15 +266,21 @@ html, body{
   display: none;
 }
 
-
-
 .bio .work .primary p,
+.bio .skills p{
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #474444;
+  line-height: 1.6rem;
+  margin-left: 25px;
+}
+
 .bio .skills ul li {
   position: relative;
   font-size: 15px;
   line-height: 1.8rem;
   color: #474444;
-  font-weight: 500;
+  font-weight: 520;
   margin-left: 40px;
   margin-top: 10px;
 }
@@ -279,6 +305,11 @@ html, body{
   margin-bottom: 30px;
 }
 
+.timeline_about .basic_info p,
+.timeline_about .basic_info span{
+  font-size: 16px;
+  margin-left: 10px;
+}
 
 .timeline_about .tabs ul {
   display: flex;
@@ -325,15 +356,16 @@ html, body{
 .timeline_about .recipe-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
-  gap: 20px;
-  max-width: 500px;
+  gap: 70px;
+  max-width: 900px;
+  margin-left: 40px;
 }
 
 .timeline_about .recipe-card {
   position: relative;
   overflow: hidden;
   width: 200px;
-  min-height: 250px; 
+  height: 250px; 
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   background-color: #ebc8cd;
@@ -341,14 +373,13 @@ html, body{
   transition: transform 0.3s ease-in-out;
 }
 
-
 .timeline_about .recipe-card:hover {
   transform: scale(1.1);
 }
 
 .timeline_about .recipe-card img {
-  width: 100%;  
-  height: 250px;            
+  width: 100%;              
+  height: 85%;            
   object-fit: cover; 
   display: block;
   border-radius: 10px 10px 0 0;
@@ -452,8 +483,6 @@ html, body{
   color: #dc889a;
   background-color: #ffffff;
 }
-
-
 
 
 @media (max-width: 768px) {
@@ -562,6 +591,10 @@ html, body{
   .timeline_about .tabs {
     height: 40px; 
   }
+
+  .footer {
+    padding: 20px 0; 
+  }
   
   .footer-col {
     flex: 1 1 100%; 
@@ -576,6 +609,10 @@ html, body{
   .footer-col .social-links {
       justify-content: center; 
   }
+  .timeline_about .tabs ul li span {
+    font-size: 12px;
+  }
+  
 }
 
 @media (max-width: 400px) {
@@ -586,8 +623,6 @@ html, body{
   .custom-navbar .navbar-brand img{
     width: 55px;
   }
-  
-
   .custom-navbar .navbar-nav{
     margin-left: 8px;
   }
@@ -598,6 +633,10 @@ html, body{
     height: 30px;
     font-size: 9px;
   }
+  .timeline_about .tabs ul li span {
+    font-size: 10px;
+  }
+  
     
 }
 
@@ -613,10 +652,11 @@ html, body{
     margin-left: 13px;
   }
 
-  .timeline_about .tabs ul li i {
-    font-size: 16px;
+  
+  .timeline_about .tabs ul li span {
+    font-size: 10px;
   }
-
+  
   .custom-navbar .navbar-nav .nav-link{
     font-size: 12px;
   }
