@@ -23,6 +23,7 @@ body {
 
 html, body{
   height: 100%;
+  overflow: auto;
 }
 
 .container {
@@ -379,7 +380,6 @@ html, body{
   justify-content: space-between;
   gap: 20px;
 }
-
 .footer-col {
   flex: 1; 
   min-width: 200px; 
