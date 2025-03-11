@@ -1,29 +1,31 @@
 
-
 body {
-    margin: 0px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    flex-direction: column;  /* Stack elements properly */
+    min-height: 100vh;       /* Ensure full viewport height */
+    justify-content: space-between; /* Push footer to the bottom */
     background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
     background-image: url('images/background\ .jpg'); 
     background-size: cover;
-    background-size: 100% ;
     background-position: center;
     background-repeat: no-repeat;
-    font-family: 'Poppins', sans-serif;
 }
-.container {
+
+
+.custom-container {
     position: relative;
+    margin: auto;   /* Center the container */
     width: 850px;
     height: 550px;
-    background: #F2E3DA ;
+    background: #F2E3DA;
     border-radius: 30px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, .2);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    margin: 20px;
+    margin-bottom: 50px; /* Add space between form and footer */
+    margin-top: 120px; /* Creates space between the navbar and login form */
 }
+
+
 .form-box {
     position: absolute;
     right: 0;
@@ -33,26 +35,31 @@ body {
     display: flex;
     align-items: center;
     color: #9c4d4d;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Schola', serif;
     text-align: center;
     padding: 40px;
     z-index: 1;
     transition: .6s ease-in-out 1.2s , visibility 0s 1s;
 }
-.container.active .form-box {
+
+
+.custom-container.active .form-box {
     right: 50%;
 }
 .form-box.register {
     visibility: hidden;
+    right: -50%;
+    position: absolute;
+    transition: .6s ease-in-out, visibility 0s .6s;
 }
-.container.active .form-box.register {
+.custom-container.active .form-box.register {
     visibility: visible;
-    right: 42%;
+    right: 50%;
 }
 form {
     width: 100%;
 }
-.container h1 {
+.custom-container h1 {
     font-size: 36px;
     margin: -10px 0;
 }
@@ -74,7 +81,7 @@ form {
     border: none;
     outline: none;
     font-size: 18px;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Schola', serif;
     color: #333;
     font-weight: 500;
     text-align: left;
@@ -114,7 +121,7 @@ form {
     text-decoration:underline; 
 }
 
-.btn {
+.custom-btn {
     width: 100%;
     height: 48px;
     background: #dc889a;
@@ -127,13 +134,13 @@ form {
     font-weight: 600;
     
 }
-.btn:hover{
+.custom-btn:hover{
     background-color: #dc889a;
     color: #333;
 }
 
 
-.container p {
+.custom-container p {
     font-size: 17.5px;
     margin: 15px 0;
 }
@@ -173,7 +180,7 @@ form {
 }
 
 
-.container.active .toggle-box::before {
+.custom-container.active .toggle-box::before {
     left: 70%;
 }
 
@@ -200,7 +207,7 @@ form {
     transition-delay: 1.2s;
 }
 
-.container.active .toggle-panel.toggle-left {
+.custom-container.active .toggle-panel.toggle-left {
     left: -50%;
     transition-delay: .6s;
 }
@@ -210,7 +217,7 @@ form {
     transition-delay: .6s;
 }
 
-.container.active .toggle-panel.toggle-right {
+.custom-container.active .toggle-panel.toggle-right {
     right: -25%;
     transition-delay: 1.2s;
 }
@@ -221,24 +228,21 @@ form {
 }
 
 
-.toggle-panel .btn {
+.toggle-panel .custom-btn {
     width: 160px;
     margin: 46px;
     background: transparent;
     border: 2px solid #fff;
     box-shadow: none;
 }
-.btn register-btn{
+.custom-btn register-custom-btn{
 
 }
 
 
-
-
-
 /* Responsive styles for smaller screens */
 @media screen and (max-width: 650px) {
-    .container {
+    .custom-container {
         height: calc(100vh - 40px);
         width: 100%;
         margin: 0;
@@ -254,7 +258,7 @@ form {
         
     }
 
-    .container.active .form-box {
+    .custom-container.active .form-box {
         right: 0;
         bottom: 30%;
     }
@@ -272,7 +276,7 @@ form {
         border-radius: 20vw;
     }
 
-    .container.active .toggle-box::before {
+    .custom-container.active .toggle-box::before {
         top: 70%;
         left: 0;
     }
@@ -286,12 +290,12 @@ form {
         top: 30px;
     }
 
-    .container.active .toggle-panel.toggle-left {
+    .custom-container.active .toggle-panel.toggle-left {
         left: 0;
         top: -30%;
     }
 
-    .container.active .toggle-panel.toggle-right {
+    .custom-container.active .toggle-panel.toggle-right {
         bottom: -15px;
         right: 2%;
     }
@@ -311,11 +315,3 @@ form {
         font-size: 30px;
     }
 }
-
-
-
-
-
-
-
-
