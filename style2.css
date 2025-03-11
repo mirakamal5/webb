@@ -47,6 +47,7 @@ html, body{
   top: 0;
 }
 
+
 .custom-navbar .navbar-nav .nav-link {
   color: #dc889a !important;
   font-size: 18px;
@@ -362,35 +363,35 @@ html, body{
 
 .footer {
   background-color: #dc889a;
-  padding: 40px 0; /* Increased padding for better spacing */
+  padding: 40px 0; 
   font-family: 'Poppins', sans-serif;
 }
 
 .containerf {
   max-width: 1170px;
   margin: auto;
-  padding: 0 15px; /* Add padding to container for better spacing */
+  padding: 0 15px; 
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* Distribute columns evenly */
-  gap: 20px; /* Add gap between columns */
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .footer-col {
-  flex: 1; /* Each column takes equal width */
-  min-width: 200px; /* Minimum width for responsiveness */
+  flex: 1; 
+  min-width: 200px; 
   padding: 0 15px;
 }
 
 .footer-col h4 {
-  font-size: 18px; /* Slightly larger font size */
+  font-size: 18px;
   color: #fbf3ed;
   text-transform: capitalize;
-  margin-bottom: 20px; /* Increased margin for better spacing */
-  font-weight: 600; /* Bold heading */
+  margin-bottom: 20px; 
+  font-weight: 600; 
   position: relative;
 }
 
@@ -408,11 +409,11 @@ html, body{
 .footer-col ul {
   list-style: none;
   padding-left: 0;
-  margin: 0; /* Remove default margin */
+  margin: 0; 
 }
 
 .footer-col ul li:not(:last-child) {
-  margin-bottom: 10px; /* Increased spacing between list items */
+  margin-bottom: 10px; 
 }
 
 .footer-col ul li a {
@@ -420,7 +421,7 @@ html, body{
   text-transform: capitalize;
   color: #fbf3ed;
   text-decoration: none;
-  font-weight: 400; /* Slightly bolder text */
+  font-weight: 400; 
   display: block;
   transition: all 0.3s ease;
 }
@@ -432,16 +433,16 @@ html, body{
 
 .footer-col .social-links {
   display: flex;
-  gap: 10px; /* Add gap between social icons */
+  gap: 10px; 
 }
 
 .footer-col .social-links a {
   display: inline-block;
-  height: 40px; /* Larger icons */
+  height: 40px; 
   width: 40px;
   background-color: rgba(251, 243, 237, 0.2);
   text-align: center;
-  line-height: 40px; /* Center icons vertically */
+  line-height: 40px;
   border-radius: 50%;
   color: #fbf3ed;
   transition: all 0.5s ease;
@@ -452,18 +453,177 @@ html, body{
   background-color: #ffffff;
 }
 
+
 @media (max-width: 768px) {
+  .custom-navbar .navbar-brand,
+  .custom-navbar .navbar-nav .nav-link,
+  .custom-navbar .dropdown-menu .dropdown-item,
+  .btn-outline-danger,
+  #loginButton {
+    font-size: 14px; 
+  }
+
+  .custom-navbar .navbar-brand {
+    margin-left: 1px;
+  }
+
+  .custom-navbar .navbar-nav .nav-link {
+    padding: 1px 0; 
+  }
+
+  .custom-navbar .dropdown-menu {
+    min-width: 120px; 
+  }
+
+  .card {
+    width: 90%;
+    padding: 15px; 
+  }
+
+  .userDetails .userName h1 {
+    font-size: 16px; 
+  }
+
+  .userDetails .userName p {
+    font-size: 14px;
+  }
+
+  .userDetails .rank .heading {
+    font-size: 14px; 
+  }
+
+  .userDetails .rank span {
+    font-size: 20px; 
+  }
+
+  .userDetails .rank .rating {
+    font-size: 18px; 
+  }
+
+  .userDetails .user-rating h1,
+  .userDetails .user-rating div {
+    font-size: 15px; 
+  }
+
+  .profile{
+    right: 5px;
+  }
+  .profile img {
+    width: 7rem; 
+    height: 7rem;
+    margin-right: 2px;
+  }
+
+  .bio .work .heading,
+  .bio .skills .heading {
+    font-size: 18px; 
+  }
+
+  .bio .work .primary p,
+  .bio .skills ul li {
+    font-size: 14px; 
+  }
+
+  .timeline_about .tabs ul li {
+    font-size: 16px; 
+  }
+
+  .timeline_about .recipe-grid {
+    grid-template-columns: repeat(2, 1fr); 
+  }
+
+  .timeline_about .recipe-card {
+    width: 100%; 
+    min-height: 200px; 
+  }
+
+  .timeline_about .recipe-card img {
+    height: 150px; 
+  }
+
+  .timeline_about .recipe-name {
+    font-size: 14px;
+  }
+
+  .footer-col h4 {
+    font-size: 16px;
+  }
+
+  .footer-col ul li a {
+    font-size: 12px; 
+  }
+
+  .custom-navbar {
+    height: auto; 
+  }
+
+  .timeline_about .tabs {
+    height: 40px; 
+  }
+
+  .footer {
+    padding: 20px 0; 
+  }
+  
   .footer-col {
-      flex: 1 1 100%; /* Full width on smaller screens */
-      text-align: center; /* Center align content */
+    flex: 1 1 100%; 
+    text-align: center; 
   }
 
   .footer-col h4::before {
-      left: 50%; /* Center the underline */
+      left: 50%; 
       transform: translateX(-50%);
   }
 
   .footer-col .social-links {
-      justify-content: center; /* Center social icons */
+      justify-content: center; 
   }
+}
+
+@media (max-width: 400px) {
+  .custom-navbar .navbar-brand{
+    width:40px;
+  }
+  
+  .custom-navbar .navbar-brand img{
+    width: 55px;
+  }
+  .custom-navbar .navbar-nav{
+    margin-left: 8px;
+  }
+  
+  .custom-navbar .d-flex #loginButton{
+    margin: 0;
+    width: 55px;
+    height: 30px;
+    font-size: 9px;
+  }
+    
+}
+
+@media (max-width: 345px) {
+  .custom-navbar .navbar-brand{
+    width:25px;
+  }
+  
+  .custom-navbar .navbar-brand img{
+    width: 50px;
+  }
+  .custom-navbar .navbar-nav{
+    margin-left: 13px;
+  }
+
+  
+  .custom-navbar .navbar-nav .nav-link{
+    font-size: 12px;
+  }
+  
+  .custom-navbar .d-flex #loginButton{
+    margin: 0;
+    width: 55px;
+    height: 30px;
+    padding: 1px;
+    font-size: 13px;
+  }
+    
 }
