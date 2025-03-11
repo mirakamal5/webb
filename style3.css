@@ -609,6 +609,10 @@ html, body{
   .footer-col .social-links {
       justify-content: center; 
   }
+  .timeline_about .tabs ul li span {
+    font-size: 12px;
+  }
+  
 }
 
 @media (max-width: 400px) {
@@ -629,6 +633,10 @@ html, body{
     height: 30px;
     font-size: 9px;
   }
+  .timeline_about .tabs ul li span {
+    font-size: 10px;
+  }
+  
     
 }
 
@@ -644,6 +652,10 @@ html, body{
     margin-left: 13px;
   }
 
+  
+  .timeline_about .tabs ul li span {
+    font-size: 10px;
+  }
   
   .custom-navbar .navbar-nav .nav-link{
     font-size: 12px;

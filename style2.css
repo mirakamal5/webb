@@ -454,6 +454,8 @@ html, body{
 }
 
 
+
+
 @media (max-width: 768px) {
   .custom-navbar .navbar-brand,
   .custom-navbar .navbar-nav .nav-link,
@@ -560,10 +562,6 @@ html, body{
   .timeline_about .tabs {
     height: 40px; 
   }
-
-  .footer {
-    padding: 20px 0; 
-  }
   
   .footer-col {
     flex: 1 1 100%; 
@@ -588,6 +586,8 @@ html, body{
   .custom-navbar .navbar-brand img{
     width: 55px;
   }
+  
+
   .custom-navbar .navbar-nav{
     margin-left: 8px;
   }
@@ -613,7 +613,10 @@ html, body{
     margin-left: 13px;
   }
 
-  
+  .timeline_about .tabs ul li i {
+    font-size: 16px;
+  }
+
   .custom-navbar .navbar-nav .nav-link{
     font-size: 12px;
   }
