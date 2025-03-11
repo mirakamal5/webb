@@ -1,3 +1,4 @@
+
 *{
     margin: 0;
     padding:0;
@@ -216,35 +217,35 @@
 
 .footer {
     background-color: #dc889a;
-    padding: 40px 0; /* Increased padding for better spacing */
+    padding: 40px 0; 
     font-family: 'Poppins', sans-serif;
 }
 
 .containerf {
     max-width: 1170px;
     margin: auto;
-    padding: 0 15px; /* Add padding to container for better spacing */
+    padding: 0 15px; 
 }
 
 .row {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Distribute columns evenly */
-    gap: 20px; /* Add gap between columns */
+    justify-content: space-between; 
+    gap: 20px; 
 }
 
 .footer-col {
-    flex: 1; /* Each column takes equal width */
-    min-width: 200px; /* Minimum width for responsiveness */
+    flex: 1;
+    min-width: 200px; 
     padding: 0 15px;
 }
 
 .footer-col h4 {
-    font-size: 18px; /* Slightly larger font size */
+    font-size: 18px; 
     color: #fbf3ed;
     text-transform: capitalize;
-    margin-bottom: 20px; /* Increased margin for better spacing */
-    font-weight: 600; /* Bold heading */
+    margin-bottom: 20px; 
+    font-weight: 600; 
     position: relative;
 }
 
@@ -262,11 +263,11 @@
 .footer-col ul {
     list-style: none;
     padding-left: 0;
-    margin: 0; /* Remove default margin */
+    margin: 0; 
 }
 
 .footer-col ul li:not(:last-child) {
-    margin-bottom: 10px; /* Increased spacing between list items */
+    margin-bottom: 10px; 
 }
 
 .footer-col ul li a {
@@ -274,7 +275,7 @@
     text-transform: capitalize;
     color: #fbf3ed;
     text-decoration: none;
-    font-weight: 400; /* Slightly bolder text */
+    font-weight: 400; 
     display: block;
     transition: all 0.3s ease;
 }
@@ -286,7 +287,7 @@
 
 .footer-col .social-links {
     display: flex;
-    gap: 10px; /* Add gap between social icons */
+    gap: 10px; 
 }
 
 .footer-col .social-links a {

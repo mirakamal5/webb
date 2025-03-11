@@ -1,9 +1,9 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 body {
     display: flex;
-    flex-direction: column;  /* Stack elements properly */
-    min-height: 100vh;       /* Ensure full viewport height */
-    justify-content: space-between; /* Push footer to the bottom */
+    flex-direction: column;  
+    min-height: 100vh;       
+    justify-content: space-between; 
     background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
     background-image: url('images/background\ .jpg'); 
     background-size: cover;
@@ -15,15 +15,15 @@ body {
 
 .custom-container {
     position: relative;
-    margin: auto;   /* Center the container */
+    margin: auto;   
     width: 850px;
     height: 550px;
     background: #F2E3DA;
     border-radius: 30px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    margin-bottom: 50px; /* Add space between form and footer */
-    margin-top: 120px; /* Creates space between the navbar and login form */
+    margin-bottom: 50px; 
+    margin-top: 120px; 
 }
 
 
