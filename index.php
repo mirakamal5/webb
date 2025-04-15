@@ -15,7 +15,7 @@ if (isset($_GET['search'])) {
     $stmt = $conn->query("SELECT * FROM recipes");
     $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
+isi
 // Handle category filtering
 $categoryFilter = '';
 if (isset($_GET['category'])) {
