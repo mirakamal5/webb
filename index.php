@@ -2,7 +2,7 @@
 // Include database configuration
 require_once('config.php');
 
-// Handle the search query
+// Handle the search queryy
 $searchTerm = '';
 if (isset($_GET['search'])) {
     $searchTerm = $_GET['search'];
