@@ -149,6 +149,20 @@ try {
     }
     
     echo "Database setup complete with all tables and categories!";
+
+    $sql = "CREATE TABLE IF NOT EXISTS contact_messages (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        full_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )";
+    if ($conn->query($sql) === TRUE) {
+        echo "Table contact_messages created successfully<br>";
+    } else {
+        echo "Error creating contact_messages table: " . $conn->error . "<br>";
+    }
+
     $conn->close();
 } catch (Exception $e) {
     die("Error: " . $e->getMessage());

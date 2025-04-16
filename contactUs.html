@@ -97,19 +97,19 @@
                 </div>
             </div>
             <div class="contactForm">
-                <form>
+                <form action="process_contact.php" method="POST">
                     <h2>Send message</h2>
                     <div class="inputBox">
                         <label for="fname">Full Name:</label><br>
-                        <input type="text" id="fname" name="" placeholder="Name" required="required">
+                        <input type="text" id="fname" name="fname" placeholder="Name" required="required">
                     </div>
                     <div class="inputBox">
                         <label for="email">Email:</label><br>
-                        <input type="email" id="email" name="" placeholder="Email" required="required">
+                        <input type="email" id="email" name="email" placeholder="Email" required="required">
                     </div>
                     <div class="inputBox">
                         <label for="message">Message:</label><br>
-                        <textarea required="required" id="message" placeholder="Type your message..."></textarea>
+                        <textarea required="required" id="message" name="message" placeholder="Type your message..."></textarea>
                     </div>
                     <div class="inputBox">
                         <input type="submit" name="" value="Send">
