@@ -638,196 +638,198 @@ $isLoggedIn = isset($_SESSION['user_id']);
     </style>
 </head>
 <body>
-    <nav class="navbar custom-navbar sticky-top">
-        <div class="container-fluid">
-            <!-- Logo -->
-            <a class="navbar-brand" href="#">
-                <img src="images/final.png" alt="Website Logo" width="80" height="50" class="d-inline-block align-text-top">
-            </a>
 
-            <!-- Navigation Links -->
-            <ul class="navbar-nav d-flex flex-row">
-                <li class="nav-item me-3">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item me-3">
-                    <a class="nav-link" href="about us.html">About Us</a>
-                </li>
-                <li class="nav-item dropdown me-3">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Recipes
+<!-- Navbar -->
+<nav class="navbar custom-navbar sticky-top">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="images/final.png" alt="Website Logo" width="80" height="50" class="d-inline-block align-text-top">
+        </a>
+
+        <!-- Navigation Links -->
+        <ul class="navbar-nav d-flex flex-row">
+            <li class="nav-item me-3">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item me-3">
+                <a class="nav-link" href="about us.html">About Us</a>
+            </li>
+            <li class="nav-item dropdown me-3">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Recipes
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="AddYourRecipe.html">Add</a></li>
+                    <li><a class="dropdown-item" href="recipes.php">Explore</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- Login Button OR Profile Icon -->
+        <div class="d-flex">
+            <?php if (!$isLoggedIn): ?>
+                <button class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
+            <?php else: ?>
+                <div onclick="window.location.href='profile.php'" style="cursor:pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                    </svg>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</nav>
+
+<!-- Session Alerts -->
+<?php
+if (isset($_SESSION['error'])) {
+    echo '<div class="alert alert-danger text-center">' . $_SESSION['error'] . '</div>';
+    unset($_SESSION['error']);
+}
+if (isset($_SESSION['success'])) {
+    echo '<div class="alert alert-success text-center">' . $_SESSION['success'] . '</div>';
+    unset($_SESSION['success']);
+}
+?>
+
+<!-- Search Bar Section -->
+<div class="search-bar-section text-center mt-5">
+    <h1 class="mb-4">Find Recipes, Fast</h1>
+    <form action="recipes.php" method="GET">
+        <div class="input-group w-50 mx-auto">
+            <input type="text" name="search" class="form-control form-control-lg" placeholder="Search by recipe, ingredient, or keyword" required>
+            <button class="btn btn-outline-danger btn-lg" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Recipe of the Day Section -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="recipe-of-the-day d-flex align-items-center">
+                <div class="col-md-5 me-md-5">
+                    <div class="image-container">
+                        <img src="images/mugcake.png" alt="Recipe of the Day" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <h3>Recipe of the Day</h3>
+                    <h4>Mug Cake</h4>
+                    <div class="posted-by">
+                        <span>by:</span>
+                        <a href="userpage mira.html" class="username">MiraCooks🍰</a>
+                    </div>
+                    <div class="rating mb-3">
+                        <span class="star">&#9733;</span>
+                        <span class="star">&#9733;</span>
+                        <span class="star">&#9733;</span>
+                        <span class="star">&#9733;</span>
+                        <span class="star">&#9734;</span>
+                        <span class="rating-value">4.5</span>
+                    </div>
+                    <p class="card-text">
+                        This chocolate mug cake is made in the microwave for a fudgy, chocolaty treat that is truly decadent.
+                        It's a great recipe for nights when I need a yummy dessert that's ready in less than 10 minutes! Add a few chocolate chips to make it extra rich and gooey.
+                    </p>
+                    <a href="MugCake-Microwavable.html" class="btn btn-outline-danger">View Recipe</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="col-md-12 mt-5">
+        <h1 class="mb-4 text-center">Explore Recipes by Category</h1>
+        <div class="row justify-content-center g-1 categories-container">
+            <?php
+            $categories = [
+                "Diabetic-Friendly" => "c.jpg",
+                "Dairy-Free" => "waffl.jpg",
+                "Gluten-Free" => "choco.jpg",
+                "Egg-Free" => "cinnamon.jpg",
+                "Vegan" => "yog.jpg",
+                "Nut-Free" => "cheese.jpg",
+                "Sugar-Free" => "l.jpg",
+                "High-Protein" => "pann.jpg",
+                "No-Bake" => "s.jpg"
+            ];
+            foreach ($categories as $label => $image) {
+                $slug = strtolower(str_replace(' ', '-', $label));
+                echo "
+                <div class='col-auto'>
+                    <a href='recipes.php?category=$slug' class='text-decoration-none'>
+                        <div class='circle-icon mx-auto'>
+                            <img src='images/$image' alt='$label' class='img-fluid'>
+                        </div>
+                        <p class='mt-2 category-label'>$label</p>
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="AddYourRecipe.html">Add</a></li>
-                        <li><a class="dropdown-item" href="recipes.php">Explore</a></li>
-                    </ul>
-                </li>
-            </ul>
-
-            <!-- Login Button and Profile Icon -->
-            <div class="d-flex">
-                <?php if (!$isLoggedIn): ?>
-                    <button class="btn btn-outline-danger me-2" onclick="window.location.href='loginpage.php'">Log In</button>
-                <?php else: ?>
-                    <div onclick="window.location.href='profile.php'" style="cursor:pointer;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill">
-                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                        </svg>
-                    </div>
-                <?php endif; ?>
-            </div>
+                </div>";
+            }
+            ?>
         </div>
-    </nav>
-
-    <?php
-        if (isset($_SESSION['error'])) {
-            echo '<div class="alert alert-danger text-center">' . $_SESSION['error'] . '</div>';
-            unset($_SESSION['error']);
-        }
-        if (isset($_SESSION['success'])) {
-            echo '<div class="alert alert-success text-center">' . $_SESSION['success'] . '</div>';
-            unset($_SESSION['success']);
-        }
-        ?>
-
-    <!-- Search Bar Section -->
-    <div class="search-bar-section text-center mt-5">
-        <h1 class="mb-4">Find Recipes, Fast</h1>
-        <form action="recipes.php" method="GET">
-            <div class="input-group w-50 mx-auto">
-                <input type="text" name="search" class="form-control form-control-lg" placeholder="Search by recipe, ingredient, or keyword" required>
-                <button class="btn btn-outline-danger btn-lg" type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </form>
     </div>
+</div>
 
-    <!-- Recipe of the Day Section -->
-    <div class="container my-5">
+<!-- Footer -->
+<footer class="footer mt-5">
+    <div class="container">
         <div class="row">
-            <div class="col-md-10 offset-md-1">
-                <div class="recipe-of-the-day d-flex align-items-center">
-                    <div class="col-md-5 me-md-5">
-                        <div class="image-container">
-                            <img src="images/mugcake.png" alt="Recipe of the Day" class="img-fluid">
-                        </div>
-                    </div>
-                    <div class="col-md-7">
-                        <h3>Recipe of the Day</h3>
-                        <h4>Mug Cake</h4>
-                        <div class="posted-by">
-                            <span>by:</span>
-                            <a href="userpage mira.html" class="username">MiraCooks🍰</a>
-                        </div>
-                        <div class="rating mb-3">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9734;</span>
-                            <span class="rating-value">4.5</span>
-                        </div>
-                        <p class="card-text">
-                            This chocolate mug cake is made in the microwave for a fudgy, chocolaty treat that is truly decadent.
-                            It's a great recipe for nights when I need a yummy dessert that's ready in less than 10 minutes! Add a few chocolate chips to make it extra rich and gooey.
-                        </p>
-                        <a href="MugCake-Microwavable.html" class="btn btn-outline-danger">View Recipe</a>
-                    </div>
-                </div>
+            <div class="footer-col">
+                <h4>About Us</h4>
+                <ul>
+                    <li><a href="about us.html">About us</a></li>
+                    <li><a href="contactUs.html">Contact us</a></li>
+                </ul>
             </div>
-        </div>
-
-        <!-- Categories Section -->
-        <div class="col-md-12 mt-5">
-            <h1 class="mb-4 text-center">Explore Recipes by Category</h1>
-            <div class="row justify-content-center g-1 categories-container">
-                <?php
-                $categories = [
-                    "Diabetic-Friendly" => "c.jpg",
-                    "Dairy-Free" => "waffl.jpg",
-                    "Gluten-Free" => "choco.jpg",
-                    "Egg-Free" => "cinnamon.jpg",
-                    "Vegan" => "yog.jpg",
-                    "Nut-Free" => "cheese.jpg",
-                    "Sugar-Free" => "l.jpg",
-                    "High-Protein" => "pann.jpg",
-                    "No-Bake" => "s.jpg"
-                ];
-                foreach ($categories as $label => $image) {
-                    $slug = strtolower(str_replace(' ', '-', $label));
-                    echo "
-                    <div class='col-auto'>
-                        <a href='recipes.php?category=$slug' class='text-decoration-none'>
-                            <div class='circle-icon mx-auto'>
-                                <img src='images/$image' alt='$label' class='img-fluid'>
-                            </div>
-                            <p class='mt-2 category-label'>$label</p>
-                        </a>
-                    </div>";
-                }
-                ?>
+            <div class="footer-col">
+                <h4>Help & Policies</h4>
+                <ul>
+                    <li><a href="faqpage.html">FAQ</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="<?= $isLoggedIn ? 'profile.php' : 'login.php' ?>">My Profile</a></li>
+                    <li><a href="recipes.php">All Recipes</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
             </div>
         </div>
     </div>
+</footer>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="footer-col">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="about us.html">About us</a></li>
-                        <li><a href="contactUs.html">Contact us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Help & Policies</h4>
-                    <ul>
-                        <li><a href="faqpage.html">FAQ</a></li>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Explore</h4>
-                    <ul>
-                        <li><a href="<?= $isLoggedIn ? 'profile.php' : 'loginpage.php' ?>">My Profile</a></li>
-                        <li><a href="recipes.php">All Recipes</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-tiktok"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const alerts = document.querySelectorAll('.alert');
-
-        if (alerts.length > 0) {
-            setTimeout(() => {
-                alerts.forEach(alert => {
-                    alert.style.transition = "opacity 0.5s ease";
-                    alert.style.opacity = '0';
-                    setTimeout(() => {
-                        alert.remove();
-                    }, 500); // wait for the fade-out animation
-                });
-            }, 4000); // show for 4 seconds
-        }
-    });
-    </script>
+<!-- Auto-hide alerts -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const alerts = document.querySelectorAll('.alert');
+    if (alerts.length > 0) {
+        setTimeout(() => {
+            alerts.forEach(alert => {
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 4000);
+    }
+});
+</script>
 
 </body>
 </html>
