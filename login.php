@@ -334,7 +334,7 @@
 
                 <!-- Login Button and Profile Icon -->
                 <div class="d-flex">
-                    <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='loginpage.html'">Log In</button>
+                    <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
                     <div id="profileIcon" class="d-none">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill" viewBox="0 0 16 16">
                             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
@@ -343,21 +343,37 @@
                 </div>
             </div>
         </nav>
+    
+        <?php
+        session_start();
+        if (isset($_SESSION['error'])) {
+            echo '<div class="alert alert-danger text-center">' . $_SESSION['error'] . '</div>';
+            unset($_SESSION['error']);
+        }
+        if (isset($_SESSION['success'])) {
+            echo '<div class="alert alert-success text-center">' . $_SESSION['success'] . '</div>';
+            unset($_SESSION['success']);
+        }
+        ?>
             
     <div class="custom-container">
         <div class="form-box login">
-            <form action="">
+            <form action="loginprocess.php" method="POST">
                 <h1>Login</h1>
                 <div class="input-box">
-                    <input type="text" placeholder="Username" required> 
+                    <input type="email" name="email" placeholder="Email" required> 
                     <i class='bx bxs-user'></i>
                 </div>
                 <div class="input-box">
-                    <input type="password" placeholder="Password" required> 
+                    <input type="password" name="password" placeholder="Password" required> 
                     <i class='bx bxs-lock-alt'></i>
                 </div>
                 <div class="forgot-link">
                     <a href="#">Forget password</a>
+                </div>
+                <div class="input-box">
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember">Remember Me</label>
                 </div>
                 <button type="submit" class="custom-btn">Login</button>
                 <p>or login with social platforms</p>
@@ -370,18 +386,18 @@
         </div>
 
         <div class="form-box register">
-            <form action="">
+            <form action="register.php" method="POST">
                 <h1>Registration </h1>
                 <div class="input-box">
-                    <input type="text" placeholder="Username" required> 
+                    <input type="text" name="username" placeholder="Username" required> 
                     <i class='bx bxs-user'></i>
                 </div>
                 <div class="input-box">
-                    <input type="email" placeholder="Email" required> 
+                    <input type="email" name="email" placeholder="Email" required> 
                     <i class='bx bxs-envelope' ></i>
                 </div>
                 <div class="input-box">
-                    <input type="password" placeholder="Password" required> 
+                    <input type="password" name="password" placeholder="Password" required> 
                     <i class='bx bxs-lock-alt'></i>
                 </div>
                 <button type="submit" class="custom-btn">Register</button>
@@ -471,6 +487,24 @@
         
 
     <script src="script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const alerts = document.querySelectorAll('.alert');
+
+            if (alerts.length > 0) {
+                setTimeout(() => {
+                    alerts.forEach(alert => {
+                        alert.style.transition = "opacity 0.5s ease";
+                        alert.style.opacity = '0';
+                        setTimeout(() => {
+                            alert.remove();
+                        }, 500);
+                    });
+                }, 4000);
+            }
+        });
+    </script>
 
 </body>
 </html>
