@@ -679,6 +679,17 @@ $isLoggedIn = isset($_SESSION['user_id']);
         </div>
     </nav>
 
+    <?php
+        if (isset($_SESSION['error'])) {
+            echo '<div class="alert alert-danger text-center">' . $_SESSION['error'] . '</div>';
+            unset($_SESSION['error']);
+        }
+        if (isset($_SESSION['success'])) {
+            echo '<div class="alert alert-success text-center">' . $_SESSION['success'] . '</div>';
+            unset($_SESSION['success']);
+        }
+        ?>
+
     <!-- Search Bar Section -->
     <div class="search-bar-section text-center mt-5">
         <h1 class="mb-4">Find Recipes, Fast</h1>
@@ -800,5 +811,23 @@ $isLoggedIn = isset($_SESSION['user_id']);
 
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alerts = document.querySelectorAll('.alert');
+
+        if (alerts.length > 0) {
+            setTimeout(() => {
+                alerts.forEach(alert => {
+                    alert.style.transition = "opacity 0.5s ease";
+                    alert.style.opacity = '0';
+                    setTimeout(() => {
+                        alert.remove();
+                    }, 500); // wait for the fade-out animation
+                });
+            }, 4000); // show for 4 seconds
+        }
+    });
+    </script>
+
 </body>
 </html>

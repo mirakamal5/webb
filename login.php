@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <!-- page created by Yassine Zeort -->
 <html lang="en">
@@ -345,7 +348,6 @@
         </nav>
     
         <?php
-        session_start();
         if (isset($_SESSION['error'])) {
             echo '<div class="alert alert-danger text-center">' . $_SESSION['error'] . '</div>';
             unset($_SESSION['error']);
@@ -372,8 +374,8 @@
                     <a href="#">Forget password</a>
                 </div>
                 <div class="input-box">
-                    <input type="checkbox" name="remember" id="remember">
-                    <label for="remember">Remember Me</label>
+                    <!-- <input type="checkbox" name="remember" id="remember"> -->
+                    <!-- <label for="remember">Remember Me</label> -->
                 </div>
                 <button type="submit" class="custom-btn">Login</button>
                 <p>or login with social platforms</p>
@@ -393,7 +395,7 @@
                     <i class='bx bxs-user'></i>
                 </div>
                 <div class="input-box">
-                    <input type="email" name="email" placeholder="Email" required> 
+                    <input type="text" name="email" placeholder="Email" required> 
                     <i class='bx bxs-envelope' ></i>
                 </div>
                 <div class="input-box">

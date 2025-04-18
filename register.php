@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 6. Insert new user
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    $insert = $con->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
+    $insert = $con->prepare("INSERT INTO users (username, email, password_hash) VALUES (:username, :email, :password)");
     $insert->bindParam(':username', $username);
     $insert->bindParam(':email', $email);
     $insert->bindParam(':password', $hashed_password);
