@@ -101,52 +101,103 @@ $isLoggedIn = isset($_SESSION['user_id']);
             border-radius: 8px;
             border-width: 2px;
         }
+        .hero-banner {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    margin-bottom: 0; /* Ensure no space below */
+}
 
-        .search-bar-section {
-            padding: 20px 10px; 
-            background-image: url('images/five.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: #f8f9fa;
-            height: 100vh; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            width: 100%;
-        }
+.hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(65%);
+}
 
-        .search-bar-section h1 {
-            font-size: 32px; 
-            font-weight: 600;
-            margin-bottom: 15px; 
-            color: white;
-            text-align: center;
-        }
+.hero-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    padding: 0 20px;
+    margin-bottom: 0; /* Remove any bottom margin */
+}
 
-        .search-bar-section .input-group {
-            max-width: 100%;
-            width: 40%; 
-            margin: 0 auto;
-        }
+.hero-overlay h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
 
-        .search-bar-section .form-control {
-            font-size: 16px; 
-            padding: 10px 14px; 
-            border: 2px solid #dc889a;
-            border-radius: 12px 0 0 12px;
-            width: 100%;
-            flex: 1;
-        }
+.hero-overlay p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
 
-        .search-bar-section .btn-outline-danger {
-            padding: 12px 16px; 
-            border-radius: 0 12px 12px 0;
-            font-size: 16px; 
-            border: 2px solid #dc889a;
-            border-left: none;
-        }
+.hero-overlay button {
+    padding: 12px 25px;
+    font-size: 1rem;
+    background-color: #c42348;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hero-overlay button:hover {
+    background-color: #a41d3b;
+}
+
+.search-bar-section {
+    padding: 20px 10px;
+    background-image: url('images/five.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #f8f9fa;
+    height: 100vh; /* Ensure the section takes full screen height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 0; /* Remove any margin above */
+}
+
+.search-bar-section h1 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: white;
+    text-align: center;
+}
+
+.search-bar-section .input-group {
+    max-width: 100%;
+    width: 40%;
+    margin: 0 auto;
+}
+
+.search-bar-section .form-control {
+    font-size: 16px;
+    padding: 10px 14px;
+    border: 2px solid #dc889a;
+    border-radius: 12px 0 0 12px;
+    width: 100%;
+    flex: 1;
+}
+
+.search-bar-section .btn-outline-danger {
+    padding: 12px 16px;
+    border-radius: 0 12px 12px 0;
+    font-size: 16px;
+    border: 2px solid #dc889a;
+    border-left: none;
+}
+
 
        .recipe-of-the-day {
             background-color: #fbf3ed;
@@ -634,6 +685,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
                 }
 
             }
+            
         
     </style>
 </head>
@@ -692,7 +744,15 @@ if (isset($_SESSION['success'])) {
     unset($_SESSION['success']);
 }
 ?>
-
+<!-- Hero Banner Section -->
+<div class="hero-banner">
+    <img src="images/neww.jpg" alt="Delicious Recipes" class="hero-img">
+    <div class="hero-overlay">
+        <h1>Welcome to Bake وبس</h1>
+        <p>Your go-to place for delightful sweets and desserts. Explore a variety of mouth-watering recipes shared by our community, or upload your own creations to inspire others. Whether you're a baking expert or just starting out, there's something sweet for everyone here!</p>
+        <button onclick="window.location.href='recipes.php'">Explore Recipes</button>
+    </div>
+</div>
 <!-- Search Bar Section -->
 <div class="search-bar-section text-center mt-5">
     <h1 class="mb-4">Find Recipes, Fast</h1>
