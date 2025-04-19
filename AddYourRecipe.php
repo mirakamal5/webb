@@ -1,3 +1,19 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Check if user is not logged in
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['error'] = "You must login first.";
+    header("Location: login.php");
+    exit();
+}
+
+
+// If logged in, continue showing the page
+?>
+
 <!DOCTYPE html>
 <!-- page created by Mira Kamal + navbar + footer -->
 <html lang="en">
