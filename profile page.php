@@ -106,6 +106,7 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="style3.css">
 </head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <body>
     <nav class="navbar custom-navbar sticky-top">
         <div class="container-fluid">
@@ -115,13 +116,17 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
             <ul class="navbar-nav d-flex flex-row">
                 <li class="nav-item me-3"><a class="nav-link active" href="index.php">Home</a></li>
                 <li class="nav-item me-3"><a class="nav-link" href="about us.html">About Us</a></li>
+                
                 <li class="nav-item dropdown me-3">
-                    <a class="nav-link dropdown-toggle" href="#" Userrole="button" data-bs-toggle="dropdown">Recipes</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="AddYourRecipe.html">Add</a></li>
-                        <li><a class="dropdown-item" href="recipes.html">Explore</a></li>
+                    <a class="nav-link dropdown-toggle" href="#" id="recipeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Recipes
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="recipeDropdown">
+                        <li><a class="dropdown-item" href="AddYourRecipe.php">Add</a></li>
+                        <li><a class="dropdown-item" href="recipes.php">Explore</a></li>
                     </ul>
                 </li>
+
             </ul>
             <div class="d-flex">
                 <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='loginpage.html'">Log In</button>
@@ -155,7 +160,6 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
                 </div>
             </div>
 
-            <!-- PROFILE PICTURE UPLOAD FORM -->
             <form id="profilePicForm" method="POST" enctype="multipart/form-data">
                 <div class="cf">
                     <br>
