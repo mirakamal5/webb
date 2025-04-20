@@ -106,11 +106,14 @@ $stmt->bind_param(
 
 // Execute
 if ($stmt->execute()) {
-    echo json_encode(['success' => true, 'message' => 'Recipe submitted successfully!']);
+    
+    $recipeId = $stmt->insert_id;
+    header("Location: individual-recipes.php?id=" . $recipeId);
 } else {
     echo json_encode(['success' => false, 'message' => 'Failed to submit recipe: ' . $stmt->error]);
 }
 
 $stmt->close();
 $conn->close();
+exit;
 ?>
