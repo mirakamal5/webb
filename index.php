@@ -712,7 +712,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
                     Recipes
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="AddYourRecipe.html">Add</a></li>
+                    <li><a class="dropdown-item" href="AddYourRecipe.php">Add</a></li>
                     <li><a class="dropdown-item" href="recipes.php">Explore</a></li>
                 </ul>
             </li>
