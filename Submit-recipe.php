@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 
 // Dummy user ID for guests
 $defaultUserId = 0;
-$userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+$userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : $defaultUserId;
 
 
 // Sanitize function
@@ -38,6 +38,7 @@ $difficulty = sanitize($_POST['difficulty']);
 
 // Insert main recipe
 
+echo "User ID used: " . htmlspecialchars($userId);
 
 $stmt = $conn->prepare("INSERT INTO Recipes (user_id, title, description, prep_time, cook_time, servings, difficulty) 
                        VALUES (?, ?, ?, ?, ?, ?, ?)");

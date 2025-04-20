@@ -722,7 +722,7 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
         </div>
 
         <div class="text-center">
-            <button type="submit" class="btn btn-primary">Submit Recipe</button>
+            <button type="submit" class="btn btn-primary">Submit Recipeee</button>
         </div>
     </form>
 
