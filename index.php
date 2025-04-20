@@ -177,7 +177,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
 
 .search-bar-section .input-group {
     max-width: 100%;
-    width: 40%;
+    width: 80%;
     margin: 0 auto;
 }
 
@@ -754,10 +754,10 @@ if (isset($_SESSION['success'])) {
     </div>
 </div>
 <!-- Search Bar Section -->
-<div class="search-bar-section text-center mt-5">
+<div class="search-bar-section text-center mt">
     <h1 class="mb-4">Find Recipes, Fast</h1>
     <form action="recipes.php" method="GET">
-        <div class="input-group w-50 mx-auto">
+        <div class="input-group w-100 mx-auto">
             <input type="text" name="search" class="form-control form-control-lg" placeholder="Search by recipe, ingredient, or keyword" required>
             <button class="btn btn-outline-danger btn-lg" type="submit">
                 <i class="fas fa-search"></i>

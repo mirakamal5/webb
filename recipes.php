@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once 'config.php';
+$isLoggedIn = isset($_SESSION['user_id']); // <--- ADD THIS LINE
+
 
 // Connect to DB and fetch recipes
 $query = "SELECT * FROM recipe";
@@ -10,8 +12,8 @@ if (isset($_GET['search'])) {
     $query .= " WHERE name LIKE :search";
     $params[':search'] = '%' . $_GET['search'] . '%';
 } elseif (isset($_GET['category'])) {
-    $query .= " WHERE category = :category";
-    $params[':category'] = str_replace('-', ' ', $_GET['category']);
+    $query .= " WHERE category LIKE :category";
+    $params[':category'] = '%' . $_GET['category'] . '%';
 }
 
 $stmt = $con->prepare($query);
@@ -512,22 +514,45 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
 <!-- Navbar -->
+<!-- Navbar -->
 <nav class="navbar custom-navbar sticky-top">
     <div class="container-fluid">
+        <!-- Logo -->
         <a class="navbar-brand" href="index.php">
             <img src="images/final.png" alt="Website Logo" width="80" height="50" class="d-inline-block align-text-top">
         </a>
+
+        <!-- Navigation Links -->
         <ul class="navbar-nav d-flex flex-row">
-            <li class="nav-item me-3"><a class="nav-link" href="index.php">Home</a></li>
-            <li class="nav-item me-3"><a class="nav-link" href="about us.html">About Us</a></li>
+            <li class="nav-item me-3">
+                <a class="nav-link" href="index.php">Home</a>
+            </li>
+            <li class="nav-item me-3">
+                <a class="nav-link" href="about us.html">About Us</a>
+            </li>
             <li class="nav-item dropdown me-3">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Recipes</a>
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Recipes
+                </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="AddYourRecipe.html">Add</a></li>
+                    <li><a class="dropdown-item" href="AddYourRecipe.php">Add</a></li>
                     <li><a class="dropdown-item" href="recipes.php">Explore</a></li>
                 </ul>
             </li>
         </ul>
+
+        <!-- Login Button OR Profile Icon -->
+        <div class="d-flex">
+            <?php if (!$isLoggedIn): ?>
+                <button class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
+            <?php else: ?>
+                <div onclick="window.location.href='profile.php'" style="cursor:pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                    </svg>
+                </div>
+            <?php endif; ?>
+        </div>
     </div>
 </nav>
 
@@ -546,10 +571,9 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </h2>
 
     <?php if (count($recipes) > 0): ?>
-        <div class="scroll-wrapper">
-            <button class="scroll-button scroll-left" data-target="scroll1">&lt;</button>
-            <div class="scroll-container" id="scroll1">
-                <?php foreach ($recipes as $recipe): ?>
+        <div class="row">
+            <?php foreach ($recipes as $recipe): ?>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <div class="recipe-card">
                         <div class="favorite-container">
                             <span class="favorite-icon"><i class="fa-regular fa-heart"></i></span>
@@ -562,9 +586,8 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <a href="#" class="btn-pink">View Recipe</a>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
-            <button class="scroll-button scroll-right" data-target="scroll1">&gt;</button>
+                </div>
+            <?php endforeach; ?>
         </div>
     <?php else: ?>
         <div class="alert alert-warning text-center">
