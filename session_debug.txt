@@ -1,0 +1,12 @@
+Array
+(
+    [session_id] => qd05iduo9hjv05q20c6fadhpi3
+    [session_before_redirect] => Array
+        (
+            [user_id] => 2
+            [username] => MiraKamal
+            [email] => mirakamal@example.com
+            [success] => Login successful! Welcome, MiraKamal.
+        )
+
+)

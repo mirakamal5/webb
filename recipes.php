@@ -581,7 +581,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <img src="images/<?= htmlspecialchars($recipe['image']) ?>" alt="<?= htmlspecialchars($recipe['name']) ?>">
                         <div class="card-body">
                             <h5><?= htmlspecialchars($recipe['name']) ?></h5>
-                            <p>By <?= htmlspecialchars($recipe['author']) ?></p>
+                            <p>By <?= htmlspecialchars($recipe['user']) ?></p>
                             <p>Prep time: <?= htmlspecialchars($recipe['prep_time']) ?> minutes</p>
                             <a href="#" class="btn-pink">View Recipe</a>
                         </div>
