@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Verify password
         if (password_verify($password, $user['password_hash'])) {
             // Password correct → Start session
-            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['email'] = $user['email'];
 
@@ -40,6 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $_SESSION['success'] = "Login successful! Welcome, " . htmlspecialchars($user['username']) . ".";
             header("Location: index.php");
+            file_put_contents(__DIR__ . '/session_debug.txt', print_r([
+                'session_id' => session_id(),
+                'session_before_redirect' => $_SESSION
+            ], true));
+            
             exit();
             // Redirect if needed:
             // header("Location: dashboard.php");
