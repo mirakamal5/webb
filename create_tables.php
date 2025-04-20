@@ -22,9 +22,22 @@ try {
             username VARCHAR(50) UNIQUE NOT NULL,
             email VARCHAR(100) UNIQUE NOT NULL,
             password_hash VARCHAR(255) NOT NULL,
-            profile_picture VARCHAR(255) DEFAULT 'default_profile.jpg',
+            profile_picture VARCHAR(255) DEFAULT 'images/default.png',
+            Userrole VARCHAR(8) DEFAULT 'Baker',
+            bio VARCHAR(270) DEFAULT 'No bio yet',
+            hobbies VARCHAR(150) DEFAULT 'Still looking for new hobbies...',
             CONSTRAINT email_format CHECK (email LIKE '%_@__%.__%')
         ) ENGINE=InnoDB",
+
+        "User_Ratings" => "CREATE TABLE IF NOT EXISTS User_Ratings (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            rated_user_id INT NOT NULL,
+            rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+            FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+            FOREIGN KEY (rated_user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+        ) ENGINE=InnoDB",
+
         
         "Categories" => "CREATE TABLE IF NOT EXISTS Categories (
             category_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -96,6 +109,14 @@ try {
             PRIMARY KEY (user_id, recipe_id),
             FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
             FOREIGN KEY (recipe_id) REFERENCES Recipes(recipe_id) ON DELETE CASCADE
+        ) ENGINE=InnoDB",
+        
+        "contact_messages" => "CREATE TABLE IF NOT EXISTS contact_messages (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            full_name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            message TEXT NOT NULL,
+            submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB"
     ];
     foreach ($tables as $name => $sql) {
@@ -109,7 +130,8 @@ try {
         "CREATE INDEX idx_recipes_user ON Recipes(user_id)",
         "CREATE INDEX idx_reviews_recipe ON Reviews(recipe_id)",
         "CREATE INDEX idx_reviews_user ON Reviews(user_id)",
-        "CREATE INDEX idx_favorites_user ON Favorites(user_id)"
+        "CREATE INDEX idx_favorites_user ON Favorites(user_id)",
+        "CREATE INDEX idx_user_ratings_rated_user ON User_Ratings(rated_user_id)"
     ];
     
     foreach ($indexes as $sql) {
@@ -149,20 +171,6 @@ try {
     }
     
     echo "Database setup complete with all tables and categories!";
-
-    $sql = "CREATE TABLE IF NOT EXISTS contact_messages (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        full_name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        message TEXT NOT NULL,
-        submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )";
-    if ($conn->query($sql) === TRUE) {
-        echo "Table contact_messages created successfully<br>";
-    } else {
-        echo "Error creating contact_messages table: " . $conn->error . "<br>";
-    }
-
     $conn->close();
 } catch (Exception $e) {
     die("Error: " . $e->getMessage());
