@@ -1,4 +1,8 @@
 
+<?php
+session_start();
+$isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
+?>
 
 <!DOCTYPE html>
 <!-- page created by Mira Kamal + navbar + footer -->
@@ -549,7 +553,7 @@
             <!-- Navigation Links -->
             <ul class="navbar-nav d-flex flex-row">
                 <li class="nav-item me-3">
-                    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                    <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                 </li>
                 <li class="nav-item me-3">
                     <a class="nav-link" href="about us.html">About Us</a>
@@ -574,145 +578,155 @@
             </div>
         </div>
     </nav>
-
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Add Your Recipe</h1>
-        <form id="recipeForm" action="submit_recipe.php" method="POST" enctype="multipart/form-data">
+    <h1 class="text-center mb-4">Add Your Recipe</h1>
+    <form id="recipeForm" action="Submit-recipe.php" method="POST" enctype="multipart/form-data">
 
-            <div class="mb-3">
-                <label for="recipeName" class="form-label">Recipe Name</label>
-                <input type="text" class="form-control" id="recipeName" name="recipeName" placeholder="Enter recipe name" required>
+        <div class="mb-3">
+            <label for="recipeName" class="form-label">Recipe Name</label>
+            <input type="text" class="form-control" id="recipeName" name="recipeName" placeholder="Enter recipe name" required>
+            <div class="empty-warning">Please fill out this field.</div>
+        </div>
 
-                <div class="empty-warning">Please fill out this field.</div>
-            </div>
-            <div class="mb-3">
-                <label for="recipeDescription" class="form-label">Description</label>
-                <textarea class="form-control" id="recipeDescription" rows="3" placeholder="Describe your recipe" required></textarea>
-                <div class="empty-warning">Please fill out this field.</div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Category</label>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="categories[]" id="diabeticFriendly" value="Diabetic-Friendly">
-                            <label class="form-check-label" for="diabeticFriendly">Diabetic-Friendly</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="categories[]" id="eggFree" value="Egg-Free">
-                            <label class="form-check-label" for="eggFree">Egg-Free</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="categories[]" id="glutenFree" value="Gluten-Free">
-                            <label class="form-check-label" for="glutenFree">Gluten-Free</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="categories[]" id="highProtein" value="High-Protein">
-                            <label class="form-check-label" for="highProtein">High-Protein</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="categories[]" id="keto" value="Keto">
-                            <label class="form-check-label" for="keto">Keto</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox"name="categories[]" id="lactoseFree" value="Lactose-Free">
-                            <label class="form-check-label" for="lactoseFree">Lactose-Free</label>
-                        </div>
-                    </div>
+        <div class="mb-3">
+            <label for="recipeDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="recipeDescription" name="recipeDescription" rows="3" placeholder="Describe your recipe" required></textarea>
+            <div class="empty-warning">Please fill out this field.</div>
+        </div>
 
-                    <!-- Second Column -->
-                    <div class="col-md-6">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="noBake" value="No-Bake">
-                            <label class="form-check-label" for="noBake">No-Bake</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="nutFree" value="Nut-Free">
-                            <label class="form-check-label" for="nutFree">Nut-Free</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="organic" value="Organic">
-                            <label class="form-check-label" for="organic">Organic</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="sugarFree" value="Sugar-Free">
-                            <label class="form-check-label" for="sugarFree">Sugar-Free</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="vegan" value="Vegan">
-                            <label class="form-check-label" for="vegan">Vegan</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="vegetarian" value="Vegetarian">
-                            <label class="form-check-label" for="vegetarian">Vegetarian</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="empty-warning category-warning">Please select at least one category.</div>
-            </div>
-            <div class="row mb-3">
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+            <div class="row">
                 <div class="col-md-6">
-                    <label for="preparingTime" class="form-label">Preparing Time (minutes)</label>
-                    <input type="number" class="form-control" id="preparingTime" placeholder="Enter preparing time" required>
-                    <div class="empty-warning">Please fill out this field.</div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="diabeticFriendly" value="Diabetic-Friendly">
+                        <label class="form-check-label" for="diabeticFriendly">Diabetic-Friendly</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="eggFree" value="Egg-Free">
+                        <label class="form-check-label" for="eggFree">Egg-Free</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="glutenFree" value="Gluten-Free">
+                        <label class="form-check-label" for="glutenFree">Gluten-Free</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="highProtein" value="High-Protein">
+                        <label class="form-check-label" for="highProtein">High-Protein</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="keto" value="Keto">
+                        <label class="form-check-label" for="keto">Keto</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="lactoseFree" value="Lactose-Free">
+                        <label class="form-check-label" for="lactoseFree">Lactose-Free</label>
+                    </div>
                 </div>
+
+                <!-- Second Column -->
                 <div class="col-md-6">
-                    <label for="cookingTime" class="form-label">Cooking Time (minutes)</label>
-                    <input type="number" class="form-control" id="cookingTime" placeholder="Enter cooking time" required>
-                    <div class="empty-warning">Please fill out this field.</div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="noBake" value="No-Bake">
+                        <label class="form-check-label" for="noBake">No-Bake</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="nutFree" value="Nut-Free">
+                        <label class="form-check-label" for="nutFree">Nut-Free</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="organic" value="Organic">
+                        <label class="form-check-label" for="organic">Organic</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="sugarFree" value="Sugar-Free">
+                        <label class="form-check-label" for="sugarFree">Sugar-Free</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="vegan" value="Vegan">
+                        <label class="form-check-label" for="vegan">Vegan</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="vegetarian" value="Vegetarian">
+                        <label class="form-check-label" for="vegetarian">Vegetarian</label>
+                    </div>
                 </div>
             </div>
-            <div class="mb-3">
-                <label for="servings" class="form-label">Servings</label>
-                <input type="number" class="form-control" id="servings" placeholder="Enter number of servings" required>
+            <div class="empty-warning category-warning">Please select at least one category.</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="preparingTime" class="form-label">Preparing Time (minutes)</label>
+                <input type="number" class="form-control" id="preparingTime" name="preparingTime" placeholder="Enter preparing time" required>
                 <div class="empty-warning">Please fill out this field.</div>
             </div>
-            <div class="mb-3">
-                <label for="difficulty" class="form-label">Difficulty</label>
-                <select class="form-select" id="difficulty" required>
-                    <option value="" disabled selected>Select difficulty</option>
-                    <option value="Easy">Easy</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Hard">Hard</option>
-                </select>
-                <div class="empty-warning">Please select difficulty.</div>
+            <div class="col-md-6">
+                <label for="cookingTime" class="form-label">Cooking Time (minutes)</label>
+                <input type="number" class="form-control" id="cookingTime" name="cookingTime" placeholder="Enter cooking time" required>
+                <div class="empty-warning">Please fill out this field.</div>
             </div>
-            <div class="mb-3">
-                <label for="recipePhotos" class="form-label">Upload Photos</label>
-                <input type="file" class="form-control" id="recipePhotos" accept="image/*" multiple>
-                <small class="text-muted">You can upload up to 5 photos.</small>
-                <div class="uploaded-images" id="uploadedImages"></div>
-            </div>
-            <div class="mb-3">
-                <label for="recipeVideo" class="form-label">Video Tutorial (Optional)</label>
-                <input type="file" class="form-control" id="recipeVideo" accept="video/*">
-                <small class="text-muted">Upload a video or paste a YouTube/Vimeo link.</small>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Ingredients</label>
-                <div id="ingredientsContainer">
-                    <div class="ingredient-group mb-2">
-                        <input type="text" class="form-control ingredient" placeholder="Ingredient (e.g., Flour)" required>
-                        <input type="text" class="form-control quantity" placeholder="Quantity (e.g., 200g)" required>
-                        <button type="button" class="btn btn-danger btn-sm remove-ingredient">Remove</button>
-                    </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="servings" class="form-label">Servings</label>
+            <input type="number" class="form-control" id="servings" name="servings" placeholder="Enter number of servings" required>
+            <div class="empty-warning">Please fill out this field.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="difficulty" class="form-label">Difficulty</label>
+            <select class="form-select" id="difficulty" name="difficulty" required>
+                <option value="" disabled selected>Select difficulty</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+            </select>
+            <div class="empty-warning">Please select difficulty.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="recipePhotos" class="form-label">Upload Photos</label>
+            <input type="file" class="form-control" id="recipePhotos" name="recipePhotos[]" accept="image/*" multiple>
+            <small class="text-muted">You can upload up to 5 photos.</small>
+            <div class="uploaded-images" id="uploadedImages"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="recipeVideo" class="form-label">Video Tutorial (Optional)</label>
+            <input type="file" class="form-control" id="recipeVideo" name="recipeVideo" accept="video/*">
+            <small class="text-muted">Upload a video or paste a YouTube/Vimeo link.</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Ingredients</label>
+            <div id="ingredientsContainer">
+                <div class="ingredient-group mb-2">
+                    <input type="text" class="form-control ingredient" name="ingredients[]" placeholder="Ingredient (e.g., Flour)" required>
+                    <input type="text" class="form-control quantity" name="quantities[]" placeholder="Quantity (e.g., 200g)" required>
+                    <button type="button" class="btn btn-danger btn-sm remove-ingredient">Remove</button>
                 </div>
-                <button type="button" class="btn btn-secondary btn-sm" id="addIngredient">Add Ingredient</button>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Steps</label>
-                <div id="stepsContainer">
-                    <div class="step-group mb-2">
-                        <textarea class="form-control step" rows="2" placeholder="Step 1" required></textarea>
-                        <button type="button" class="btn btn-danger btn-sm remove-step">Remove</button>
-                    </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="addIngredient">Add Ingredient</button>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Steps</label>
+            <div id="stepsContainer">
+                <div class="step-group mb-2">
+                    <textarea class="form-control step" name="steps[]" rows="2" placeholder="Step 1" required></textarea>
+                    <button type="button" class="btn btn-danger btn-sm remove-step">Remove</button>
                 </div>
-                <button type="button" class="btn btn-secondary btn-sm" id="addStep">Add Step</button>
             </div>
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Submit Recipe</button>
-            </div>
-        </form>
+            <button type="button" class="btn btn-secondary btn-sm" id="addStep">Add Step</button>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Submit Recipe</button>
+        </div>
+    </form>
+
+
     </div>
     <footer class="footer">
         <div class="container">
@@ -805,20 +819,20 @@
                 reader.readAsDataURL(file);
             }
         });
-        document.getElementById('recipeForm').addEventListener('submit', (event) => {
+       /*  document.getElementById('recipeForm').addEventListener('submit', (event) => {
             event.preventDefault();
             if (!isLoggedIn) {
                 alert('You must be logged in to submit a recipe.');
                 return;
             }
             alert('Recipe submitted successfully!');
-        });
+        });*/
         function checkLoginStatus() {
             const token = localStorage.getItem('authToken');
             isLoggedIn = !!token;
         }
 
         checkLoginStatus();
-    </script>
+    </script> 
 </body>
 </html>
