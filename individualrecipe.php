@@ -84,10 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_rating'])) {
         $result = $conn->query($checkSql);
 
         if ($result->num_rows > 0) {
-            // Remove rating
-            $deleteSql = "DELETE FROM recipe_rating WHERE user_id = $userId AND recipe_id = $recipeId";
-            $conn->query($deleteSql);
-            echo "Rating removed!";
+            // Update rating if it exists
+            $updateSql = "UPDATE recipe_rating SET rating = ? WHERE user_id = ? AND recipe_id = ?";
+            $stmt = $conn->prepare($updateSql);
+            $stmt->bind_param("iii", $rating, $userId, $recipeId);
+            $stmt->execute();
+            echo "Rating updated!";
         } else {
             // Add rating
             $insertSql = "INSERT INTO recipe_rating (user_id, recipe_id, rating) VALUES ($userId, $recipeId, $rating)";

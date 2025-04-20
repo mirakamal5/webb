@@ -4,9 +4,9 @@ Array
     [session_before_redirect] => Array
         (
             [user_id] => 5
-            [username] => zeeeeeeee
-            [email] => zeinab@gmaill.com
-            [success] => Login successful! Welcome, zeeeeeeee.
+            [username] => rorooo
+            [email] => ranimo@gmail.com
+            [success] => Login successful! Welcome, rorooo.
         )
 
 )
