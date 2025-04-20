@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2025 at 10:36 PM
+-- Generation Time: Apr 20, 2025 at 10:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -108,7 +108,6 @@ CREATE TABLE `recipe` (
   `servings` int(11) DEFAULT NULL,
   `difficulty` enum('Easy','Medium','Hard') NOT NULL DEFAULT 'Easy',
   `image` varchar(255) DEFAULT NULL,
-  `video` varchar(255) DEFAULT NULL,
   `ingredients` text DEFAULT NULL,
   `steps` text DEFAULT NULL,
   `user` varchar(255) DEFAULT NULL,

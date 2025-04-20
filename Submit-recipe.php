@@ -18,7 +18,7 @@ $defaultUsername = 'Guest';
 
 // If logged in user
 $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : $defaultUserId;
-$username = isset($_SESSION['username']) ? $_SESSION['username'] : $defaultUsername; // Add session username!!
+$username = isset($_SESSION['username']) ? $_SESSION['username'] : $defaultUsername;
 
 // Sanitize function
 function sanitize($data) {
@@ -69,32 +69,17 @@ $stepsJson = json_encode($stepsArray);
 $imageName = null;
 if (isset($_FILES['recipePhotos']['tmp_name'][0]) && !empty($_FILES['recipePhotos']['tmp_name'][0])) {
     $img = $_FILES['recipePhotos'];
-    $filename = basename($img['name'][0]);  // Use original name
+    $filename = basename($img['name'][0]);
     $destination = 'images/' . $filename;
     if (move_uploaded_file($img['tmp_name'][0], $destination)) {
         $imageName = $filename;
     }
 }
 
-// Upload video
-$videoName = null;
-if (isset($_FILES['recipeVideo']['tmp_name']) && !empty($_FILES['recipeVideo']['tmp_name'])) {
-    $video = $_FILES['recipeVideo'];
-    $videoFilename = uniqid() . '_' . basename($video['name']);
-    $videoDestination = 'videos/' . $videoFilename;
-
-    if (!is_dir('videos')) {
-        mkdir('videos', 0777, true);
-    }
-    if (move_uploaded_file($video['tmp_name'], $videoDestination)) {
-        $videoName = $videoFilename;
-    }
-}
-
-// Prepare SQL query
+// Prepare SQL query (Notice: No video anymore!)
 $sql = "INSERT INTO recipe 
-(name, description, category, prep_time, cook_time, servings, difficulty, image, video, ingredients, steps, user, created_at, user_id)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)";
+(name, description, category, prep_time, cook_time, servings, difficulty, image, ingredients, steps, user, created_at, user_id)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)";
 
 $stmt = $conn->prepare($sql);
 
@@ -102,9 +87,9 @@ if (!$stmt) {
     die(json_encode(['success' => false, 'message' => 'Prepare failed: ' . $conn->error]));
 }
 
-// Bind parameters correctly
+// Bind parameters correctly (Notice: one "s" less because no video)
 $stmt->bind_param(
-    "sssiisssssssi",
+    "sssiisssssi",
     $name,
     $description,
     $category,
@@ -113,11 +98,10 @@ $stmt->bind_param(
     $servings,
     $difficulty,
     $imageName,
-    $videoName,
     $ingredientsJson,
     $stepsJson,
-    $username,   // <<< 🟰 Correct username, not userId
-    $userId      // <<< 🟰 Integer ID
+    $username,
+    $userId
 );
 
 // Execute

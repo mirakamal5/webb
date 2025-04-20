@@ -692,11 +692,11 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
             <div class="uploaded-images" id="uploadedImages"></div>
         </div>
 
-        <div class="mb-3">
+        <!-- <div class="mb-3">
             <label for="recipeVideo" class="form-label">Video Tutorial (Optional)</label>
             <input type="file" class="form-control" id="recipeVideo" name="recipeVideo" accept="video/*">
             <small class="text-muted">Upload a video or paste a YouTube/Vimeo link.</small>
-        </div>
+        </div> -->
 
         <div class="mb-3">
             <label class="form-label">Ingredients</label>
