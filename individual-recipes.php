@@ -1,3 +1,5 @@
+<?php include 'individualrecipe.php'; ?>
+
 <!DOCTYPE html>
 <!-- page created by Ranim Ibrahim -->
 <html lang="en">
@@ -511,7 +513,7 @@
                         Recipes
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="AddYourRecipe.html">Add</a></li>
+                        <li><a class="dropdown-item" href="AddYourRecipe.php">Add</a></li>
                         <li><a class="dropdown-item" href="recipes.html">Explore</a></li>
                     </ul>
                 </li>
@@ -535,8 +537,8 @@
         <div class="favorite-warning warning" id="favoriteWarning">Please log in to add this recipe to favorites.</div>
 
         <div class="recipe-header">
-            <h1>Recipe Name</h1>
-            <img src="recipe-image.jpg" alt="Recipe Image" class="recipe-img">
+            <h1><?= htmlspecialchars($recipe['name']) ?></h1>
+            <img src="images/<?= htmlspecialchars($recipe['image']) ?>" alt="Recipe Image" class="recipe-img">
             <div class="categories">
                 <div class="category">Diabetic-Friendly</div>
                 <div class="category">Vegan</div>
@@ -545,16 +547,16 @@
         </div>
 
         <div class="user-info">
-            <img src="user-profile.jpg" alt="User Picture" class="user-pic">
-            <p>Posted by: <strong>User Name</strong></p>
+            <img src="<?= htmlspecialchars($recipe['profile_picture']) ?>" alt="User Picture" class="user-pic">
+            <p>Posted by: <strong><?= htmlspecialchars($recipe['username']) ?></strong></p>
         </div>
 
-        <p><strong>Description:</strong> A delightful and easy-to-make dessert perfect for any occasion.</p>
-        <p><strong>Prep Time:</strong> 15 min | <strong>Cook Time:</strong> 30 min | <strong>Servings:</strong> 8 | <strong>Difficulty:</strong> Medium</p>
+        <p><strong>Description:</strong> <?= htmlspecialchars($recipe['description']) ?></p>
+        <p><strong>Prep Time:</strong> <?= htmlspecialchars($recipe['prep_time']) ?> | <strong>Cook Time:</strong>  <?= htmlspecialchars($recipe['cook_time']) ?> | <strong>Servings:</strong> <?= htmlspecialchars($recipe['servings']) ?>| <strong>Difficulty:</strong> <?= htmlspecialchars($recipe['difficulty']) ?></p>
         
         <div class="serving-calculator">
             <label for="servingInput">Adjust servings:</label>
-            <input type="number" id="servingInput" value="8" min="1" onchange="adjustIngredients()">
+            <input type="number" id="servingInput" value=<?= htmlspecialchars($recipe['servings']) ?> min="1" onchange="adjustIngredients()">
         </div>
         
         <h3>Ingredients</h3>
@@ -638,14 +640,11 @@
         const favoriteHeart = document.getElementById('favoriteHeart');
         const favoriteWarning = document.getElementById('favoriteWarning');
         
-        // This would be replaced with actual check for if user is logged in
-        const isLoggedIn = false; 
-        
         // This would be replaced with actual check for if recipe is favorited by user
         const isRecipeFavorited = false; 
 
         document.addEventListener('DOMContentLoaded', function() {
-            if (isLoggedIn && isRecipeFavorited) {
+            if (isRecipeFavorited) {
                 favoriteHeart.classList.add('added');
                 favoriteHeart.innerHTML = '❤️';
             } else {
@@ -655,23 +654,29 @@
         });
 
         function toggleFavorite() {
-            if (!isLoggedIn) {
-                favoriteWarning.style.display = 'block';
-                // Hide the warning after 3 seconds
-                setTimeout(() => {
-                    favoriteWarning.style.display = 'none';
-                }, 3000);
-                return;
-            }
-            
-            // Only proceed if user is logged in
-            favoriteHeart.classList.toggle('added');
-            if (favoriteHeart.classList.contains('added')) {
-                favoriteHeart.innerHTML = '❤️'; 
-            } else {
-                favoriteHeart.innerHTML = '♡'; 
+            const heart = document.getElementById('favoriteHeart');
+            const isAdding = !heart.classList.contains('added');
+
+            // Toggle heart UI
+            heart.classList.toggle('added');
+            heart.innerHTML = isAdding ? '❤️' : '♡';
+
+            // Send POST request to backend
+            if (isAdding) {
+                fetch('', { // '' sends request to same page
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'add_favorite=1'
+                })
+                .then(res => res.text())
+                .then(data => {
+                    console.log('Response:', data);
+                });
             }
         }
+
 
         // Star Rating System
         const stars = document.querySelectorAll('.star');

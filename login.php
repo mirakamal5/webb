@@ -329,7 +329,7 @@ session_start();
                             Recipes
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="AddYourRecipe.html">Add</a></li>
+                            <li><a class="dropdown-item" href="AddYourRecipe.php">Add</a></li>
                             <li><a class="dropdown-item" href="recipes.html">Explore</a></li>
                         </ul>
                     </li>

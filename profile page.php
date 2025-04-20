@@ -288,7 +288,7 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
     
             const recipesContent = 
                 <br>
-                <a href="AddYourRecipe.html">
+                <a href="AddYourRecipe.php">
                     <button class="heart-button" id="upload-btn">🩷</button>
                     <span>Add recipe</span>
                 </a>
