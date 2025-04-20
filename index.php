@@ -723,7 +723,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
             <?php if (!$isLoggedIn): ?>
                 <button class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
             <?php else: ?>
-                <div onclick="window.location.href='profile.php'" style="cursor:pointer;">
+                <div onclick="window.location.href='profile page.php'" style="cursor:pointer;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill">
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
                     </svg>

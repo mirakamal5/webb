@@ -1,4 +1,8 @@
 
+<?php
+session_start();
+$isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
+?>
 
 <!DOCTYPE html>
 <!-- page created by Mira Kamal + navbar + footer -->
@@ -549,7 +553,7 @@
             <!-- Navigation Links -->
             <ul class="navbar-nav d-flex flex-row">
                 <li class="nav-item me-3">
-                    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                    <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                 </li>
                 <li class="nav-item me-3">
                     <a class="nav-link" href="about us.html">About Us</a>
@@ -577,7 +581,7 @@
 
     <div class="container mt-5">
         <h1 class="text-center mb-4">Add Your Recipe</h1>
-        <form id="recipeForm" action="submit_recipe.php" method="POST" enctype="multipart/form-data">
+        <form id="recipeForm" action="Submit-recipe.php" method="POST" enctype="multipart/form-data">
 
             <div class="mb-3">
                 <label for="recipeName" class="form-label">Recipe Name</label>
@@ -813,12 +817,9 @@
             }
             alert('Recipe submitted successfully!');
         });
-        function checkLoginStatus() {
-            const token = localStorage.getItem('authToken');
-            isLoggedIn = !!token;
-        }
 
-        checkLoginStatus();
+        let isLoggedIn = <?php echo $isLoggedIn; ?>;
+
     </script>
 </body>
 </html>
