@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2025 at 02:07 PM
+-- Generation Time: Apr 20, 2025 at 07:10 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -291,16 +291,33 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
-  `profile_picture` varchar(255) DEFAULT 'default_profile.jpg'
-) ;
+  `profile_picture` varchar(255) DEFAULT 'images/default.png',
+  `bio` varchar(270) DEFAULT 'No bio yet',
+  `hobbies` varchar(150) DEFAULT 'Still looking for new hobbies...',
+  `Userrole` varchar(8) DEFAULT 'Baker'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `profile_picture`) VALUES
-(1, 'JohnDoe', 'johndoe@example.com', '$2y$10$Wzu0lGfMCn9CGmd7Ewh0VeHq3IAc561c3APcXW9kNlDTqNVViRKF6', 'default_profile.jpg'),
-(2, 'MiraKamal', 'mirakamal@example.com', '$2y$10$EO6/Edr0FJlQwL/LJpqmue/e8QyuB1uL64.HgNotFWnNLTg4TTTla', 'default_profile.jpg');
+INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `profile_picture`, `bio`, `hobbies`, `Userrole`) VALUES
+(1, 'JohnDoe', 'johndoe@example.com', '$2y$10$Wzu0lGfMCn9CGmd7Ewh0VeHq3IAc561c3APcXW9kNlDTqNVViRKF6', 'images/default.png', 'No bio yet', 'Still looking for new hobbies...', 'Baker'),
+(2, 'MiraKamal', 'mirakamal@example.com', '$2y$10$EO6/Edr0FJlQwL/LJpqmue/e8QyuB1uL64.HgNotFWnNLTg4TTTla', 'images/default.png', 'No bio yet', 'Still looking for new hobbies...', 'Baker'),
+(3, 'rim', 'rim.serhan@lau.edu', '$2y$10$1ZDuNU6QPaq16P0jCyJFquCVc5vpPE39VAbD4fIPih/u9Fc9WhFQG', 'images/default.png', 'No bio yet', 'Still looking for new hobbies...', 'Baker');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_ratings`
+--
+
+CREATE TABLE `user_ratings` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `rated_user_id` int(11) NOT NULL,
+  `rating` tinyint(4) NOT NULL CHECK (`rating` between 1 and 5)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Indexes for dumped tables
@@ -386,6 +403,14 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `user_ratings`
+--
+ALTER TABLE `user_ratings`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `idx_user_ratings_rated_user` (`rated_user_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -393,7 +418,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `contact_messages`
@@ -423,7 +448,7 @@ ALTER TABLE `recipes`
 -- AUTO_INCREMENT for table `recipe_media`
 --
 ALTER TABLE `recipe_media`
-  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -441,7 +466,13 @@ ALTER TABLE `steps`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `user_ratings`
+--
+ALTER TABLE `user_ratings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -491,6 +522,13 @@ ALTER TABLE `reviews`
 --
 ALTER TABLE `steps`
   ADD CONSTRAINT `steps_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `user_ratings`
+--
+ALTER TABLE `user_ratings`
+  ADD CONSTRAINT `user_ratings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_ratings_ibfk_2` FOREIGN KEY (`rated_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
