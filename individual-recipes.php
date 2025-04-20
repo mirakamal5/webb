@@ -153,7 +153,7 @@
             color: #ccc;
         }
         .star.selected {
-            color: #ffcc00;
+            color: #d46a7e;
         }
         .average-rating {
             font-size: 18px;
@@ -534,7 +534,6 @@
         <div class="favorite-heart" id="favoriteHeart" onclick="toggleFavorite()">
             ♡ 
         </div>
-        <div class="favorite-warning warning" id="favoriteWarning">Please log in to add this recipe to favorites.</div>
 
         <div class="recipe-header">
             <h1><?= htmlspecialchars($recipe['name']) ?></h1>
@@ -572,27 +571,22 @@
             <li>Bake at 180°C for 30 minutes.</li>
             <li>Let it cool and enjoy!</li>
         </ol>
-
         <div class="rating-section">
             <h3>Rate this Recipe</h3>
-            <div class="star-rating">
+            <div class="star-rating" id="starRating">
                 <span class="star" data-value="1">&#9733;</span>
                 <span class="star" data-value="2">&#9733;</span>
                 <span class="star" data-value="3">&#9733;</span>
                 <span class="star" data-value="4">&#9733;</span>
                 <span class="star" data-value="5">&#9733;</span>
             </div>
-            <div class="warning" id="ratingWarning">Please log in to rate this recipe.</div>
-            <div class="average-rating">
-                Average Rating: <span id="averageRating">4.5</span>
-            </div>
+            <p id="ratingMessage"></p>
         </div>
 
         <div class="discussion-section">
             <h3>Discussions</h3>
             <input type="text" placeholder="Add a comment..." id="commentInput">
             <button id="submitCommentBtn" onclick="submitComment()">Submit</button>
-            <div class="warning" id="commentWarning">Please log in to submit a comment.</div>
             <div id="commentsList">
                 
             </div>
@@ -662,31 +656,56 @@
             heart.innerHTML = isAdding ? '❤️' : '♡';
 
             // Send POST request to backend
-            if (isAdding) {
-                fetch('', { // '' sends request to same page
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'add_favorite=1'
-                })
-                .then(res => res.text())
-                .then(data => {
-                    console.log('Response:', data);
-                });
-            }
+            fetch('', { // '' sends request to same page
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'add_favorite=1'
+            })
+            .then(res => res.text())
+            .then(data => {
+                console.log('Response:', data);
+            });
+        }
+
+        const stars = document.querySelectorAll('.star');
+        const message = document.getElementById('ratingMessage');
+        const recipeId = new URLSearchParams(window.location.search).get("id");
+
+        function highlightStars(rating) {
+            document.querySelectorAll('.star').forEach(star => {
+                const value = parseInt(star.getAttribute('data-value'));
+                if (value <= rating) {
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                }
+            });
         }
 
 
-        // Star Rating System
-        const stars = document.querySelectorAll('.star');
-        const ratingWarning = document.getElementById('ratingWarning');
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', function () {
+                const rating = this.getAttribute('data-value');
+                const recipeId = new URLSearchParams(window.location.search).get('id');
 
-        stars.forEach(star => {
-            star.addEventListener('click', () => {
-                ratingWarning.style.display = 'block';
+                fetch('', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `submit_rating=1&rating=${rating}&recipe_id=${recipeId}`
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data); // Can be "Rating submitted!" or "Rating removed!"
+                    // Optionally show user feedback
+                    highlightStars(rating);
+                });
             });
         });
+
 
         // Discussion System
         const commentInput = document.getElementById('commentInput');

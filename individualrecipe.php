@@ -75,16 +75,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_favorite'])) {
 }
 
 
-// Handle Rating Submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_rating'])) {
     if ($isLoggedIn) {
         $rating = (int) $_POST['rating'];
-        // TODO: Save rating to database
-        $ratingMessage = "Thanks! You rated this recipe $rating star(s).";
+
+        // Check if rating exists
+        $checkSql = "SELECT * FROM recipe_rating WHERE user_id = $userId AND recipe_id = $recipeId";
+        $result = $conn->query($checkSql);
+
+        if ($result->num_rows > 0) {
+            // Remove rating
+            $deleteSql = "DELETE FROM recipe_rating WHERE user_id = $userId AND recipe_id = $recipeId";
+            $conn->query($deleteSql);
+            echo "Rating removed!";
+        } else {
+            // Add rating
+            $insertSql = "INSERT INTO recipe_rating (user_id, recipe_id, rating) VALUES ($userId, $recipeId, $rating)";
+            $conn->query($insertSql);
+            echo "Rating submitted!";
+        }
+
+        $conn->close();
+        exit();
     } else {
-        $ratingMessage = "You must be logged in to rate.";
+        echo "NOT LOGGED IN";
+        exit();
     }
 }
+
 
 // Handle Discussion Submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_discussion'])) {

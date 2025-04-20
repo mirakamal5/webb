@@ -251,6 +251,19 @@ CREATE TABLE `user_ratings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
+-- Table Structure for table recipe_rating
+--
+
+CREATE TABLE `recipe_rating` (
+    `id` int(11) NOT NULL,
+    `user_id` INT,
+    `recipe_id` INT,
+    `rating` TINYINT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+--
 -- Indexes for dumped tables
 --
 
@@ -341,6 +354,16 @@ ALTER TABLE `user_ratings`
   ADD KEY `user_id` (`user_id`),
   ADD KEY `idx_user_ratings_rated_user` (`rated_user_id`);
 
+
+--
+-- Indexes for table `recipe_rating`
+--
+ALTER TABLE `recipe_rating`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `recipe_id` (`recipe_id`);
+
+
 --
 -- AUTO_INCREMENT for dumped tables
 --
@@ -414,7 +437,7 @@ ALTER TABLE `user_ratings`
 --
 ALTER TABLE `favorites`
   ADD CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ingredients`
@@ -460,6 +483,15 @@ ALTER TABLE `steps`
 ALTER TABLE `user_ratings`
   ADD CONSTRAINT `user_ratings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `user_ratings_ibfk_2` FOREIGN KEY (`rated_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+COMMIT;
+
+
+--
+-- Constraints for table `recipe_rating`
+--
+ALTER TABLE `recipe_rating`
+  ADD CONSTRAINT `recipe_rating_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `recipe_rating_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
