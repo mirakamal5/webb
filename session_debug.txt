@@ -3,10 +3,10 @@ Array
     [session_id] => qd05iduo9hjv05q20c6fadhpi3
     [session_before_redirect] => Array
         (
-            [user_id] => 4
-            [username] => Yassine zeort
-            [email] => yassine.elzeort@lau.edu
-            [success] => Login successful! Welcome, Yassine zeort.
+            [user_id] => 2
+            [username] => MiraKamal
+            [email] => mirakamal@example.com
+            [success] => Login successful! Welcome, MiraKamal.
         )
 
 )
