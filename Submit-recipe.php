@@ -89,7 +89,7 @@ if (!$stmt) {
 
 // Bind parameters correctly (Notice: one "s" less because no video)
 $stmt->bind_param(
-    "sssiisssssi",
+    "sssiissssssi",
     $name,
     $description,
     $category,

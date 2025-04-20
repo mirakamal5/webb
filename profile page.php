@@ -17,7 +17,7 @@ $email = $_SESSION['email'] ?? '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bio = trim($_POST['bio'] ?? '');
     $hobbies = trim($_POST['hobbies'] ?? '');
-    $Userrole = trim($_POST['Userrole'] ?? 'Baker'); // Still comes from the 'baker' input field
+    $Userrole = trim($_POST['Userrole'] ?? 'Baker');
 
     $bio = $bio !== '' ? $bio : 'No bio yet';
     $hobbies = $hobbies !== '' ? $hobbies : 'Still looking for new hobbies...';
@@ -33,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
         if (in_array($imageFileType, $allowedTypes)) {
             if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $targetFile)) {
-                // Save image + profile info in DB
                 $stmt = $con->prepare("UPDATE users SET profile_picture = :pic, Userrole = :Userrole, bio = :bio, hobbies = :hobbies WHERE user_id = :id");
                 $stmt->execute([
                     ':pic' => $targetFile,
@@ -66,8 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
-
-
 // Fetch user info
 $stmt = $con->prepare("SELECT u.username, u.email, u.bio, u.hobbies, u.Userrole, u.profile_picture,
         (SELECT AVG(r.rating) FROM user_ratings r WHERE r.user_id = u.user_id) AS rating
@@ -83,6 +80,10 @@ if (!$user) {
     exit();
 }
 
+// 🔥 FETCH recipes posted by the user
+$stmtRecipes = $con->prepare("SELECT * FROM recipe WHERE user_id = :id ORDER BY created_at DESC");
+$stmtRecipes->execute([':id' => $user_id]);
+$recipes = $stmtRecipes->fetchAll(PDO::FETCH_ASSOC);
 
 // Rating Logic
 $rating = round($user['rating'] ?? 0);
@@ -91,9 +92,7 @@ $emptyStars = str_repeat('<span style="color: #dc889a; font-size: 22px; line-hei
 $ratingStars = $fullStars . $emptyStars;
 
 $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">' . $rating . '</span>';
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,106 +105,119 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="style3.css">
 </head>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <body>
-    <nav class="navbar custom-navbar sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="images/final.png" alt="Website Logo" width="80" height="50">
-            </a>
-            <ul class="navbar-nav d-flex flex-row">
-                <li class="nav-item me-3"><a class="nav-link active" href="index.php">Home</a></li>
-                <li class="nav-item me-3"><a class="nav-link" href="about us.html">About Us</a></li>
-                
-                <li class="nav-item dropdown me-3">
-                    <a class="nav-link dropdown-toggle" href="#" id="recipeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Recipes
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="recipeDropdown">
-                        <li><a class="dropdown-item" href="AddYourRecipe.php">Add</a></li>
-                        <li><a class="dropdown-item" href="recipes.php">Explore</a></li>
-                    </ul>
-                </li>
 
-            </ul>
-            <div class="d-flex">
-                <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
-                <div id="profileIcon" class="d-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill" viewBox="0 0 16 16">
-                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                    </svg>
-                </div>
+<nav class="navbar custom-navbar sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="images/final.png" alt="Website Logo" width="80" height="50">
+        </a>
+        <ul class="navbar-nav d-flex flex-row">
+            <li class="nav-item me-3"><a class="nav-link active" href="index.php">Home</a></li>
+            <li class="nav-item me-3"><a class="nav-link" href="about us.html">About Us</a></li>
+            <li class="nav-item dropdown me-3">
+                <a class="nav-link dropdown-toggle" href="#" id="recipeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Recipes
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="recipeDropdown">
+                    <li><a class="dropdown-item" href="AddYourRecipe.php">Add</a></li>
+                    <li><a class="dropdown-item" href="recipes.php">Explore</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="d-flex">
+            <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
+            <div id="profileIcon" class="d-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill" viewBox="0 0 16 16">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                </svg>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <div class="container">
-        <section class="userDetails card">
-            <div class="profile">
-                <figure>
-                    <img src="<?php echo !empty($user['profile_picture']) ? htmlspecialchars($user['profile_picture']) : 'images/default.png'; ?>" alt="Profile Picture" width="150px" height="200px">
-                </figure>
-            </div>
+<div class="container">
+    <section class="userDetails card">
+        <div class="profile">
+            <figure>
+                <img src="<?php echo !empty($user['profile_picture']) ? htmlspecialchars($user['profile_picture']) : 'images/default.png'; ?>" alt="Profile Picture" width="150px" height="200px">
+            </figure>
+        </div>
 
-            <div class="userName">
-                <h1 class="name"><?php echo htmlspecialchars($user['username']); ?></h1>
-                <p style="color: #dc889a"><?php echo htmlspecialchars($user['Userrole']); ?></p>
-            </div>
+        <div class="userName">
+            <h1 class="name"><?php echo htmlspecialchars($user['username']); ?></h1>
+            <p style="color: #dc889a"><?php echo htmlspecialchars($user['Userrole']); ?></p>
+        </div>
 
-            <div class="rank">
-                <h1 class="heading">My Ratings</h1>
-                <span><?php echo $rating; ?></span>
-                <div class="rating">
-                    <?php echo $ratingStars; ?>
-                </div>
-            </div>
+        <div class="rank">
+            <h1 class="heading">My Ratings</h1>
+            <span><?php echo $rating; ?></span>
+            <div class="rating"><?php echo $ratingStars; ?></div>
+        </div>
 
-            <form id="profilePicForm" method="POST" enctype="multipart/form-data">
-                <div class="cf">
-                    <br>
-                    <button class="heart-button" id="upload-btn" type="button">🩷</button>
-                    <span>Change profile picture</span>
-                    <input type="file" name="profile_pic" id="file-input" style="display: none;" onchange="submitProfilePic()">
-                </div>
-            </form>
-        </section>
-
-        <section class="bio card">
-            <div class="work">
-                <h1 class="heading">Bio</h1>
-                <div class="primary">
-                    <p><?php echo htmlspecialchars($user['bio'] ?: 'No bio yet'); ?></p>
-                </div>
-            </div>
-
-            <div class="skills">
-                <h1 class="heading">Hobbies</h1>
-                <p><?php echo htmlspecialchars($user['hobbies'] ?: 'Still looking for new hobbies...'); ?></p>
-            </div>
+        <form id="profilePicForm" method="POST" enctype="multipart/form-data">
             <div class="cf">
                 <br>
-                <button class="heart-button" id="upload-btn">🩷</button>
-                <span>Edit profile</span>
+                <button class="heart-button" id="upload-btn" type="button">🩷</button>
+                <span>Change profile picture</span>
+                <input type="file" name="profile_pic" id="file-input" style="display: none;" onchange="submitProfilePic()">
             </div>
-        </section>
+        </form>
+    </section>
 
-        <section class="timeline_about card">
-            <div class="tabs">
-                <ul>
-                    <li class="timeline"><i class="ri-eye-fill ri"></i><span>Recipes Posted</span></li>
-                    <li class="timeline"><i class="ri-eye-fill ri"></i><span>Favorites</span></li>
-                </ul>
+    <section class="bio card">
+        <div class="work">
+            <h1 class="heading">Bio</h1>
+            <div class="primary">
+                <p><?php echo htmlspecialchars($user['bio'] ?: 'No bio yet'); ?></p>
             </div>
-            <div class="basic_info">
+        </div>
+
+        <div class="skills">
+            <h1 class="heading">Hobbies</h1>
+            <p><?php echo htmlspecialchars($user['hobbies'] ?: 'Still looking for new hobbies...'); ?></p>
+        </div>
+        <div class="cf">
+            <br>
+            <button class="heart-button" id="upload-btn">🩷</button>
+            <span>Edit profile</span>
+        </div>
+    </section>
+
+    <section class="timeline_about card">
+        <div class="tabs">
+            <ul>
+                <li class="timeline"><i class="ri-eye-fill ri"></i><span>Recipes Posted</span></li>
+                <li class="timeline"><i class="ri-eye-fill ri"></i><span>Favorites</span></li>
+            </ul>
+        </div>
+
+        <div class="basic_info">
+            <?php if (count($recipes) > 0): ?>
+                <?php foreach ($recipes as $recipe): ?>
+                    <div class="recipe-card mb-3 p-3 border rounded">
+                        <h5 style="color:#dc889a;"><?php echo htmlspecialchars($recipe['name']); ?></h5>
+                        <p><strong>Prep Time:</strong> <?php echo htmlspecialchars($recipe['prep_time']); ?> min</p>
+                        <p><strong>Cook Time:</strong> <?php echo htmlspecialchars($recipe['cook_time']); ?> min</p>
+                        <p><strong>Servings:</strong> <?php echo htmlspecialchars($recipe['servings']); ?></p>
+                        <?php if (!empty($recipe['image'])): ?>
+                            <img src="<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" width="150px" style="border-radius: 10px;">
+                        <?php endif; ?>
+                        <hr>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p style="color: grey; font-size: 16px;">You have not posted any recipes yet.</p>
                 <br>
                 <a href="AddYourRecipe.php">
                     <button class="heart-button" id="upload-btn">🩷</button>
                     <span>Add recipe</span>
                 </a>
-            </div>
-        </section>
-    </div>
+            <?php endif; ?>
+        </div>
 
+    </section>
+</div>
     <footer class="footer">
         <div class="containerf">
             <div class="row">
