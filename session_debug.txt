@@ -1,6 +1,10 @@
 Array
 (
+<<<<<<< HEAD
     [session_id] => qd05iduo9hjv05q20c6fadhpi3
+=======
+    [session_id] => t7ukfbvo58uch921sbf3mc6t3k
+>>>>>>> e84262d2bb4dabd82a092aab516efbe692a7dcd6
     [session_before_redirect] => Array
         (
             [user_id] => 2
