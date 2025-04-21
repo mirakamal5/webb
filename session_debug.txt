@@ -1,12 +1,12 @@
 Array
 (
-    [session_id] => qd05iduo9hjv05q20c6fadhpi3
+    [session_id] => csqka2bfjkqptibel00gfanh6d
     [session_before_redirect] => Array
         (
-            [user_id] => 2
-            [username] => MiraKamal
-            [email] => mirakamal@example.com
-            [success] => Login successful! Welcome, MiraKamal.
+            [user_id] => 11
+            [username] => Mira Kadamani
+            [email] => Mira.kadamani@lau.edu
+            [success] => Login successful! Welcome, Mira Kadamani.
         )
 
 )
