@@ -615,8 +615,8 @@
                 <div class="footer-col">
                     <h4>Explore</h4>
                     <ul>
-                        <li><a href="#">My Profile</a></li>
-                        <li><a href="recipes.html">All Recipes</a></li>
+                        <li><a href="profile page.php">My Profile</a></li>
+                        <li><a href="recipes.php">All Recipes</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
