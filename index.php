@@ -824,7 +824,7 @@ if (isset($_SESSION['success'])) {
                                 <p class="card-text">
                                     <?php echo htmlspecialchars($recipeDescription); ?>
                                 </p>
-                                <a href="recipe.php?id=<?php echo $recipeId; ?>" class="btn btn-outline-danger">View Recipe</a>
+                                <a href="individual-recipes.php?id=<?php echo $recipeId; ?>" class="btn btn-outline-danger">View Recipe</a>
                             </div>
                         </div>
                     </div>

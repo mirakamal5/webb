@@ -13,14 +13,17 @@
         echo "Invalid recipe ID.";
         exit;
     }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_favorite'])) {
+        toggleFavoriteStatus($user_id, $recipe_id);
+
+        exit("Favorite toggled!");
+    }
 
     $query = "SELECT * FROM recipe WHERE id = :id";  
     $stmt = $con->prepare($query);
     $stmt->bindParam(':id', $recipe_id, PDO::PARAM_INT);  
     $stmt->execute(); 
-    
     $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
-
     $userQuery = $con->prepare("SELECT username, profile_picture FROM users WHERE user_id = ?");
     $userQuery->execute([$recipe['user_id']]);
     $userInfo = $userQuery->fetch();
@@ -33,20 +36,73 @@
     $ingredients = json_decode($recipe['ingredients'], true);
     $steps = json_decode($recipe['steps'], true);
 
-    $ratingQuery = $con->prepare("SELECT AVG(rating) AS avg_rating FROM recipe_rating WHERE recipe_id = ?");
+    $ratingQuery = $con->prepare("SELECT AVG(rating) AS avg_rating FROM reviews WHERE recipe_id = ?");
     $ratingQuery->execute([$recipe_id]);
     $ratingResult = $ratingQuery->fetch();
     $averageRating = $ratingResult['avg_rating'] ? number_format($ratingResult['avg_rating'], 2) : "No ratings yet";
 
-    function checkIfFavorited($user_id, $recipe_id, $conn) {
-        $stmt = $conn->prepare("SELECT * FROM favorites WHERE user_id = ? AND recipe_id = ?");
-        $stmt->bind_param("ii", $user_id, $recipe_id);
+    function checkIfFavorited($user_id, $recipe_id, $con) {
+        $stmt = $con->prepare("SELECT * FROM favorites WHERE user_id = :user_id AND recipe_id = :recipe_id");
+        
+        // Bind parameters using bindParam
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+    
+        // Execute the statement
         $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->num_rows > 0;
+    
+        // Check if any rows were returned
+        return $stmt->rowCount() > 0;
     }
     
-    $isFavorited = checkIfFavorited($user_id, $recipe_id, $conn);    
+
+    function toggleFavoriteStatus($user_id, $recipe_id) {
+        if (checkIfFavorited($user_id, $recipe_id)) {
+            $stmt = $pdo->prepare("DELETE FROM favorites WHERE user_id = ? AND recipe_id = ?");
+            $stmt->execute([$user_id, $recipe_id]);
+        } else {
+            $stmt = $pdo->prepare("INSERT INTO favorites (user_id, recipe_id) VALUES (?, ?)");
+            $stmt->execute([$user_id, $recipe_id]);
+        }
+    }
+
+    $isFavorited = checkIfFavorited($user_id, $recipe_id, $con);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $comment = $_POST['comment'];
+    
+        // Check if user has commented on this recipe before
+        $stmt = $con->prepare("SELECT * FROM reviews WHERE recipe_id = :recipe_id AND user_id = :user_id");
+        $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        if ($stmt->rowCount() > 0) {
+            // User has commented before, update the comment
+            $updateStmt = $con->prepare("UPDATE reviews SET comment = :comment WHERE recipe_id = :recipe_id AND user_id = :user_id");
+            $updateStmt->bindParam(':comment', $comment, PDO::PARAM_STR);
+            $updateStmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+            $updateStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $updateStmt->execute();
+            echo "<script>alert('Comment updated successfully!');</script>";
+        } else {
+            // User has not commented before, insert a new row
+            $insertStmt = $con->prepare("INSERT INTO reviews (recipe_id, user_id, comment) VALUES (:recipe_id, :user_id, :comment)");
+            $insertStmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+            $insertStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $insertStmt->bindParam(':comment', $comment, PDO::PARAM_STR);
+            $insertStmt->execute();
+            echo "<script>alert('Comment added successfully!');</script>";
+        }
+        header('Location: ' . $_SERVER['REQUEST_URI']);
+        exit();
+    }
+    
+    // Fetch all comments for this recipe_id
+    $commentsStmt = $con->prepare("SELECT users.username, reviews.comment FROM reviews JOIN users ON reviews.user_id = users.user_id WHERE reviews.recipe_id = :recipe_id");
+    $commentsStmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+    $commentsStmt->execute();
+    $comments = $commentsStmt->fetchAll(PDO::FETCH_ASSOC);    
+
 ?>
 
 
@@ -581,108 +637,139 @@
         </div>
     </nav>
     <div class="container">
-    <!-- Favorite Heart -->
-    <i class="<?php echo $isFavorited ? 'fa-solid' : 'fa-regular'; ?> fa-heart favorite-heart" id="favoriteHeart" onclick="toggleFavorite()"></i>
+        <!-- Favorite Heart -->
+        <i class="<?php echo $isFavorited ? 'fa-solid' : 'fa-regular'; ?> fa-heart favorite-heart" id="favoriteHeart" onclick="toggleFavorite()"></i>
 
-    <div class="recipe-header">
-        <h1><?= htmlspecialchars($recipe['name'] ?? 'No Name Available') ?></h1> <!-- Name check -->
-        <img src="images/<?= htmlspecialchars($recipe['image'] ?? 'default.jpg') ?>" alt="Recipe Image" class="recipe-img"> <!-- Image check -->
-        <div class="categories">
-            <div class="category"><?= htmlspecialchars($recipe['category_1'] ?? 'Unknown Category') ?></div> <!-- Category check -->
-            <div class="category"><?= htmlspecialchars($recipe['category_2'] ?? 'Unknown Category') ?></div> <!-- Category check -->
-            <div class="category"><?= htmlspecialchars($recipe['category_3'] ?? 'Unknown Category') ?></div> <!-- Category check -->
+        <div class="recipe-header">
+            <h1><?= htmlspecialchars($recipe['name'] ?? 'No Name Available') ?></h1>
+            <br></br>
+            <img src="images/<?= htmlspecialchars($recipe['image'] ?? 'default.jpg') ?>" alt="Recipe Image" class="recipe-img" style="width: 400px; height: 300px; object-fit: cover;"> <!-- Image check -->
+            <div class="categories">
+                <?php
+                $categories = explode(',', $recipe['category'] ?? ''); 
+                $categories = array_unique($categories); 
+                foreach ($categories as $category) {
+                    echo '<div class="category">' . htmlspecialchars(trim($category)) . '</div>';
+                }
+                ?>
+            </div>
+
         </div>
-    </div>
 
-    <h1><?= htmlspecialchars($recipe['name']) ?></h1>
-    <?php
-        $averageRating = $ratingResult['avg_rating'];
 
-        echo '<p><strong>Rating:</strong> ';
+        <div class="user-info">
+            <img src="<?= htmlspecialchars($userInfo['profile_picture'] ?? 'default.png') ?>" alt="User Picture" class="user-pic"> <!-- Profile picture check -->
+            <p>Posted by: <strong><?= htmlspecialchars($userInfo['username'] ?? 'Unknown User') ?></strong></p> <!-- Username check -->
+        </div>
 
-        if ($averageRating) {
-            $roundedRating = round($averageRating); // Round to nearest whole number
-            for ($i = 1; $i <= 5; $i++) {
-                echo ($i <= $roundedRating) ? '★' : '☆';
+        <?php
+            $averageRating = $ratingResult['avg_rating'];
+
+            echo '<p><strong>Rating:</strong> ';
+
+            if ($averageRating) {
+                $roundedRating = round($averageRating); // Round to nearest whole number
+                for ($i = 1; $i <= 5; $i++) {
+                    echo ($i <= $roundedRating) ? '★' : '☆';
+                }
+                echo " (" . number_format($averageRating, 1) . " / 5)";
+            } else {
+                // No ratings yet — show 5 empty stars
+                echo str_repeat('☆', 5);
+                echo " (No ratings yet)";
             }
-            echo " (" . number_format($averageRating, 1) . " / 5)";
-        } else {
-            // No ratings yet — show 5 empty stars
-            echo str_repeat('☆', 5);
-            echo " (No ratings yet)";
-        }
 
-        echo '</p>';
-    ?>
-
-
-    <div class="user-info">
-        <img src="<?= htmlspecialchars($userInfo['profile_picture'] ?? 'default.png') ?>" alt="User Picture" class="user-pic"> <!-- Profile picture check -->
-        <p>Posted by: <strong><?= htmlspecialchars($userInfo['username'] ?? 'Unknown User') ?></strong></p> <!-- Username check -->
-    </div>
-
-    <p><strong>Description:</strong> <?= htmlspecialchars($recipe['description']) ?></p>
-    <p><strong>Prep Time:</strong> <?= htmlspecialchars($recipe['prep_time']) ?> | <strong>Cook Time:</strong>  <?= htmlspecialchars($recipe['cook_time']) ?> | <strong>Servings:</strong> <?= htmlspecialchars($recipe['servings']) ?> | <strong>Difficulty:</strong> <?= htmlspecialchars($recipe['difficulty']) ?></p>
-    
-    <div class="serving-calculator">
-        <label for="servingInput">Adjust servings:</label>
-        <input type="number" id="servingInput" value=<?= htmlspecialchars($recipe['servings']) ?> min="1" onchange="adjustIngredients()">
-    </div>
-
-
-    <h3>Ingredients</h3>
-    <ul id="ingredients-list">
-        <?php
-        // Loop through ingredients and display each one
-        foreach ($ingredients as $ingredient) {
-            echo "<li id=\"ingredient-" . htmlspecialchars($ingredient['ingredient']) . "\" data-quantity=\"" . htmlspecialchars($ingredient['quantity']) . "\">" . htmlspecialchars($ingredient['quantity']) . " " . htmlspecialchars($ingredient['ingredient']) . "</li>";
-        }
+            echo '</p>';
         ?>
-    </ul>
 
-
-    <h3>Steps</h3>
-    <ol id="steps-list">
-        <?php
-        foreach ($steps as $step) {
-            echo "<li>" . htmlspecialchars($step) . "</li>";
-        }
-        ?>
-    </ol>
-
-
-    <div class="rating-section">
-    <form method="post" action="">
-    <label for="rating">Rate this recipe:</label>
-    <select name="rating" id="rating" required>
-        <option value="">Select</option>
-        <?php for ($i = 1; $i <= 5; $i++): ?>
-            <option value="<?= $i ?>"><?= $i ?></option>
-        <?php endfor; ?>
-    </select>
-    <button type="submit" name="submit_rating">Submit</button>
-</form>
-
-    </div>
-
-    <div class="discussion-section">
-        <h3>Discussions</h3>
-        <input type="text" placeholder="Add a comment..." id="commentInput">
-        <button id="submitCommentBtn" onclick="submitComment()">Submit</button>
-        <div id="commentsList">
-            <!-- Dynamically load comments here -->
+        <p><strong>Description:</strong> <?= htmlspecialchars($recipe['description']) ?></p>
+        <p><strong>Prep Time:</strong> <?= htmlspecialchars($recipe['prep_time']) ?> | <strong>Cook Time:</strong>  <?= htmlspecialchars($recipe['cook_time']) ?> | <strong>Servings:</strong> <?= htmlspecialchars($recipe['servings']) ?> | <strong>Difficulty:</strong> <?= htmlspecialchars($recipe['difficulty']) ?></p>
+        
+        <div class="serving-calculator">
+            <label for="servingInput">Adjust servings:</label>
+            <input type="number" id="servingInput" value=<?= htmlspecialchars($recipe['servings']) ?> min="1" onchange="adjustIngredients()">
         </div>
+
+
+        <h3>Ingredients</h3>
+        <ul id="ingredients-list">
+            <?php
+            // Loop through ingredients and display each one
+            foreach ($ingredients as $ingredient) {
+                echo "<li id=\"ingredient-" . htmlspecialchars($ingredient['ingredient']) . "\" data-quantity=\"" . htmlspecialchars($ingredient['quantity']) . "\">" . htmlspecialchars($ingredient['quantity']) . " " . htmlspecialchars($ingredient['ingredient']) . "</li>";
+            }
+            ?>
+        </ul>
+
+
+        <h3>Steps</h3>
+        <ol id="steps-list">
+            <?php
+            foreach ($steps as $step) {
+                echo "<li>" . htmlspecialchars($step) . "</li>";
+            }
+            ?>
+        </ol>
+
+
+        <div class="user-rating">
+                    <form method="post" action="">
+                        <label for="rating">Rate this recipe:</label>
+                        <div class="star-rating">
+                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                <span class="star" data-value="<?= $i ?>" onclick="setRating(<?= $i ?>)">
+                                    ★
+                                </span>
+                            <?php endfor; ?>
+                        </div>
+                        <input type="hidden" name="rating" id="rating" required>
+                        <button type="submit" name="submit_rating">Submit</button>
+                    </form>
+
+                    <div id="warning-message" 
+                        style="color: red; margin-top: 10px; display: none; font-size: 14px;">
+                        Please log in to rate this page
+                    </div>
+                </div>
+                <div class="discussion-section">
+                <br></br>
+                <h3>Add Comment</h3>
+                <form method="POST" action="individual-recipes.php?id=<?php echo $recipe_id; ?>" style="margin-bottom: 20px;">
+                    <textarea name="comment" placeholder="Add your comment..." required
+                        style="width: 100%; height: 100px; padding: 10px; font-size: 16px; resize: vertical;"></textarea>
+                    <button type="submit"
+                        style="margin-top: 10px; padding: 10px 20px; font-size: 16px; display: block;">Submit</button>
+                </form>
+
+
+                <br></br>
+                <h3>Comments</h3>
+                <div id="commentsList">
+                    <?php
+                    $hasComments = false;
+                    foreach ($comments as $comment) {
+                        if (!empty(trim($comment['comment']))) {
+                            $hasComments = true;
+                            echo '<p><strong>' . htmlspecialchars($comment['username']) . ':</strong> ' . htmlspecialchars($comment['comment']) . '</p>';
+                        }
+                    }
+                    if (!$hasComments) {
+                        echo '<p>No comments yet.</p>';
+                    }
+                    ?>
+                </div>
+
+            </div>
+        
+        </div>
+        
     </div>
-</div>
-
-    
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const favoriteHeart = document.getElementById('favoriteHeart');
         const favoriteWarning = document.getElementById('favoriteWarning');
         
-        const isRecipeFavorited = <?php echo $isFavorited ? 'true' : 'false'; ?>;
+        const isRecipeFavorited = <?= $isFavorited ? 'true' : 'false' ?>;
 
         document.addEventListener('DOMContentLoaded', function() {
             if (isRecipeFavorited) {
@@ -694,13 +781,14 @@
             }
         });
 
-
         function toggleFavorite() {
             const heart = document.getElementById('favoriteHeart');
 
+            // Toggle between outlined and filled heart
             heart.classList.toggle('fa-regular');
             heart.classList.toggle('fa-solid');
 
+            // Optionally: Send request to backend
             fetch('', {
                 method: 'POST',
                 headers: {
@@ -708,12 +796,11 @@
                 },
                 body: 'add_favorite=1'
             })
-            .then(res => res.text())
+            .then(res => res.texHt())
             .then(data => {
                 console.log('Response:', data);
             });
         }
-
 
         const stars = document.querySelectorAll('.star');
         const message = document.getElementById('ratingMessage');
@@ -764,31 +851,79 @@
     </script>
         
     <script>
-    function adjustIngredients() {
-        const newServings = document.getElementById('servingInput').value;
+        function setRating(rating) {
+            document.getElementById('rating').value = rating;
 
-        const oldServings = <?= htmlspecialchars($recipe['servings']) ?>;
-
-        const ingredientsList = document.querySelectorAll('#ingredients-list li');
-
-        ingredientsList.forEach(function(ingredient) {
-            let oldQuantity = ingredient.getAttribute('data-quantity');
-            let newQuantity = calculateNewQuantity(oldQuantity, oldServings, newServings);
-
-            ingredient.innerHTML = newQuantity + " " + ingredient.innerHTML.split(' ').slice(1).join(' ');
-        });
-    }
-
-    function calculateNewQuantity(oldQuantity, oldServings, newServings) {
-        let number = parseFloat(oldQuantity); 
-        let unit = oldQuantity.replace(number, '').trim();
-
-        let newQuantity = (number / oldServings) * newServings;
-
-        return newQuantity.toFixed(2);
-    }
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                if (parseInt(star.getAttribute('data-value')) <= rating) {
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                }
+            });
+        }
     </script>
-    </div>
+
+    <script>
+        // Function to submit the comment via AJAX
+        function submitComment() {
+            var comment = document.getElementById("commentInput").value;
+            if (comment.trim() === "") {
+                alert("Please enter a comment.");
+                return;
+            }
+
+            // Create a new FormData object to send the data
+            var formData = new FormData();
+            formData.append("comment", comment);
+
+            // Send the comment to the PHP backend using AJAX
+            var xhr = new XMLHttpRequest();
+            var recipeId = new URLSearchParams(window.location.search).get("id");
+            xhr.open("POST", "individual-recipes.php?id=" + recipeId, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // After submission, clear the input field and reload comments
+                    document.getElementById("commentInput").value = "";
+                    loadComments();  // Reload the comments after submitting
+                }
+            };
+            xhr.send(formData);
+        }
+
+        // Function to load comments via AJAX
+
+        // Load comments on page load
+        window.onload = loadComments;
+    </script>
+
+
+    <script>
+        function adjustIngredients() {
+            const newServings = document.getElementById('servingInput').value;
+
+            const oldServings = <?= htmlspecialchars($recipe['servings']) ?>;
+
+            const ingredientsList = document.querySelectorAll('#ingredients-list li');
+
+            ingredientsList.forEach(function(ingredient) {
+                let oldQuantity = ingredient.getAttribute('data-quantity');
+                let newQuantity = calculateNewQuantity(oldQuantity, oldServings, newServings);
+
+                ingredient.innerHTML = newQuantity + " " + ingredient.innerHTML.split(' ').slice(1).join(' ');
+            });
+        }
+
+        function calculateNewQuantity(oldQuantity, oldServings, newServings) {
+            let number = parseFloat(oldQuantity); 
+            let unit = oldQuantity.replace(number, '').trim();
+
+            let newQuantity = (number / oldServings) * newServings;
+
+            return newQuantity.toFixed(2);
+        }
+    </script>
 </body>
     <footer class="footer">
         <div class="container">

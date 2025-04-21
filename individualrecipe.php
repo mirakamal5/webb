@@ -4,16 +4,16 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 $isLoggedIn = isset($_SESSION['user_id']);
 
-
-// Database connection
 $host = "localhost";
 $db_user = "root";
 $db_pass = "";
 $db_name = "recipe_website";
 
-$conn = new mysqli($host, $db_user, $db_pass, $db_name);
-if ($conn->connect_error) {
-    die(json_encode(['success' => false, 'message' => 'Database connection failed.']));
+try {
+    $con = new PDO("mysql:host=$host;dbname=$db_name", $db_user, $db_pass);
+    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die(json_encode(['success' => false, 'message' => 'Database conection failed: ' . $e->getMessage()]));
 }
 
 // Get and validate recipe ID from URL
@@ -23,27 +23,25 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 }
 
 $recipeId = (int) $_GET['id'];
-// Fetch recipe data from DB
 
 $sql = "
 SELECT recipe.*, users.username, users.profile_picture
 FROM recipe 
 JOIN users ON recipe.user_id = users.user_id 
-WHERE recipe.id = $recipeId
+WHERE recipe.id = :recipe_id
 ";
 
+$stmt = $con->prepare($sql);
+$stmt->bindValue(':recipe_id', $recipeId, PDO::PARAM_INT);
+$stmt->execute();
 
-$recipe = $conn->query($sql);
-$userId = $_SESSION['user_id'];
-
-if ($recipe->num_rows > 0) {
-    $recipe = $recipe->fetch_assoc();
-} else {
+$recipe = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!$recipe) {
     echo "Recipe not found.";
     exit;
 }
 
-// Check if user is logged in
+$userId = $_SESSION['user_id'] ?? null;
 $isLoggedIn = isset($_SESSION['user_id']);
 
 // Flags and messages
@@ -51,25 +49,33 @@ $addedToFavorites = false;
 $ratingMessage = '';
 $discussionMessage = '';
 
+// Handle "Add to Favorites" functionality
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_favorite'])) {
     if ($isLoggedIn) {
-
         // Check if favorite already exists
-        $checkSql = "SELECT * FROM favorites WHERE user_id = $userId AND recipe_id = $recipeId";
-        $result = $conn->query($checkSql);
-        echo $recipeId;
-        if ($result->num_rows > 0) {
+        $checkSql = "SELECT * FROM favorites WHERE user_id = :user_id AND recipe_id = :recipe_id";
+        $stmt = $con->prepare($checkSql);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':recipe_id', $recipeId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
             // Remove from favorites
-            $deleteSql = "DELETE FROM favorites WHERE user_id = $userId AND recipe_id = $recipeId";
-            $conn->query($deleteSql);
-            echo "removed from favorites";
+            $deleteSql = "DELETE FROM favorites WHERE user_id = :user_id AND recipe_id = :recipe_id";
+            $stmt = $con->prepare($deleteSql);
+            $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->bindValue(':recipe_id', $recipeId, PDO::PARAM_INT);
+            $stmt->execute();
+            echo "Removed from favorites";
         } else {
             // Add to favorites
-            $insertSql = "INSERT INTO favorites (user_id, recipe_id) VALUES ($userId, $recipeId)";
-            $conn->query($insertSql);
-            echo "added to favorites";
+            $insertSql = "INSERT INTO favorites (user_id, recipe_id) VALUES (:user_id, :recipe_id)";
+            $stmt = $con->prepare($insertSql);
+            $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->bindValue(':recipe_id', $recipeId, PDO::PARAM_INT);
+            $stmt->execute();
+            echo "Added to favorites";
         }
-
         exit();
     } else {
         echo "NOT LOGGED IN";
@@ -77,36 +83,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_favorite'])) {
     }
 }
 
-
+// Handle Rating and Comment submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_rating'])) {
     if ($isLoggedIn) {
         $rating = (int) $_POST['rating'];
-
-        // Check if rating exists
-        $checkSql = "SELECT * FROM recipe_rating WHERE user_id = $userId AND recipe_id = $recipeId";
-        $result = $conn->query($checkSql);
-
-        if ($result->num_rows > 0) {
-            // Update rating if it exists
-            $updateSql = "UPDATE recipe_rating SET rating = ? WHERE user_id = ? AND recipe_id = ?";
-            $stmt = $conn->prepare($updateSql);
-            $stmt->bind_param("iii", $rating, $userId, $recipeId);
-            $stmt->execute();
-            echo "Rating updated!";
-        } else {
-            // Add rating
-            $insertSql = "INSERT INTO recipe_rating (user_id, recipe_id, rating) VALUES ($userId, $recipeId, $rating)";
-            $conn->query($insertSql);
-            echo "Rating submitted!";
+        $comment = $_POST['comment'] ?? ''; // Optional comment from the user
+        
+        // Ensure the rating is valid
+        if ($rating < 1 || $rating > 5) {
+            echo "Invalid rating.";
+            exit();
         }
 
+        // Check if the recipe_id exists in the recipe table
+        $checkRecipeSql = "SELECT 1 FROM recipe WHERE id = :recipe_id";
+        $stmt = $con->prepare($checkRecipeSql);
+        $stmt->bindValue(':recipe_id', $recipeId, PDO::PARAM_INT);
+        $stmt->execute();
+        if ($stmt->rowCount() == 0) {
+            echo "The recipe does not exist.";
+            exit();
+        }
+
+        // Check if the user has already rated the recipe
+        $checkSql = "SELECT * FROM reviews WHERE user_id = :user_id AND recipe_id = :recipe_id";
+        $stmt = $con->prepare($checkSql);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':recipe_id', $recipeId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            // Update rating if the user has already rated the recipe
+            $updateSql = "UPDATE reviews SET rating = :rating, comment = :comment WHERE user_id = :user_id AND recipe_id = :recipe_id";
+            $stmt = $con->prepare($updateSql);
+            $stmt->bindValue(':rating', $rating, PDO::PARAM_INT);
+            $stmt->bindValue(':comment', $comment, PDO::PARAM_STR);
+            $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->bindValue(':recipe_id', $recipeId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            echo "Successfully updated!";
+        } else {
+            // Insert a new review if the user hasn't rated the recipe yet
+            $insertSql = "INSERT INTO reviews (user_id, recipe_id, rating, comment) VALUES (:user_id, :recipe_id, :rating, :comment)";
+            $stmt = $con->prepare($insertSql);
+            $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->bindValue(':recipe_id', $recipeId, PDO::PARAM_INT);
+            $stmt->bindValue(':rating', $rating, PDO::PARAM_INT);
+            $stmt->bindValue(':comment', $comment, PDO::PARAM_STR);
+            $stmt->execute();
+
+            echo "Successfully submitted!";
+        }
         exit();
     } else {
-        echo "NOT LOGGED IN";
+        echo "You are not logged in.";
         exit();
     }
 }
-
 
 // Handle Discussion Submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_discussion'])) {
@@ -118,5 +152,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_discussion']))
         $discussionMessage = "You must be logged in to comment.";
     }
 }
-
 ?>

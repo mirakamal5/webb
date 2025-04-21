@@ -199,27 +199,26 @@ $ratingStars = $fullStars . $emptyStars;
 
                 
             <div class="user-rating">
-            <h1 class="heading">RATE:</h1>
+                <h1 class="heading">RATE:</h1>
 
-            <!-- Rating form -->
-            <form id="ratingForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-                <div class="rating" id="user-rating">
-                    <?php 
-                    $rating = 0; // You can set a default here if needed
-                    for ($i = 1; $i <= 5; $i++): 
-                        $cls = $i <= $rating ? 'filled' : '';
-                    ?>
-                        <span class="star <?= $cls ?>" data-value="<?= $i ?>">&#9733;</span>
-                    <?php endfor; ?>
+                <form id="ratingForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                    <div class="rating" id="user-rating">
+                        <?php 
+                        $rating = 0;
+                        for ($i = 1; $i <= 5; $i++): 
+                            $cls = $i <= $rating ? 'filled' : '';
+                        ?>
+                            <span class="star <?= $cls ?>" data-value="<?= $i ?>">&#9733;</span>
+                        <?php endfor; ?>
+                    </div>
+                    <input type="hidden" name="rating" id="ratingInput" value="<?= $rating ?>" />
+                    <button type="submit" id="submitRating" class="hidden">Submit</button>
+                </form>
+
+                <div id="warning-message" 
+                    style="color: red; margin-top: 10px; display: none; font-size: 14px;">
+                    Please log in to rate this page
                 </div>
-                <input type="hidden" name="rating" id="ratingInput" value="<?= $rating ?>" />
-                <button type="submit" id="submitRating" class="hidden">Submit</button>
-            </form>
-
-            <div id="warning-message" 
-                style="color: red; margin-top: 10px; display: none; font-size: 14px;">
-                Please log in to rate this page
-            </div>
             </div>
 
         </section>
