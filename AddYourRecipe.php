@@ -176,7 +176,7 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
         .form-control[type="file"] {
             padding: 5px;
         }
-        .empty-warning {
+        .empty-warning, .length-warning {
             color: rgb(247, 170, 170);
             font-size: 0.8rem;
             display: none;
@@ -602,8 +602,12 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="categories[]" id="diabeticFriendly" value="Diabetic-Friendly">
-                        <label class="form-check-label" for="diabeticFriendly">Diabetic-Friendly</label>
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="nutFree" value="Nut-Free">
+                        <label class="form-check-label" for="nutFree">Nut-Free</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="keto" value="Keto">
+                        <label class="form-check-label" for="keto">Dairy-Free</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="categories[]" id="eggFree" value="Egg-Free">
@@ -614,44 +618,28 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
                         <label class="form-check-label" for="glutenFree">Gluten-Free</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="categories[]" id="highProtein" value="High-Protein">
-                        <label class="form-check-label" for="highProtein">High-Protein</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="categories[]" id="keto" value="Keto">
-                        <label class="form-check-label" for="keto">Keto</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="categories[]" id="lactoseFree" value="Lactose-Free">
-                        <label class="form-check-label" for="lactoseFree">Lactose-Free</label>
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="eggFree" value="Egg-Free">
+                        <label class="form-check-label" for="eggFree">Sugar-Free</label>
                     </div>
                 </div>
 
                 <!-- Second Column -->
                 <div class="col-md-6">
                     <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="diabeticFriendly" value="Diabetic-Friendly">
+                        <label class="form-check-label" for="diabeticFriendly">Diabetic-Friendly</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="categories[]" id="highProtein" value="High-Protein">
+                        <label class="form-check-label" for="highProtein">High-Protein</label>
+                    </div>
+                    <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="categories[]" id="noBake" value="No-Bake">
                         <label class="form-check-label" for="noBake">No-Bake</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="categories[]" id="nutFree" value="Nut-Free">
-                        <label class="form-check-label" for="nutFree">Nut-Free</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="categories[]" id="organic" value="Organic">
-                        <label class="form-check-label" for="organic">Organic</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="categories[]" id="sugarFree" value="Sugar-Free">
-                        <label class="form-check-label" for="sugarFree">Sugar-Free</label>
-                    </div>
-                    <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="categories[]" id="vegan" value="Vegan">
                         <label class="form-check-label" for="vegan">Vegan</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="categories[]" id="vegetarian" value="Vegetarian">
-                        <label class="form-check-label" for="vegetarian">Vegetarian</label>
                     </div>
                 </div>
             </div>
@@ -661,19 +649,19 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="preparingTime" class="form-label">Preparing Time (minutes)</label>
-                <input type="number" class="form-control" id="preparingTime" name="preparingTime" placeholder="Enter preparing time" required>
+                <input type="number" class="form-control" id="preparingTime" name="preparingTime" placeholder="Enter preparing time" min="1" required>
                 <div class="empty-warning">Please fill out this field.</div>
             </div>
             <div class="col-md-6">
                 <label for="cookingTime" class="form-label">Cooking Time (minutes)</label>
-                <input type="number" class="form-control" id="cookingTime" name="cookingTime" placeholder="Enter cooking time" required>
+                <input type="number" class="form-control" id="cookingTime" name="cookingTime" placeholder="Enter cooking time" min="1" required>
                 <div class="empty-warning">Please fill out this field.</div>
             </div>
         </div>
 
         <div class="mb-3">
             <label for="servings" class="form-label">Servings</label>
-            <input type="number" class="form-control" id="servings" name="servings" placeholder="Enter number of servings" required>
+            <input type="number" class="form-control" id="servings" name="servings" placeholder="Enter number of servings" min="1" required>
             <div class="empty-warning">Please fill out this field.</div>
         </div>
 
@@ -690,17 +678,10 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
 
         <div class="mb-3">
             <label for="recipePhotos" class="form-label">Upload Photos</label>
-            <input type="file" class="form-control" id="recipePhotos" name="recipePhotos[]" accept="image/*" multiple>
-            <small class="text-muted">You can upload up to 5 photos.</small>
+            <input type="file" class="form-control" id="recipePhotos" name="recipePhoto" accept="image/*" required>
+            <small class="text-muted">Upload one photo only.</small>
             <div class="uploaded-images" id="uploadedImages"></div>
         </div>
-
-        <!-- <div class="mb-3">
-            <label for="recipeVideo" class="form-label">Video Tutorial (Optional)</label>
-            <input type="file" class="form-control" id="recipeVideo" name="recipeVideo" accept="video/*">
-            <small class="text-muted">Upload a video or paste a YouTube/Vimeo link.</small>
-        </div> -->
-
         <div class="mb-3">
             <label class="form-label">Ingredients</label>
             <div id="ingredientsContainer">
@@ -710,7 +691,7 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
                     <button type="button" class="btn btn-danger btn-sm remove-ingredient">Remove</button>
                 </div>
             </div>
-            <button type="button" class="btn btn-secondary btn-sm" id="addIngredient">Add Ingredient</button>
+            <button type="button" class="btn btn-secondary mt-2" id="addIngredientBtn">Add Ingredient</button>
         </div>
 
         <div class="mb-3">
@@ -837,5 +818,97 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
 
         checkLoginStatus();
     </script> 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Restrict ingredient addition to non-empty inputs
+            const addIngredientBtn = document.getElementById("addIngredientBtn");
+            const ingredientsContainer = document.getElementById("ingredientsContainer");
+
+            if (addIngredientBtn) {
+                addIngredientBtn.addEventListener("click", () => {
+                    const lastGroup = ingredientsContainer.lastElementChild;
+                    const ingredientInput = lastGroup.querySelector(".ingredient");
+                    const quantityInput = lastGroup.querySelector(".quantity");
+
+                    if (ingredientInput.value.trim() === "" || quantityInput.value.trim() === "") {
+                        alert("Please fill in both ingredient and quantity before adding a new one.");
+                        return;
+                    }
+
+                    const newGroup = lastGroup.cloneNode(true);
+                    newGroup.querySelector(".ingredient").value = "";
+                    newGroup.querySelector(".quantity").value = "";
+                    ingredientsContainer.appendChild(newGroup);
+                });
+            }
+
+            // Remove ingredient
+            ingredientsContainer.addEventListener("click", (e) => {
+                if (e.target.classList.contains("remove-ingredient")) {
+                    const groups = ingredientsContainer.querySelectorAll(".ingredient-group");
+                    if (groups.length > 1) {
+                        e.target.closest(".ingredient-group").remove();
+                    } else {
+                        alert("At least one ingredient is required.");
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        document.getElementById('recipePhotos').addEventListener('change', function () {
+        const file = this.files[0];
+        const preview = document.getElementById('preview');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.style.display = 'none';
+            preview.src = '';
+        }
+        });
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const addStepBtn = document.getElementById("addStep");
+        const stepsContainer = document.getElementById("stepsContainer");
+
+        addStepBtn.addEventListener("click", () => {
+            const lastGroup = stepsContainer.lastElementChild;
+            const stepInput = lastGroup.querySelector(".step");
+
+            // Check if the current step is empty before adding a new one
+            if (stepInput.value.trim() === "") {
+                alert("Please fill in the current step before adding a new one.");
+                return;
+            }
+
+            // Clone the last step group and reset its value
+            const newStepGroup = lastGroup.cloneNode(true);
+            newStepGroup.querySelector(".step").value = ""; // Clear the new step input
+            stepsContainer.appendChild(newStepGroup);
+        });
+
+        // Event listener for removing steps
+        stepsContainer.addEventListener("click", (e) => {
+            if (e.target.classList.contains("remove-step")) {
+                const groups = stepsContainer.querySelectorAll(".step-group");
+                // Ensure there's at least one step left
+                if (groups.length > 1) {
+                    e.target.closest(".step-group").remove();
+                } else {
+                    alert("At least one step is required.");
+                }
+            }
+        });
+    });
+
+    </script>
 </body>
 </html>
