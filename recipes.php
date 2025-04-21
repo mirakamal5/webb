@@ -3,7 +3,6 @@ session_start();
 require_once 'config.php';
 $isLoggedIn = isset($_SESSION['user_id']);
 
-
 // Connect to DB and fetch recipes
 $query = "SELECT * FROM recipe";
 $params = [];
@@ -20,17 +19,21 @@ $stmt = $con->prepare($query);
 $stmt->execute($params);
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="images/favicon.png" type="image/png">
     <title>Recipes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
+    a {
+        text-decoration: none;  /* Remove underline */
+        color: inherit;  /* Inherit color from the parent element (no blue) */
+    }
         .custom-navbar {
     font-family: 'Poppins', sans-serif;
     font-size: 20px;
@@ -581,9 +584,11 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <img src="images/<?= htmlspecialchars($recipe['image']) ?>" alt="<?= htmlspecialchars($recipe['name']) ?>">
                         <div class="card-body">
                             <h5><?= htmlspecialchars($recipe['name']) ?></h5>
-                            <p>By <?= htmlspecialchars($recipe['user']) ?></p>
+                            <p>
+                            By <a href="userpage.php?user_id=<?= urlencode($recipe['user_id']) ?>"><?= htmlspecialchars($recipe['user']) ?></a>
+                            </p>
                             <p>Prep time: <?= htmlspecialchars($recipe['prep_time']) ?> minutes</p>
-                            <a href="#" class="btn-pink">View Recipe</a>
+                            <a href="individual-recipes.php?recipe_id=<?= urlencode($recipe['recipe_id']) ?>" class="btn-pink">View Recipe</a>
                         </div>
                     </div>
                 </div>
