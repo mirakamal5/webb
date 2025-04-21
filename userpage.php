@@ -7,7 +7,13 @@ $conn = new mysqli("localhost", "root", "", "recipe_website");
 if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 
 // Get user_id from URL or default to 1
-$user_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
+if (isset($_GET['id'])) {
+    $user_id = intval($_GET['id']);
+} elseif (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+} else {
+    die("No user specified.");
+}
 
 // Fetch user data
 $sql = "SELECT * FROM users WHERE user_id = $user_id";
@@ -96,6 +102,53 @@ $ratingStars = $fullStars . $emptyStars;
         a:hover {
             text-decoration: none;
         }
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .recipe-item {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .recipe-item:hover {
+            transform: scale(1.05);
+        }
+
+        .recipe-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid #f5a4b5;
+        }
+
+        .recipe-title {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .recipe-title h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .recipe-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .recipe-title a:hover {
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -199,19 +252,21 @@ $ratingStars = $fullStars . $emptyStars;
             <div class="basic_info">
                 <div class="recipe-grid">
                     <?php
-                    // recipes posted by this user
-                    $recipeSql = "SELECT * FROM recipe WHERE id = $user_id";
+                    // Fetch the recipes posted by this user
+                    $recipeSql = "SELECT * FROM recipe WHERE user_id = $user_id";  // Use the correct column (user_id)
                     $recipeResult = $conn->query($recipeSql);
                     if ($recipeResult && $recipeResult->num_rows > 0) {
                         while ($recipe = $recipeResult->fetch_assoc()) {
+                            // Display each recipe with a link to the recipe page
                             echo "<a href='recipe.php?id=" . $recipe['id'] . "'>
                                     <div class='recipe-card'>
-                                        <img src='images/" . $recipe['image'] . "' alt='" . $recipe['name'] . "'>
+                                        <img src='images/" . $recipe['image'] . "' alt='" . $recipe['name'] . "' class='recipe-image'>
                                         <div class='recipe-name'>" . $recipe['name'] . "</div>
                                     </div>
-                                  </a>";
+                                </a>";
                         }
-                    }else {
+                    } else {
+                        // Display a message if no recipes are found
                         echo "<p style='text-align:center; color:#000; padding-left:10px'>Baking in progress...</p>";
                     }
                     ?>

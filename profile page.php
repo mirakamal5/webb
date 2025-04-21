@@ -126,72 +126,86 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
             border-radius: 10px;
             color:rgb(177, 43, 72);
         }
-        .recipe-card {
-            border: 1px solid #ddd;
+        .save-btn-custom {
+            background: none;
+            border: none;
+            color:rgb(65, 54, 59);
+            font-weight: normal;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .save-btn-custom:hover,
+        .save-btn-custom:focus {
+            color:rgb(65, 54, 59);
+            font-weight: bold;
+            outline: none;
+        }
+        .tab-content{
+            width:100%;
+        }
+        .tab-content .recipe-card{
             border-radius: 20px;
             overflow: hidden;
             position: relative;
-            width: 250px; /* Adjust the width of the recipe card */
-            height: 400px; /* Adjust the height of the recipe card */
-            background-color: white;
+            width: 250px; 
+            height: 350px;
+            background-color:rgb(254, 227, 234) ;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            padding:0px;
         }
 
-        /* Image Styling */
-        .recipe-img {
-            width: 100%; /* Makes the image fill the width of the card */
-            height: 20px; /* Adjust the height of the image */
-            object-fit: cover; /* Ensures the image covers the area without distorting */
+        .tab-content .favorite-container {
+            position: absolute;   
+            top: 10px;            
+            right: 10px;         
+            background-color:rgb(220, 219, 220) ;
+            padding:8px;
+            border-radius: 50%;  
         }
 
-        /* Rest of the styles */
-        .favorite-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 5px;
-            border-radius: 50%;
+        .tab-content .favorite-icon i {
+            color:rgb(252, 109, 147) ;           /* Make the heart red */
+            font-size: 24px;      /* Adjust the size of the heart */
         }
 
-        .favorite-icon {
-            color: #ff5a5f;
-            font-size: 20px;
+        .tab-content .recipe-card .recipe-img{
+            height:200px;
+            width:100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
         }
-
-        .card-body {
-            padding: 15px;
-            height: calc(100% - 200px); /* Adjusts the height of the body to fit the card */
-            overflow: auto;
+        .tab-content .recipe-card .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            text-align: center;         
         }
-
-        .card-body h5 {
-            font-size: 1.2rem;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .card-body p {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .card-body .btn-pink {
+        .btn-pink {
+            background-color:rgb(229, 155, 174); 
+            border: none;
+            padding: 10px 18px;
+            font-weight: bold;
+            color: white;
+            border-radius: 8px;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+            font-size: 14px;
             display: inline-block;
-            background-color: #dc889a;
-            color: white;
-            padding: 8px 15px;
+            text-align: center;
             text-decoration: none;
-            border-radius: 5px;
-            font-size: 0.9rem;
         }
-
-        .card-body .btn-pink:hover {
-            background-color: #ff5a5f;
-            color: white;
+        .btn-pink:hover {
+            background-color: #B55B73; 
+            transform: scale(1.05);
         }
-
+        .btn-pink:focus, .btn-pink:active {
+            background-color: #B55B73 !important;
+            color: white !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
     </style>
 </head>
 <body>
@@ -286,17 +300,26 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
 
         <div id="postedTab" class="tab-content">
             <?php if (count($postedRecipes) > 0): ?>
-                <?php foreach ($postedRecipes as $recipe): ?>
-                    <div class="recipe-card">
-                        <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img">
-                        <div class="card-body">
-                            <h5><?php echo htmlspecialchars($recipe['name']); ?></h5>
-                            <p>By <?php echo htmlspecialchars($recipe['user']); ?></p>
-                            <p>Prep time: <?php echo htmlspecialchars($recipe['prep_time']); ?> minutes</p>
-                            <a href="#" class="btn-pink">View Recipe</a>
+                <div class="row d-flex flex-wrap justify-content-between">
+                    <?php foreach ($postedRecipes as $recipe): ?>
+                        <div class="recipe-card">
+                            <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img">
+                            <div class="card-body">
+                                <h5><?php echo htmlspecialchars($recipe['name']); ?></h5>
+                                <p>By <?php echo htmlspecialchars($recipe['user']); ?></p>
+                                <p>Prep time: <?php echo htmlspecialchars($recipe['prep_time']); ?> minutes</p>
+                                <a href="#" class="btn-pink">View Recipe</a>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                    <?php
+                    // if less than 3 recipes
+                    $count = count($postedRecipes);
+                    $placeholders = 3 - $count;
+                    for ($i = 0; $i < $placeholders; $i++): ?>
+                        <div class="col-md-4 mb-4"></div>
+                    <?php endfor; ?>
+                </div>
             <?php else: ?>
                 <p style="color: grey;">You have not posted any recipes yet.</p>
             <?php endif; ?>
@@ -308,22 +331,34 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
 
         <div id="favoritesTab" class="tab-content" style="display: none;">
             <?php if (count($favRecipes) > 0): ?>
-                <?php foreach ($favRecipes as $recipe): ?>
-                    <div class="recipe-card">
-                        <div class="favorite-container">
-                            <span class="favorite-icon" style="border-radius=30%;">
-                                <i class="fa-solid fa-heart"></i>
-                            </span>
+                <div class="row d-flex flex-wrap justify-content-between">
+                    <?php foreach ($favRecipes as $recipe): ?>
+                        <div class="recipe-card">
+                            <div class="favorite-container">
+                                <span class="favorite-icon">
+                                    <i class="fa-solid fa-heart"></i>
+                                </span>
+                            </div>
+                            <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img">
+                            <div class="card-body">
+                                <h5><?php echo htmlspecialchars($recipe['name']); ?></h5>
+                                <p>By <a href="userpage.php?user=<?php echo urlencode($recipe['user']); ?>" style="text-decoration: none; color: inherit;">
+                                    <?php echo htmlspecialchars($recipe['user']); ?>
+                                </a></p>
+
+                                <p>Prep time: <?php echo htmlspecialchars($recipe['prep_time']); ?> minutes</p>
+                                <a href="#" class="btn-pink">View Recipe</a>
+                            </div>
                         </div>
-                        <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img">
-                        <div class="card-body">
-                            <h5><?php echo htmlspecialchars($recipe['name']); ?></h5>
-                            <p>By <?php echo htmlspecialchars($recipe['user']); ?></p>
-                            <p>Prep time: <?php echo htmlspecialchars($recipe['prep_time']); ?> minutes</p>
-                            <a href="#" class="btn-pink">View Recipe</a>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                    <?php
+                    // if less than 3 recipes
+                    $count = count($favRecipes);
+                    $placeholders = 3 - $count;
+                    for ($i = 0; $i < $placeholders; $i++): ?>
+                        <div class="col-md-4 mb-4"></div>
+                    <?php endfor; ?>
+                </div>
             <?php else: ?>
                 <p style="color: grey;">You have not favorited any recipes yet.</p>
             <?php endif; ?>
@@ -350,7 +385,7 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
                 <div class="footer-col">
                     <h4>Explore</h4>
                     <ul>
-                        <li><a href="#">My Profile</a></li>
+                        <li><a href="profile page.php">My Profile</a></li>
                         <li><a href="recipes.php">All Recipes</a></li>
                     </ul>
                 </div>

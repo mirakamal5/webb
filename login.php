@@ -320,7 +320,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
                 <!-- Navigation Links -->
                 <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item me-3">
-                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item me-3">
                         <a class="nav-link" href="about us.html">About Us</a>
@@ -331,7 +331,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="AddYourRecipe.php">Add</a></li>
-                            <li><a class="dropdown-item" href="recipes.html">Explore</a></li>
+                            <li><a class="dropdown-item" href="recipes.php">Explore</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -449,8 +449,8 @@ $isLoggedIn = isset($_SESSION['user_id']);
                 <div class="footer-col">
                     <h4>Explore</h4>
                     <ul>
-                        <li><a href="#">My Profile</a></li>
-                        <li><a href="recipes.html">All Recipes</a></li>
+                        <li><a href="profile page.php">My Profile</a></li>
+                        <li><a href="recipes.php">All Recipes</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
