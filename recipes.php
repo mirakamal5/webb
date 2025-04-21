@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'config.php';
-$isLoggedIn = isset($_SESSION['user_id']); // <--- ADD THIS LINE
+$isLoggedIn = isset($_SESSION['user_id']);
 
 
 // Connect to DB and fetch recipes
@@ -604,7 +604,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <h4>About Us</h4>
                 <ul>
                     <li><a href="about us.html">About us</a></li>
-                    <li><a href="contactUs.html">Contact us</a></li>
+                    <li><a href="contactUs.php">Contact us</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -617,7 +617,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="footer-col">
                 <h4>Explore</h4>
                 <ul>
-                    <li><a href="#">My Profile</a></li>
+                    <li><a href="profile page.php">My Profile</a></li>
                     <li><a href="recipes.php">All Recipes</a></li>
                 </ul>
             </div>

@@ -153,7 +153,7 @@
             color: #ccc;
         }
         .star.selected {
-            color: #ffcc00;
+            color: #d46a7e;
         }
         .average-rating {
             font-size: 18px;
@@ -503,7 +503,7 @@
             <!-- Navigation Links -->
             <ul class="navbar-nav d-flex flex-row">
                 <li class="nav-item me-3">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                 </li>
                 <li class="nav-item me-3">
                     <a class="nav-link" href="about us.html">About Us</a>
@@ -514,19 +514,22 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="AddYourRecipe.php">Add</a></li>
-                        <li><a class="dropdown-item" href="recipes.html">Explore</a></li>
+                        <li><a class="dropdown-item" href="recipes.php">Explore</a></li>
                     </ul>
                 </li>
             </ul>
 
             <!-- Login Button and Profile Icon -->
             <div class="d-flex">
-                <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='loginpage.html'">Log In</button>
-                <div id="profileIcon" class="d-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill" viewBox="0 0 16 16">
-                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                    </svg>
-                </div>
+                <?php if (!$isLoggedIn): ?>
+                    <button class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
+                <?php else: ?>
+                    <div onclick="window.location.href='profile page.php'" style="cursor:pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                        </svg>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
@@ -534,7 +537,6 @@
         <div class="favorite-heart" id="favoriteHeart" onclick="toggleFavorite()">
             ♡ 
         </div>
-        <div class="favorite-warning warning" id="favoriteWarning">Please log in to add this recipe to favorites.</div>
 
         <div class="recipe-header">
             <h1><?= htmlspecialchars($recipe['name']) ?></h1>
@@ -572,27 +574,22 @@
             <li>Bake at 180°C for 30 minutes.</li>
             <li>Let it cool and enjoy!</li>
         </ol>
-
         <div class="rating-section">
             <h3>Rate this Recipe</h3>
-            <div class="star-rating">
+            <div class="star-rating" id="starRating">
                 <span class="star" data-value="1">&#9733;</span>
                 <span class="star" data-value="2">&#9733;</span>
                 <span class="star" data-value="3">&#9733;</span>
                 <span class="star" data-value="4">&#9733;</span>
                 <span class="star" data-value="5">&#9733;</span>
             </div>
-            <div class="warning" id="ratingWarning">Please log in to rate this recipe.</div>
-            <div class="average-rating">
-                Average Rating: <span id="averageRating">4.5</span>
-            </div>
+            <p id="ratingMessage"></p>
         </div>
 
         <div class="discussion-section">
             <h3>Discussions</h3>
             <input type="text" placeholder="Add a comment..." id="commentInput">
             <button id="submitCommentBtn" onclick="submitComment()">Submit</button>
-            <div class="warning" id="commentWarning">Please log in to submit a comment.</div>
             <div id="commentsList">
                 
             </div>
@@ -605,7 +602,7 @@
                     <h4>About Us</h4>
                     <ul>
                         <li><a href="about us.html">About us</a></li>
-                        <li><a href="contactUs.html">Contact us</a></li>
+                        <li><a href="contactUs.php">Contact us</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -618,8 +615,8 @@
                 <div class="footer-col">
                     <h4>Explore</h4>
                     <ul>
-                        <li><a href="#">My Profile</a></li>
-                        <li><a href="recipes.html">All Recipes</a></li>
+                        <li><a href="profile page.php">My Profile</a></li>
+                        <li><a href="recipes.php">All Recipes</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -662,31 +659,56 @@
             heart.innerHTML = isAdding ? '❤️' : '♡';
 
             // Send POST request to backend
-            if (isAdding) {
-                fetch('', { // '' sends request to same page
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'add_favorite=1'
-                })
-                .then(res => res.text())
-                .then(data => {
-                    console.log('Response:', data);
-                });
-            }
+            fetch('', { // '' sends request to same page
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'add_favorite=1'
+            })
+            .then(res => res.text())
+            .then(data => {
+                console.log('Response:', data);
+            });
+        }
+
+        const stars = document.querySelectorAll('.star');
+        const message = document.getElementById('ratingMessage');
+        const recipeId = new URLSearchParams(window.location.search).get("id");
+
+        function highlightStars(rating) {
+            document.querySelectorAll('.star').forEach(star => {
+                const value = parseInt(star.getAttribute('data-value'));
+                if (value <= rating) {
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                }
+            });
         }
 
 
-        // Star Rating System
-        const stars = document.querySelectorAll('.star');
-        const ratingWarning = document.getElementById('ratingWarning');
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', function () {
+                const rating = this.getAttribute('data-value');
+                const recipeId = new URLSearchParams(window.location.search).get('id');
 
-        stars.forEach(star => {
-            star.addEventListener('click', () => {
-                ratingWarning.style.display = 'block';
+                fetch('', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `submit_rating=1&rating=${rating}&recipe_id=${recipeId}`
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data); // Can be "Rating submitted!" or "Rating removed!"
+                    // Optionally show user feedback
+                    highlightStars(rating);
+                });
             });
         });
+
 
         // Discussion System
         const commentInput = document.getElementById('commentInput');

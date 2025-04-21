@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2025 at 11:55 PM
+-- Generation Time: Apr 21, 2025 at 12:57 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -186,6 +186,19 @@ CREATE TABLE `recipe_media` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `recipe_rating`
+--
+
+CREATE TABLE `recipe_rating` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `recipe_id` int(11) DEFAULT NULL,
+  `rating` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `reviews`
 --
 
@@ -311,6 +324,14 @@ ALTER TABLE `recipe_media`
   ADD KEY `recipe_id` (`recipe_id`);
 
 --
+-- Indexes for table `recipe_rating`
+--
+ALTER TABLE `recipe_rating`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `recipe_id` (`recipe_id`);
+
+--
 -- Indexes for table `reviews`
 --
 ALTER TABLE `reviews`
@@ -414,7 +435,7 @@ ALTER TABLE `user_ratings`
 --
 ALTER TABLE `favorites`
   ADD CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ingredients`
@@ -440,6 +461,13 @@ ALTER TABLE `recipe_categories`
 --
 ALTER TABLE `recipe_media`
   ADD CONSTRAINT `recipe_media_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `recipe_rating`
+--
+ALTER TABLE `recipe_rating`
+  ADD CONSTRAINT `recipe_rating_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `recipe_rating_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `reviews`

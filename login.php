@@ -1,5 +1,6 @@
 <?php
 session_start();
+$isLoggedIn = isset($_SESSION['user_id']);
 ?>
 <!DOCTYPE html>
 <!-- page created by Yassine Zeort -->
@@ -319,7 +320,7 @@ session_start();
                 <!-- Navigation Links -->
                 <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item me-3">
-                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item me-3">
                         <a class="nav-link" href="about us.html">About Us</a>
@@ -330,19 +331,18 @@ session_start();
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="AddYourRecipe.php">Add</a></li>
-                            <li><a class="dropdown-item" href="recipes.html">Explore</a></li>
+                            <li><a class="dropdown-item" href="recipes.php">Explore</a></li>
                         </ul>
                     </li>
                 </ul>
 
                 <!-- Login Button and Profile Icon -->
                 <div class="d-flex">
-                    <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
-                    <div id="profileIcon" class="d-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill" viewBox="0 0 16 16">
-                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                        </svg>
-                    </div>
+                    <?php if (!$isLoggedIn): ?>
+                        <button class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
+                    <?php else: ?>
+                        <button class="btn btn-outline-danger me-2" onclick="window.location.href='#'">Logging In...</button>
+                    <?php endif; ?>
                 </div>
             </div>
         </nav>
@@ -436,7 +436,7 @@ session_start();
                     <h4>About Us</h4>
                     <ul>
                         <li><a href="about us.html">About us</a></li>
-                        <li><a href="contactUs.html">Contact us</a></li>
+                        <li><a href="contactUs.php">Contact us</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -449,8 +449,8 @@ session_start();
                 <div class="footer-col">
                     <h4>Explore</h4>
                     <ul>
-                        <li><a href="#">My Profile</a></li>
-                        <li><a href="recipes.html">All Recipes</a></li>
+                        <li><a href="profile page.php">My Profile</a></li>
+                        <li><a href="recipes.php">All Recipes</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
