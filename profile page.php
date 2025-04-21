@@ -3,7 +3,7 @@ session_start();
 require_once 'config.php';
 $isLoggedIn = isset($_SESSION['user_id']);
 
-// Check if user is logged in
+// logged in?
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error'] = "You must login first.";
     header("Location: login.php");
@@ -14,7 +14,7 @@ $user_id = $_SESSION['user_id'];
 $username = $_SESSION['username'] ?? '';
 $email = $_SESSION['email'] ?? '';
 
-// Handle profile update
+// profile update
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bio = trim($_POST['bio'] ?? '');
     $hobbies = trim($_POST['hobbies'] ?? '');
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hobbies = $hobbies !== '' ? $hobbies : 'Still looking for new hobbies...';
     $Userrole = $Userrole !== '' ? $Userrole : 'Baker';
 
-    // Handle image upload if present
+    //  image upload
     if (!empty($_FILES['profile_pic']['name'])) {
         $targetDir = "uploads/";
         $fileName = basename($_FILES["profile_pic"]["name"]);
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // If no image, just update text info
+    // no image
     $stmt = $con->prepare("UPDATE users SET bio = :bio, hobbies = :hobbies, Userrole = :Userrole WHERE user_id = :id");
     $stmt->execute([
         ':bio' => $bio,
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
-// Fetch user info
+// user info
 $stmt = $con->prepare("SELECT u.username, u.email, u.bio, u.hobbies, u.Userrole, u.profile_picture,
         (SELECT AVG(r.rating) FROM user_ratings r WHERE r.user_id = u.user_id) AS rating
     FROM users u 
@@ -81,18 +81,33 @@ if (!$user) {
     exit();
 }
 
-// 🔥 FETCH recipes posted by the user
+// recipes posted by the user
 $stmtRecipes = $con->prepare("SELECT * FROM recipe WHERE user_id = :id ORDER BY created_at DESC");
 $stmtRecipes->execute([':id' => $user_id]);
 $recipes = $stmtRecipes->fetchAll(PDO::FETCH_ASSOC);
 
-// Rating Logic
+// rating
 $rating = round($user['rating'] ?? 0);
 $fullStars = str_repeat('<span style="color: #dc889a; font-size: 22px; line-height: 0.7;">★</span>', $rating);
 $emptyStars = str_repeat('<span style="color: #dc889a; font-size: 22px; line-height: 0.7;">☆</span>', 5 - $rating);
 $ratingStars = $fullStars . $emptyStars;
 
 $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">' . $rating . '</span>';
+
+//get posted recipes
+$postedQuery = $con->prepare("SELECT * FROM recipe WHERE user_id = ?");
+$postedQuery->execute([$user_id]);
+$postedRecipes = $postedQuery->fetchAll(PDO::FETCH_ASSOC);
+
+// get favorite recipes
+$favQuery = $con->prepare("
+    SELECT r.* FROM recipe r
+    INNER JOIN favorites f ON r.id = f.recipe_id
+    WHERE f.user_id = ?
+");
+$favQuery->execute([$user_id]);
+$favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,9 +117,82 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="style3.css">
+    <style>
+        .tabs ul li.active-tab {
+            border-radius: 10px;
+            color:rgb(177, 43, 72);
+        }
+        .recipe-card {
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            width: 250px; /* Adjust the width of the recipe card */
+            height: 400px; /* Adjust the height of the recipe card */
+            background-color: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Image Styling */
+        .recipe-img {
+            width: 100%; /* Makes the image fill the width of the card */
+            height: 20px; /* Adjust the height of the image */
+            object-fit: cover; /* Ensures the image covers the area without distorting */
+        }
+
+        /* Rest of the styles */
+        .favorite-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        .favorite-icon {
+            color: #ff5a5f;
+            font-size: 20px;
+        }
+
+        .card-body {
+            padding: 15px;
+            height: calc(100% - 200px); /* Adjusts the height of the body to fit the card */
+            overflow: auto;
+        }
+
+        .card-body h5 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .card-body p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .card-body .btn-pink {
+            display: inline-block;
+            background-color: #dc889a;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .card-body .btn-pink:hover {
+            background-color: #ff5a5f;
+            color: white;
+        }
+
+    </style>
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -187,35 +275,59 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
     <section class="timeline_about card">
         <div class="tabs">
             <ul>
-                <li class="timeline"><i class="ri-eye-fill ri"></i><span>Recipes Posted</span></li>
-                <li class="timeline"><i class="ri-eye-fill ri"></i><span>Favorites</span></li>
+                <li class="timeline active-tab" onclick="showTab('posted')">
+                    <i class="ri-eye-fill ri"></i><span>Recipes Posted</span>
+                </li>
+                <li class="timeline" onclick="showTab('favorites')">
+                    <i class="ri-heart-fill ri"></i><span>Favorites</span>
+                </li>
             </ul>
         </div>
 
-        <div class="basic_info">
-            <?php if (count($recipes) > 0): ?>
-                <?php foreach ($recipes as $recipe): ?>
-                    <div class="recipe-card mb-3 p-3 border rounded">
-                        <h5 style="color:#dc889a;"><?php echo htmlspecialchars($recipe['name']); ?></h5>
-                        <p><strong>Prep Time:</strong> <?php echo htmlspecialchars($recipe['prep_time']); ?> min</p>
-                        <p><strong>Cook Time:</strong> <?php echo htmlspecialchars($recipe['cook_time']); ?> min</p>
-                        <p><strong>Servings:</strong> <?php echo htmlspecialchars($recipe['servings']); ?></p>
-                        <?php if (!empty($recipe['image'])): ?>
-                            <img src="<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" width="150px" style="border-radius: 10px;">
-                        <?php endif; ?>
-                        <hr>
+        <div id="postedTab" class="tab-content">
+            <?php if (count($postedRecipes) > 0): ?>
+                <?php foreach ($postedRecipes as $recipe): ?>
+                    <div class="recipe-card">
+                        <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img">
+                        <div class="card-body">
+                            <h5><?php echo htmlspecialchars($recipe['name']); ?></h5>
+                            <p>By <?php echo htmlspecialchars($recipe['user']); ?></p>
+                            <p>Prep time: <?php echo htmlspecialchars($recipe['prep_time']); ?> minutes</p>
+                            <a href="#" class="btn-pink">View Recipe</a>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p style="color: grey; font-size: 16px;">You have not posted any recipes yet.</p>
-                <br>
-                <a href="AddYourRecipe.php">
-                    <button class="heart-button" id="upload-btn">🩷</button>
-                    <span>Add recipe</span>
-                </a>
+                <p style="color: grey;">You have not posted any recipes yet.</p>
             <?php endif; ?>
+            <a href="AddYourRecipe.php" style="color: inherit;text-decoration: none;">
+                <button class="heart-button" id="upload-btn">🩷</button>
+                <span>Add recipe</span>
+            </a>
         </div>
 
+        <div id="favoritesTab" class="tab-content" style="display: none;">
+            <?php if (count($favRecipes) > 0): ?>
+                <?php foreach ($favRecipes as $recipe): ?>
+                    <div class="recipe-card">
+                        <div class="favorite-container">
+                            <span class="favorite-icon" style="border-radius=30%;">
+                                <i class="fa-solid fa-heart"></i>
+                            </span>
+                        </div>
+                        <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img">
+                        <div class="card-body">
+                            <h5><?php echo htmlspecialchars($recipe['name']); ?></h5>
+                            <p>By <?php echo htmlspecialchars($recipe['user']); ?></p>
+                            <p>Prep time: <?php echo htmlspecialchars($recipe['prep_time']); ?> minutes</p>
+                            <a href="#" class="btn-pink">View Recipe</a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p style="color: grey;">You have not favorited any recipes yet.</p>
+            <?php endif; ?>
+        </div>
     </section>
 </div>
     <footer class="footer">
@@ -225,7 +337,7 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
                     <h4>About Us</h4>
                     <ul>
                         <li><a href="about us.html">About us</a></li>
-                        <li><a href="contactUs.html">Contact us</a></li>
+                        <li><a href="contactUs.php">Contact us</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -255,7 +367,6 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
         </div>
     </footer>
 
-    <!-- JavaScript -->
     <script>
         document.getElementById("upload-btn").onclick = function () {
             document.getElementById("file-input").click();
@@ -282,48 +393,6 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
         }
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const tabs = document.querySelectorAll(".tabs ul li");
-            const basicInfo = document.querySelector(".basic_info");
-    
-            const recipesContent = 
-                <br>
-                <a href="AddYourRecipe.php">
-                    <button class="heart-button" id="upload-btn">🩷</button>
-                    <span>Add recipe</span>
-                </a>
-            ;
-    
-            const favoritesContent =  
-                <p> Favorites is Empty </p>    
-            ;
-
-            basicInfo.innerHTML = recipesContent; 
-            tabs[0].classList.add("active"); 
-            tabs[0].style.color = "#c42348"; 
-            tabs[1].style.color = "grey";
-
-            tabs[0].addEventListener("click", function () {
-                basicInfo.innerHTML = recipesContent;
-                tabs[0].style.color = "#c42348";
-                tabs[1].style.color = "grey";
-            });
-    
-            tabs[1].addEventListener("click", function () {
-                basicInfo.innerHTML = favoritesContent;
-                tabs[1].style.color = "#c42348";
-                tabs[0].style.color = "grey"; 
-            });
-            tabs.forEach(tab => {
-                tab.addEventListener("click", function () {
-                tabs.forEach(t => t.classList.remove("active"));
-                this.classList.add("active");
-                });
-            });
-            
-        });
-    </script>
-    <script>
         document.addEventListener('DOMContentLoaded', function () {
         const editBtn = document.querySelector(".bio .cf .heart-button");
         const spanText = editBtn.nextElementSibling;
@@ -347,7 +416,6 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
             const currentBio = bioText.textContent.trim() || bioDefault;
             const currentHobbies = hobbiesText.textContent.trim() || hobbiesDefault;
 
-            // Replace with form elements
             UserroleTag.innerHTML = `
                 <input type="text" id="UserroleInput" maxlength="8" value="${currentUserrole}" class="form-control" style="width: 120px; display: inline;">
                 <small><span id="UserroleCharCount">${currentUserrole.length}</span>/8</small>
@@ -363,7 +431,6 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
                 <small><span id="hobbiesCharCount">${currentHobbies.length}</span>/150</small>
             `;
 
-            // Character count updates
             document.getElementById("UserroleInput").addEventListener("input", (e) => {
                 document.getElementById("UserroleCharCount").textContent = e.target.value.length;
             });
@@ -376,8 +443,7 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
                 document.getElementById("hobbiesCharCount").textContent = e.target.value.length;
             });
 
-            // Create Save Button
-            let saveButton = document.querySelector(".save-btn");  // Check if the button already exists
+            let saveButton = document.querySelector(".save-btn");  
             if (!saveButton) {
                 saveButton = document.createElement("button");
                 saveButton.className = "save-btn-custom mt-3";
@@ -385,7 +451,6 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
                 saveButton.innerHTML = '<span style="font-size: 20px;">🩷</span> <span style="font-size: 14px;">Save Changes</span>';
                 saveButton.style.backgroundColor= "transparent"; 
 
-                // Append the save button right after the "Editing..." text
                 const lineBreak = document.createElement("br");
                 spanText.parentNode.appendChild(lineBreak); 
                 spanText.parentNode.appendChild(saveButton);
@@ -396,7 +461,6 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
                 const hobbiesVal = document.getElementById("hobbiesInput").value.trim() || hobbiesDefault;
                 const UserroleVal = document.getElementById("UserroleInput").value.trim() || UserroleDefault;
 
-                // Send data via fetch to PHP
                 fetch("profile page.php", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -406,7 +470,7 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
                 .then(data => {
                     if (data.includes("Profile updated successfully")) {
                         alert("Changes saved!");
-                        window.location.reload();  // Reload to show updated data
+                        window.location.reload();  
                     } else {
                         alert("Failed to save. Server response:\n" + data);
                     }
@@ -415,8 +479,28 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
             });
         });
     });
+    </script>
 
+    <script>
+        function showTab(tab) {
+            const posted = document.getElementById("postedTab");
+            const favorites = document.getElementById("favoritesTab");
+            const tabs = document.querySelectorAll(".tabs ul li");
 
+            // Remove active from all tabs
+            tabs.forEach(t => t.classList.remove("active-tab"));
+
+            // Show the selected tab
+            if (tab === 'posted') {
+                posted.style.display = "block";
+                favorites.style.display = "none";
+                tabs[0].classList.add("active-tab");
+            } else {
+                posted.style.display = "none";
+                favorites.style.display = "block";
+                tabs[1].classList.add("active-tab");
+            }
+        }
     </script>
 
 </body>

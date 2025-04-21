@@ -90,7 +90,7 @@ $ratingStars = $fullStars . $emptyStars;
         }
         a {
             text-decoration: none;
-            color: inherit; /* Keeps the text color as it is without default link colors */
+            color: inherit; 
         }
 
         a:hover {
@@ -199,7 +199,7 @@ $ratingStars = $fullStars . $emptyStars;
             <div class="basic_info">
                 <div class="recipe-grid">
                     <?php
-                    // Fetch recipes posted by this user
+                    // recipes posted by this user
                     $recipeSql = "SELECT * FROM recipe WHERE id = $user_id";
                     $recipeResult = $conn->query($recipeSql);
                     if ($recipeResult && $recipeResult->num_rows > 0) {
@@ -227,7 +227,7 @@ $ratingStars = $fullStars . $emptyStars;
                     <h4>About Us</h4>
                     <ul>
                         <li><a href="about us.html">About us</a></li>
-                        <li><a href="contactUs.html">Contact us</a></li>
+                        <li><a href="contactUs.php">Contact us</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">

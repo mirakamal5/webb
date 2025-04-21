@@ -1,3 +1,7 @@
+<?php
+session_start();
+$isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
+?>
 <!DOCTYPE html>
 <!-- page created by Rim Serhan -->
 <html lang="en">
@@ -40,12 +44,15 @@
 
             <!-- Login Button and Profile Icon -->
             <div class="d-flex">
-                <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='loginpage.html'">Log In</button>
-                <div id="profileIcon" class="d-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill" viewBox="0 0 16 16">
-                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                    </svg>
-                </div>
+                <?php if (!$isLoggedIn): ?>
+                    <button class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
+                <?php else: ?>
+                    <div onclick="window.location.href='profile.php'" style="cursor:pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                        </svg>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
@@ -125,7 +132,7 @@
                     <h4>About Us</h4>
                     <ul>
                         <li><a href="about us.html">About us</a></li>
-                        <li><a href="contactUs.html">Contact us</a></li>
+                        <li><a href="contactUs.php">Contact us</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">

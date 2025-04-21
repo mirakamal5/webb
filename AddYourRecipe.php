@@ -738,7 +738,7 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
                     <h4>About Us</h4>
                     <ul>
                         <li><a href="about us.html">About us</a></li>
-                        <li><a href="contactUs.html">Contact us</a></li>
+                        <li><a href="contactUs.php">Contact us</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">

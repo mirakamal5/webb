@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mail($to, $subject, $body, $headers);
         }
 
-        echo "<script>alert('Thank you! Your message has been sent.'); window.location.href='contactUs.html';</script>";
+        echo "<script>alert('Thank you! Your message has been sent.'); window.location.href='contactUs.php';</script>";
     } catch (PDOException $e) {
         echo "Database error: " . $e->getMessage();
     }
