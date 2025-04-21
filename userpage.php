@@ -2,11 +2,9 @@
 session_start();
 $isLoggedIn = isset($_SESSION['user_id']);
 
-// DB connection
 $conn = new mysqli("localhost", "root", "", "recipe_website");
 if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 
-// Get user_id from URL or default to 1
 if (isset($_GET['id'])) {
     $user_id = intval($_GET['id']);
 } elseif (isset($_SESSION['user_id'])) {
@@ -15,7 +13,6 @@ if (isset($_GET['id'])) {
     die("No user specified.");
 }
 
-// Fetch user data
 $sql = "SELECT * FROM users WHERE user_id = $user_id";
 $result = $conn->query($sql);
 if (!$result || $result->num_rows === 0) {
@@ -23,7 +20,6 @@ if (!$result || $result->num_rows === 0) {
 }
 $user = $result->fetch_assoc();
 
-// Handle rating submission
 if (isset($_POST['rating']) && isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
     $ratedUserId = $user_id;
@@ -48,12 +44,10 @@ if (isset($_POST['rating']) && isset($_SESSION['user_id'])) {
 
     $checkStmt->close();
 
-    // Refresh to update display
     header("Location: " . $_SERVER['PHP_SELF'] . "?id=$user_id");
     exit();
 }
 
-// Get average rating
 $ratingSql = "SELECT AVG(rating) AS avg_rating FROM user_ratings WHERE rated_user_id = $user_id";
 $ratingResult = $conn->query($ratingSql);
 $rating = 0;
@@ -148,6 +142,9 @@ $ratingStars = $fullStars . $emptyStars;
         .recipe-title a:hover {
             text-decoration: underline;
         }
+        .recipe-grid .recipe-card .recipe-image  {
+            height:200px;
+        }
 
     </style>
 </head>
@@ -193,8 +190,8 @@ $ratingStars = $fullStars . $emptyStars;
 
             <div class="rank">
                 <h1 class="heading">Ratings</h1>
-                <span><?php echo $rating; ?> </span> <!-- Display the rating number -->
-                <span><?php echo $ratingStars; ?></span> <!-- This will display the stars -->
+                <span><?php echo $rating; ?> </span>
+                <span><?php echo $ratingStars; ?></span> 
             </div>
 
                 
@@ -251,13 +248,11 @@ $ratingStars = $fullStars . $emptyStars;
             <div class="basic_info">
                 <div class="recipe-grid">
                     <?php
-                    // Fetch the recipes posted by this user
-                    $recipeSql = "SELECT * FROM recipe WHERE user_id = $user_id";  // Use the correct column (user_id)
+                    $recipeSql = "SELECT * FROM recipe WHERE user_id = $user_id";
                     $recipeResult = $conn->query($recipeSql);
                     if ($recipeResult && $recipeResult->num_rows > 0) {
                         while ($recipe = $recipeResult->fetch_assoc()) {
-                            // Display each recipe with a link to the recipe page
-                            echo "<a href='recipe.php?id=" . $recipe['id'] . "'>
+                            echo "<a href='individual-recipes.php?id=" . $recipe['id'] . "'>
                                     <div class='recipe-card'>
                                         <img src='images/" . $recipe['image'] . "' alt='" . $recipe['name'] . "' class='recipe-image'>
                                         <div class='recipe-name'>" . $recipe['name'] . "</div>
@@ -265,7 +260,7 @@ $ratingStars = $fullStars . $emptyStars;
                                 </a>";
                         }
                     } else {
-                        // Display a message if no recipes are found
+                        // no recipes are found
                         echo "<p style='text-align:center; color:#000; padding-left:10px'>Baking in progress...</p>";
                     }
                     ?>
