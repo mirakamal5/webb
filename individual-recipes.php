@@ -1,4 +1,54 @@
-<?php include 'individualrecipe.php'; ?>
+<?php 
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    include 'config.php'; 
+    include 'individualrecipe.php';
+     
+    $isLoggedIn = isset($_SESSION['user_id']);
+    $user_id = $_SESSION['user_id'];
+    $recipe_id = $_GET['id'];  
+
+    if (!is_numeric($recipe_id)) {
+        echo "Invalid recipe ID.";
+        exit;
+    }
+
+    $query = "SELECT * FROM recipe WHERE id = :id";  
+    $stmt = $con->prepare($query);
+    $stmt->bindParam(':id', $recipe_id, PDO::PARAM_INT);  
+    $stmt->execute(); 
+    
+    $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $userQuery = $con->prepare("SELECT username, profile_picture FROM users WHERE user_id = ?");
+    $userQuery->execute([$recipe['user_id']]);
+    $userInfo = $userQuery->fetch();
+
+    if (!$recipe) {
+        echo "Recipe not found!";
+        exit;
+    }
+
+    $ingredients = json_decode($recipe['ingredients'], true);
+    $steps = json_decode($recipe['steps'], true);
+
+    $ratingQuery = $con->prepare("SELECT AVG(rating) AS avg_rating FROM recipe_rating WHERE recipe_id = ?");
+    $ratingQuery->execute([$recipe_id]);
+    $ratingResult = $ratingQuery->fetch();
+    $averageRating = $ratingResult['avg_rating'] ? number_format($ratingResult['avg_rating'], 2) : "No ratings yet";
+
+    function checkIfFavorited($user_id, $recipe_id, $conn) {
+        $stmt = $conn->prepare("SELECT * FROM favorites WHERE user_id = ? AND recipe_id = ?");
+        $stmt->bind_param("ii", $user_id, $recipe_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->num_rows > 0;
+    }
+    
+    $isFavorited = checkIfFavorited($user_id, $recipe_id, $conn);    
+?>
+
 
 <!DOCTYPE html>
 <!-- page created by Ranim Ibrahim -->
@@ -128,16 +178,13 @@
             font-size: 14px;
         }
         .favorite-heart {
-            position: absolute; 
-            top: 20px;
-            right: 20px; 
-            font-size: 32px;
+            font-size: 28px;
+            color: #e74c3c;
             cursor: pointer;
-            color: #dc889a; 
             transition: color 0.3s;
-        }
-        .favorite-heart.added {
-            color: red; 
+            position: absolute;
+            top: 20px; 
+            right: 20px; 
         }
         .rating-section, .discussion-section {
             margin-top: 20px;
@@ -506,7 +553,7 @@
                     <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                 </li>
                 <li class="nav-item me-3">
-                    <a class="nav-link" href="about us.html">About Us</a>
+                    <a class="nav-link" href="about us.php">About Us</a>
                 </li>
                 <li class="nav-item dropdown me-3">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -534,132 +581,127 @@
         </div>
     </nav>
     <div class="container">
-        <div class="favorite-heart" id="favoriteHeart" onclick="toggleFavorite()">
-            ♡ 
-        </div>
+    <!-- Favorite Heart -->
+    <i class="<?php echo $isFavorited ? 'fa-solid' : 'fa-regular'; ?> fa-heart favorite-heart" id="favoriteHeart" onclick="toggleFavorite()"></i>
 
-        <div class="recipe-header">
-            <h1><?= htmlspecialchars($recipe['name']) ?></h1>
-            <img src="images/<?= htmlspecialchars($recipe['image']) ?>" alt="Recipe Image" class="recipe-img">
-            <div class="categories">
-                <div class="category">Diabetic-Friendly</div>
-                <div class="category">Vegan</div>
-                <div class="category">Gluten-Free</div>
-            </div>
-        </div>
-
-        <div class="user-info">
-            <img src="<?= htmlspecialchars($recipe['profile_picture']) ?>" alt="User Picture" class="user-pic">
-            <p>Posted by: <strong><?= htmlspecialchars($recipe['username']) ?></strong></p>
-        </div>
-
-        <p><strong>Description:</strong> <?= htmlspecialchars($recipe['description']) ?></p>
-        <p><strong>Prep Time:</strong> <?= htmlspecialchars($recipe['prep_time']) ?> | <strong>Cook Time:</strong>  <?= htmlspecialchars($recipe['cook_time']) ?> | <strong>Servings:</strong> <?= htmlspecialchars($recipe['servings']) ?>| <strong>Difficulty:</strong> <?= htmlspecialchars($recipe['difficulty']) ?></p>
-        
-        <div class="serving-calculator">
-            <label for="servingInput">Adjust servings:</label>
-            <input type="number" id="servingInput" value=<?= htmlspecialchars($recipe['servings']) ?> min="1" onchange="adjustIngredients()">
-        </div>
-        
-        <h3>Ingredients</h3>
-        <ul id="ingredients-list">
-            <li data-quantity="200">200g Flour</li>
-            <li data-quantity="100">100g Sugar</li>
-            <li data-quantity="2">2 Eggs</li>
-        </ul>
-
-        <h3>Steps</h3>
-        <ol>
-            <li>Mix ingredients together.</li>
-            <li>Bake at 180°C for 30 minutes.</li>
-            <li>Let it cool and enjoy!</li>
-        </ol>
-        <div class="rating-section">
-            <h3>Rate this Recipe</h3>
-            <div class="star-rating" id="starRating">
-                <span class="star" data-value="1">&#9733;</span>
-                <span class="star" data-value="2">&#9733;</span>
-                <span class="star" data-value="3">&#9733;</span>
-                <span class="star" data-value="4">&#9733;</span>
-                <span class="star" data-value="5">&#9733;</span>
-            </div>
-            <p id="ratingMessage"></p>
-        </div>
-
-        <div class="discussion-section">
-            <h3>Discussions</h3>
-            <input type="text" placeholder="Add a comment..." id="commentInput">
-            <button id="submitCommentBtn" onclick="submitComment()">Submit</button>
-            <div id="commentsList">
-                
-            </div>
+    <div class="recipe-header">
+        <h1><?= htmlspecialchars($recipe['name'] ?? 'No Name Available') ?></h1> <!-- Name check -->
+        <img src="images/<?= htmlspecialchars($recipe['image'] ?? 'default.jpg') ?>" alt="Recipe Image" class="recipe-img"> <!-- Image check -->
+        <div class="categories">
+            <div class="category"><?= htmlspecialchars($recipe['category_1'] ?? 'Unknown Category') ?></div> <!-- Category check -->
+            <div class="category"><?= htmlspecialchars($recipe['category_2'] ?? 'Unknown Category') ?></div> <!-- Category check -->
+            <div class="category"><?= htmlspecialchars($recipe['category_3'] ?? 'Unknown Category') ?></div> <!-- Category check -->
         </div>
     </div>
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="footer-col">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="about us.html">About us</a></li>
-                        <li><a href="contactUs.php">Contact us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Help & Policies</h4>
-                    <ul>
-                        <li><a href="#faqpage.html">FAQ</a></li>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Explore</h4>
-                    <ul>
-                        <li><a href="profile page.php">My Profile</a></li>
-                        <li><a href="recipes.php">All Recipes</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-tiktok"></i></a>
-                    </div>
-                </div>
-            </div>
+
+    <h1><?= htmlspecialchars($recipe['name']) ?></h1>
+    <?php
+        $averageRating = $ratingResult['avg_rating'];
+
+        echo '<p><strong>Rating:</strong> ';
+
+        if ($averageRating) {
+            $roundedRating = round($averageRating); // Round to nearest whole number
+            for ($i = 1; $i <= 5; $i++) {
+                echo ($i <= $roundedRating) ? '★' : '☆';
+            }
+            echo " (" . number_format($averageRating, 1) . " / 5)";
+        } else {
+            // No ratings yet — show 5 empty stars
+            echo str_repeat('☆', 5);
+            echo " (No ratings yet)";
+        }
+
+        echo '</p>';
+    ?>
+
+
+    <div class="user-info">
+        <img src="<?= htmlspecialchars($userInfo['profile_picture'] ?? 'default.png') ?>" alt="User Picture" class="user-pic"> <!-- Profile picture check -->
+        <p>Posted by: <strong><?= htmlspecialchars($userInfo['username'] ?? 'Unknown User') ?></strong></p> <!-- Username check -->
+    </div>
+
+    <p><strong>Description:</strong> <?= htmlspecialchars($recipe['description']) ?></p>
+    <p><strong>Prep Time:</strong> <?= htmlspecialchars($recipe['prep_time']) ?> | <strong>Cook Time:</strong>  <?= htmlspecialchars($recipe['cook_time']) ?> | <strong>Servings:</strong> <?= htmlspecialchars($recipe['servings']) ?> | <strong>Difficulty:</strong> <?= htmlspecialchars($recipe['difficulty']) ?></p>
+    
+    <div class="serving-calculator">
+        <label for="servingInput">Adjust servings:</label>
+        <input type="number" id="servingInput" value=<?= htmlspecialchars($recipe['servings']) ?> min="1" onchange="adjustIngredients()">
+    </div>
+
+
+    <h3>Ingredients</h3>
+    <ul id="ingredients-list">
+        <?php
+        // Loop through ingredients and display each one
+        foreach ($ingredients as $ingredient) {
+            echo "<li id=\"ingredient-" . htmlspecialchars($ingredient['ingredient']) . "\" data-quantity=\"" . htmlspecialchars($ingredient['quantity']) . "\">" . htmlspecialchars($ingredient['quantity']) . " " . htmlspecialchars($ingredient['ingredient']) . "</li>";
+        }
+        ?>
+    </ul>
+
+
+    <h3>Steps</h3>
+    <ol id="steps-list">
+        <?php
+        foreach ($steps as $step) {
+            echo "<li>" . htmlspecialchars($step) . "</li>";
+        }
+        ?>
+    </ol>
+
+
+    <div class="rating-section">
+    <form method="post" action="">
+    <label for="rating">Rate this recipe:</label>
+    <select name="rating" id="rating" required>
+        <option value="">Select</option>
+        <?php for ($i = 1; $i <= 5; $i++): ?>
+            <option value="<?= $i ?>"><?= $i ?></option>
+        <?php endfor; ?>
+    </select>
+    <button type="submit" name="submit_rating">Submit</button>
+</form>
+
+    </div>
+
+    <div class="discussion-section">
+        <h3>Discussions</h3>
+        <input type="text" placeholder="Add a comment..." id="commentInput">
+        <button id="submitCommentBtn" onclick="submitComment()">Submit</button>
+        <div id="commentsList">
+            <!-- Dynamically load comments here -->
         </div>
-    </footer>
+    </div>
+</div>
+
+    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Favorite Heart Functionality
         const favoriteHeart = document.getElementById('favoriteHeart');
         const favoriteWarning = document.getElementById('favoriteWarning');
         
-        // This would be replaced with actual check for if recipe is favorited by user
-        const isRecipeFavorited = false; 
+        const isRecipeFavorited = <?php echo $isFavorited ? 'true' : 'false'; ?>;
 
         document.addEventListener('DOMContentLoaded', function() {
             if (isRecipeFavorited) {
-                favoriteHeart.classList.add('added');
-                favoriteHeart.innerHTML = '❤️';
+                favoriteHeart.classList.remove('fa-regular');
+                favoriteHeart.classList.add('fa-solid');
             } else {
-                favoriteHeart.classList.remove('added');
-                favoriteHeart.innerHTML = '♡';
+                favoriteHeart.classList.remove('fa-solid');
+                favoriteHeart.classList.add('fa-regular');
             }
         });
 
+
         function toggleFavorite() {
             const heart = document.getElementById('favoriteHeart');
-            const isAdding = !heart.classList.contains('added');
 
-            // Toggle heart UI
-            heart.classList.toggle('added');
-            heart.innerHTML = isAdding ? '❤️' : '♡';
+            heart.classList.toggle('fa-regular');
+            heart.classList.toggle('fa-solid');
 
-            // Send POST request to backend
-            fetch('', { // '' sends request to same page
+            fetch('', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -671,6 +713,7 @@
                 console.log('Response:', data);
             });
         }
+
 
         const stars = document.querySelectorAll('.star');
         const message = document.getElementById('ratingMessage');
@@ -702,15 +745,13 @@
                 })
                 .then(response => response.text())
                 .then(data => {
-                    console.log(data); // Can be "Rating submitted!" or "Rating removed!"
-                    // Optionally show user feedback
+                    console.log(data);
                     highlightStars(rating);
                 });
             });
         });
 
 
-        // Discussion System
         const commentInput = document.getElementById('commentInput');
         const submitCommentBtn = document.getElementById('submitCommentBtn');
         const commentWarning = document.getElementById('commentWarning');
@@ -719,21 +760,70 @@
             commentWarning.style.display = 'block'; 
         });
 
-        // Serving Calculator
-        function adjustIngredients() {
-            let originalServings = 8;
-            let newServings = document.getElementById("servingInput").value;
-            let ingredients = document.querySelectorAll("#ingredients-list li");
-
-            ingredients.forEach(ingredient => {
-                let baseQuantity = ingredient.getAttribute("data-quantity");
-
-                if (baseQuantity) {
-                    let adjustedQuantity = (baseQuantity / originalServings) * newServings;
-                    ingredient.innerHTML = `${adjustedQuantity.toFixed(1)} ${ingredient.textContent.replace(/^\d+(\.\d+)?\s*/, '')}`;
-                }
-            });
-        }
+        
     </script>
+        
+    <script>
+    function adjustIngredients() {
+        const newServings = document.getElementById('servingInput').value;
+
+        const oldServings = <?= htmlspecialchars($recipe['servings']) ?>;
+
+        const ingredientsList = document.querySelectorAll('#ingredients-list li');
+
+        ingredientsList.forEach(function(ingredient) {
+            let oldQuantity = ingredient.getAttribute('data-quantity');
+            let newQuantity = calculateNewQuantity(oldQuantity, oldServings, newServings);
+
+            ingredient.innerHTML = newQuantity + " " + ingredient.innerHTML.split(' ').slice(1).join(' ');
+        });
+    }
+
+    function calculateNewQuantity(oldQuantity, oldServings, newServings) {
+        let number = parseFloat(oldQuantity); 
+        let unit = oldQuantity.replace(number, '').trim();
+
+        let newQuantity = (number / oldServings) * newServings;
+
+        return newQuantity.toFixed(2);
+    }
+    </script>
+    </div>
 </body>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col">
+                    <h4>About Us</h4>
+                    <ul>
+                        <li><a href="about us.php">About us</a></li>
+                        <li><a href="contactUs.php">Contact us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Help & Policies</h4>
+                    <ul>
+                        <li><a href="#faqpage.php">FAQ</a></li>
+                        <li><a href="privacy.php">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="profile page.php">My Profile</a></li>
+                        <li><a href="recipes.php">All Recipes</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 </html>

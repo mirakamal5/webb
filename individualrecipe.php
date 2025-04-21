@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 $isLoggedIn = isset($_SESSION['user_id']);
 
 
@@ -68,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_favorite'])) {
             echo "added to favorites";
         }
 
-        $conn->close();
         exit();
     } else {
         echo "NOT LOGGED IN";
@@ -99,7 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_rating'])) {
             echo "Rating submitted!";
         }
 
-        $conn->close();
         exit();
     } else {
         echo "NOT LOGGED IN";
@@ -119,5 +119,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_discussion']))
     }
 }
 
-$conn->close();
 ?>

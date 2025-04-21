@@ -161,7 +161,7 @@ $ratingStars = $fullStars . $emptyStars;
             </a>
             <ul class="navbar-nav d-flex flex-row">
                 <li class="nav-item me-3"><a class="nav-link active" href="index.php">Home</a></li>
-                <li class="nav-item me-3"><a class="nav-link" href="about us.html">About Us</a></li>
+                <li class="nav-item me-3"><a class="nav-link" href="about us.php">About Us</a></li>
                 <li class="nav-item dropdown me-3">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Recipes</a>
                     <ul class="dropdown-menu">
@@ -174,7 +174,7 @@ $ratingStars = $fullStars . $emptyStars;
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <button class="btn btn-outline-danger me-2" onclick="window.location.href='profile page.php'"><?php echo $_SESSION['username']; ?>'s Profile</button>
                 <?php else: ?>
-                    <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='loginpage.html'">Log In</button>
+                    <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
                 <?php endif; ?>
             </div>
         </div>
@@ -281,15 +281,15 @@ $ratingStars = $fullStars . $emptyStars;
                 <div class="footer-col">
                     <h4>About Us</h4>
                     <ul>
-                        <li><a href="about us.html">About us</a></li>
+                        <li><a href="about us.php">About us</a></li>
                         <li><a href="contactUs.php">Contact us</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Help & Policies</h4>
                     <ul>
-                        <li><a href="faqpage.html">FAQ</a></li>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="faqpage.php">FAQ</a></li>
+                        <li><a href="privacy.php">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">

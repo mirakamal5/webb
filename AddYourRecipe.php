@@ -556,7 +556,7 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
                     <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                 </li>
                 <li class="nav-item me-3">
-                    <a class="nav-link" href="about us.html">About Us</a>
+                    <a class="nav-link" href="about us.php">About Us</a>
                 </li>
                 <li class="nav-item dropdown me-3">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -737,15 +737,15 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
                 <div class="footer-col">
                     <h4>About Us</h4>
                     <ul>
-                        <li><a href="about us.html">About us</a></li>
+                        <li><a href="about us.php">About us</a></li>
                         <li><a href="contactUs.php">Contact us</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Help & Policies</h4>
                     <ul>
-                        <li><a href="faqpage.html">FAQ</a></li>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="faqpage.php">FAQ</a></li>
+                        <li><a href="privacy.php">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">

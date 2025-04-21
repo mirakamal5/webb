@@ -1,6 +1,7 @@
 <?php
 session_start();
 $isLoggedIn = isset($_SESSION['user_id']);
+include 'config.php';
 ?>
 <!DOCTYPE html>
 <!-- page created by Mira Kamal + navbar + footer-->
@@ -705,7 +706,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
                 <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>
             <li class="nav-item me-3">
-                <a class="nav-link" href="about us.html">About Us</a>
+                <a class="nav-link" href="about us.php">About Us</a>
             </li>
             <li class="nav-item dropdown me-3">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -766,40 +767,75 @@ if (isset($_SESSION['success'])) {
     </form>
 </div>
 
-<!-- Recipe of the Day Section -->
-<div class="container my-5">
-    <div class="row">
-        <div class="col-md-10 offset-md-1">
-            <div class="recipe-of-the-day d-flex align-items-center">
-                <div class="col-md-5 me-md-5">
-                    <div class="image-container">
-                        <img src="images/mugcake.png" alt="Recipe of the Day" class="img-fluid">
+    <!-- Recipe of the Day Section -->
+    <?php
+    // conect to the database (make sure $con is already available)
+
+    // Step 1: Get total number of recipes
+    $countQuery = "SELECT COUNT(*) AS total FROM recipe";
+    $countResult = $con->query($countQuery);
+    $totalRecipes = $countResult->fetch(PDO::FETCH_ASSOC)['total'];
+
+
+    if ($totalRecipes > 0) {
+        // Step 2: Get a random offset and fetch one recipe
+        $randomOffset = rand(0, $totalRecipes - 1);
+        $recipeQuery = "SELECT * FROM recipe LIMIT 1 OFFSET $randomOffset";
+        $recipeResult = $con->query($recipeQuery);
+
+        if ($recipeResult && $recipe = $recipeResult->fetch(PDO::FETCH_ASSOC)) {
+            $recipeId = $recipe['id'];
+            $recipeName = $recipe['name'];
+            $recipeImage = $recipe['image'];
+            $recipeDescription = $recipe['description'];
+            $userId = $recipe['user_id'];
+
+            // Get the username
+            $userQuery = "SELECT username FROM users WHERE user_id = $userId";
+            $userResult = $con->query($userQuery);
+            $username = ($userResult && $userRow = $userResult->fetch(PDO::FETCH_ASSOC)) ? $userRow['username'] : "Unknown";
+            ?>
+
+            <!-- Actual layout starts here -->
+            <div class="container my-5">
+                <div class="row">
+                    <div class="col-md-10 offset-md-1">
+                        <div class="recipe-of-the-day d-flex align-items-center">
+                            <div class="col-md-5 me-md-5">
+                                <div class="image-container">
+                                    <img src="images/<?php echo $recipeImage; ?>" alt="Recipe of the Day" class="img-fluid">
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <h3>Recipe of the Day</h3>
+                                <h4><?php echo htmlspecialchars($recipeName); ?></h4>
+                                <div class="posted-by">
+                                    <span>by:</span>
+                                    <a href="userpage.php?id=<?php echo $userId; ?>" class="username"><?php echo htmlspecialchars($username); ?></a>
+                                </div>
+                                <div class="rating mb-3">
+                                    <span class="star">&#9733;</span>
+                                    <span class="star">&#9733;</span>
+                                    <span class="star">&#9733;</span>
+                                    <span class="star">&#9733;</span>
+                                    <span class="star">&#9734;</span>
+                                    <span class="rating-value">4.5</span>
+                                </div>
+                                <p class="card-text">
+                                    <?php echo htmlspecialchars($recipeDescription); ?>
+                                </p>
+                                <a href="recipe.php?id=<?php echo $recipeId; ?>" class="btn btn-outline-danger">View Recipe</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-7">
-                    <h3>Recipe of the Day</h3>
-                    <h4>Mug Cake</h4>
-                    <div class="posted-by">
-                        <span>by:</span>
-                        <a href="userpage mira.html" class="username">MiraCooks🍰</a>
-                    </div>
-                    <div class="rating mb-3">
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9733;</span>
-                        <span class="star">&#9734;</span>
-                        <span class="rating-value">4.5</span>
-                    </div>
-                    <p class="card-text">
-                        This chocolate mug cake is made in the microwave for a fudgy, chocolaty treat that is truly decadent.
-                        It's a great recipe for nights when I need a yummy dessert that's ready in less than 10 minutes! Add a few chocolate chips to make it extra rich and gooey.
-                    </p>
-                    <a href="MugCake-Microwavable.html" class="btn btn-outline-danger">View Recipe</a>
                 </div>
             </div>
-        </div>
-    </div>
+    <?php
+        }
+    } else {
+        echo "<p class='text-center'>No recipes available at the moment.</p>";
+    }
+    ?>
 
     <!-- Categories Section -->
     <div class="col-md-12 mt-5">
@@ -841,15 +877,15 @@ if (isset($_SESSION['success'])) {
             <div class="footer-col">
                 <h4>About Us</h4>
                 <ul>
-                    <li><a href="about us.html">About us</a></li>
+                    <li><a href="about us.php">About us</a></li>
                     <li><a href="contactUs.php">Contact us</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Help & Policies</h4>
                 <ul>
-                    <li><a href="faqpage.html">FAQ</a></li>
-                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="faqpage.php">FAQ</a></li>
+                    <li><a href="privacy.php">Privacy Policy</a></li>
                 </ul>
             </div>
             <div class="footer-col">
