@@ -1,78 +1,39 @@
 <?php
-session_start(); // Start session to manage login state
+session_start();
+$isLoggedIn = isset($_SESSION['user_id']);
 
-// Database connection (update with your actual credentials)
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "recipe_website";
+// DB connection
+$conn = new mysqli("localhost", "root", "", "recipe_website");
+if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Get user_id from URL or default to 1
+$user_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Get the user data for id=1 (you can update this dynamically if needed)
-$user_id = 1;
-
+// Fetch user data
 $sql = "SELECT * FROM users WHERE user_id = $user_id";
 $result = $conn->query($sql);
-
-// Check for query execution errors
-if ($result === false) {
-    echo "Error fetching user data: " . $conn->error;
-    exit();
+if (!$result || $result->num_rows === 0) {
+    echo "User not found."; exit();
 }
+$user = $result->fetch_assoc();
 
-if ($result->num_rows > 0) {
-    $user = $result->fetch_assoc();
-} else {
-    echo "User not found.";
-    exit();
-}
-
-// Fetch the rating for the current user
-$ratingSql = "SELECT AVG(rating) AS avg_rating FROM user_ratings WHERE rated_user_id = $user_id";
-$ratingResult = $conn->query($ratingSql);
-
-// Check for query execution errors
-if ($ratingResult === false) {
-    echo "Error fetching ratings: " . $conn->error;
-    exit();
-}
-
-// Default to 0 if no rating found
-$rating = 0;
-if ($ratingResult->num_rows > 0) {
-    $ratingRow = $ratingResult->fetch_assoc();
-    $rating = round($ratingRow['avg_rating']);  // Get average rating
-} 
-$fullStars = str_repeat('<span style="color: #dc889a; font-size: 22px; line-height: 0.5;">★</span>', $rating);
-$emptyStars = str_repeat('<span style="color: #dc889a; font-size: 22px; line-height: 0 !important;">☆</span>', 5 - $rating);
-$ratingStars = $fullStars . $emptyStars;
-
-if (isset($_POST['user_rating']) && isset($_SESSION['user_id'])) {
+// Handle rating submission
+if (isset($_POST['rating']) && isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
-    $ratedUserId = $user_id; // the profile being viewed
-    $rating = intval($_POST['user_rating']);
+    $ratedUserId = $user_id;
+    $rating = intval($_POST['rating']);
 
-    // Check if user already rated this profile
     $checkStmt = $conn->prepare("SELECT * FROM user_ratings WHERE user_id = ? AND rated_user_id = ?");
     $checkStmt->bind_param("ii", $userId, $ratedUserId);
     $checkStmt->execute();
-    $result = $checkStmt->get_result();
+    $existingRating = $checkStmt->get_result();
 
-    if ($result->num_rows > 0) {
-        // Update existing rating
+    if ($existingRating->num_rows > 0) {
         $updateStmt = $conn->prepare("UPDATE user_ratings SET rating = ? WHERE user_id = ? AND rated_user_id = ?");
         $updateStmt->bind_param("iii", $rating, $userId, $ratedUserId);
         $updateStmt->execute();
         $updateStmt->close();
     } else {
-        // Insert new rating
         $insertStmt = $conn->prepare("INSERT INTO user_ratings (user_id, rated_user_id, rating) VALUES (?, ?, ?)");
         $insertStmt->bind_param("iii", $userId, $ratedUserId, $rating);
         $insertStmt->execute();
@@ -80,10 +41,23 @@ if (isset($_POST['user_rating']) && isset($_SESSION['user_id'])) {
     }
 
     $checkStmt->close();
+
+    // Refresh to update display
+    header("Location: " . $_SERVER['PHP_SELF'] . "?id=$user_id");
+    exit();
 }
 
-// Close the connection
-$conn->close();
+// Get average rating
+$ratingSql = "SELECT AVG(rating) AS avg_rating FROM user_ratings WHERE rated_user_id = $user_id";
+$ratingResult = $conn->query($ratingSql);
+$rating = 0;
+if ($ratingResult && $ratingResult->num_rows > 0) {
+    $ratingRow = $ratingResult->fetch_assoc();
+    $rating = round($ratingRow['avg_rating']);
+}
+$fullStars = str_repeat('<span style="color: #dc889a; font-size: 22px;">★</span>', $rating);
+$emptyStars = str_repeat('<span style="color: #dc889a; font-size: 22px;">☆</span>', 5 - $rating);
+$ratingStars = $fullStars . $emptyStars;
 ?>
 
 
@@ -99,7 +73,32 @@ $conn->close();
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style2.css">
+    <style>
+        .star {
+            font-size: 2rem;
+            color: gray;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .star.hovered,
+        .star.filled {
+            color: #f5a4b5;
+        }
+        .hidden {
+            display: none;
+        }
+        a {
+            text-decoration: none;
+            color: inherit; /* Keeps the text color as it is without default link colors */
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+    </style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <body>
     <nav class="navbar custom-navbar sticky-top">
@@ -108,19 +107,19 @@ $conn->close();
                 <img src="images/final.png" alt="Website Logo" width="80" height="50" class="d-inline-block align-text-top">
             </a>
             <ul class="navbar-nav d-flex flex-row">
-                <li class="nav-item me-3"><a class="nav-link active" href="index.html">Home</a></li>
+                <li class="nav-item me-3"><a class="nav-link active" href="index.php">Home</a></li>
                 <li class="nav-item me-3"><a class="nav-link" href="about us.html">About Us</a></li>
                 <li class="nav-item dropdown me-3">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Recipes</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="AddYourRecipe.php">Add</a></li>
-                        <li><a class="dropdown-item" href="recipes.html">Explore</a></li>
+                        <li><a class="dropdown-item" href="recipes.php">Explore</a></li>
                     </ul>
                 </li>
             </ul>
             <div class="d-flex">
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <button class="btn btn-outline-danger me-2" onclick="window.location.href='profile.php'"><?php echo $_SESSION['username']; ?>'s Profile</button>
+                    <button class="btn btn-outline-danger me-2" onclick="window.location.href='profile page.php'"><?php echo $_SESSION['username']; ?>'s Profile</button>
                 <?php else: ?>
                     <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='loginpage.html'">Log In</button>
                 <?php endif; ?>
@@ -145,25 +144,31 @@ $conn->close();
                 <span><?php echo $ratingStars; ?></span> <!-- This will display the stars -->
             </div>
 
+                
             <div class="user-rating">
-                <h1 class="heading">RATE: </h1>
-                <div class="rating" id="user-rating">
-                    <i class="far fa-star" data-value="1" style="font-size: 20px; color: #dc889a; cursor: pointer;"></i>
-                    <span class="star" data-value="1">&#9733;</span>
-                    <span class="star" data-value="2">&#9733;</span>
-                    <span class="star" data-value="3">&#9733;</span>
-                    <span class="star" data-value="4">&#9733;</span>
-                    <span class="star" data-value="5">&#9733;</span>
-                </div>
-                <!-- Warning Message for Unauthenticated Users -->
-                <div id="warning-message" style="color: red; margin-top: 10px; display: none; font-size: 14px;">Please log in to rate this page</div>
+            <h1 class="heading">RATE:</h1>
 
-                <!-- Submit Button -->
-                <form id="rating-form" method="POST" action="">
-                    <input type="hidden" name="user_rating" id="user_rating_input">
-                    <button id="submit-rating" type="submit" style="display: none; background-color: #dc889a; color: white; padding: 10px 20px; border: none; cursor: pointer;">Submit Rating</button>
-                </form>
+            <!-- Rating form -->
+            <form id="ratingForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                <div class="rating" id="user-rating">
+                    <?php 
+                    $rating = 0; // You can set a default here if needed
+                    for ($i = 1; $i <= 5; $i++): 
+                        $cls = $i <= $rating ? 'filled' : '';
+                    ?>
+                        <span class="star <?= $cls ?>" data-value="<?= $i ?>">&#9733;</span>
+                    <?php endfor; ?>
+                </div>
+                <input type="hidden" name="rating" id="ratingInput" value="<?= $rating ?>" />
+                <button type="submit" id="submitRating" class="hidden">Submit</button>
+            </form>
+
+            <div id="warning-message" 
+                style="color: red; margin-top: 10px; display: none; font-size: 14px;">
+                Please log in to rate this page
             </div>
+            </div>
+
         </section>
 
         <section class="bio card">
@@ -175,7 +180,7 @@ $conn->close();
             </div>
             <div class="skills">
                 <h1 class="heading">Hobbies</h1>
-                <ul>
+                <ul style="list-style: none; padding-left: 0; margin: 0; padding-bottom:5px;">
                     <li><?php echo $user['hobbies']; ?></li>
                 </ul>
             </div>
@@ -195,17 +200,19 @@ $conn->close();
                 <div class="recipe-grid">
                     <?php
                     // Fetch recipes posted by this user
-                    $recipeSql = "SELECT * FROM recipes WHERE user_id = $userId";
+                    $recipeSql = "SELECT * FROM recipe WHERE id = $user_id";
                     $recipeResult = $conn->query($recipeSql);
-                    if ($recipeResult->num_rows > 0) {
+                    if ($recipeResult && $recipeResult->num_rows > 0) {
                         while ($recipe = $recipeResult->fetch_assoc()) {
                             echo "<a href='recipe.php?id=" . $recipe['id'] . "'>
                                     <div class='recipe-card'>
-                                        <img src='images/" . $recipe['image'] . "' alt='" . $recipe['title'] . "'>
-                                        <div class='recipe-name'>" . $recipe['title'] . "</div>
+                                        <img src='images/" . $recipe['image'] . "' alt='" . $recipe['name'] . "'>
+                                        <div class='recipe-name'>" . $recipe['name'] . "</div>
                                     </div>
                                   </a>";
                         }
+                    }else {
+                        echo "<p style='text-align:center; color:#000; padding-left:10px'>Baking in progress...</p>";
                     }
                     ?>
                 </div>
@@ -233,8 +240,8 @@ $conn->close();
                 <div class="footer-col">
                     <h4>Explore</h4>
                     <ul>
-                        <li><a href="#">My Profile</a></li>
-                        <li><a href="recipes.html">All Recipes</a></li>
+                        <li><a href="profile page.php">My Profile</a></li>
+                        <li><a href="recipes.php">All Recipes</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -252,48 +259,98 @@ $conn->close();
 
     <script>
         const stars = document.querySelectorAll('.star');
-        const submitBtn = document.getElementById('submit-rating');
-        const warningMsg = document.getElementById('warning-message');
-        const ratingInput = document.getElementById('user_rating_input');
-        let selectedRating = 0;
+        const ratingInput = document.getElementById('ratingInput');
+        let selectedRating = parseInt(ratingInput.value) || 0;
 
-        stars.forEach((star, index) => {
-            const ratingValue = index + 1;
-
-            // Handle hover effect
-            star.addEventListener('mouseover', () => {
-                highlightStars(ratingValue);
-            });
-
-            // Reset on mouse out
-            star.addEventListener('mouseout', () => {
-                highlightStars(selectedRating);
-            });
-
-            // Handle click to set rating
-            star.addEventListener('click', () => {
-                selectedRating = ratingValue;
-                ratingInput.value = selectedRating;
-                highlightStars(selectedRating);
-
-                if (submitBtn && warningMsg) {
-                    submitBtn.style.display = 'inline-block';
-                    warningMsg.style.display = 'none';
-                }
-            });
-        });
-
-        function highlightStars(rating) {
+        // Highlight saved rating on load
+        function updateStars(rating) {
             stars.forEach((s, i) => {
-                s.style.color = i < rating ? '#dc889a' : '#ccc';
+                s.classList.toggle('filled', i < rating);
             });
         }
 
+        // Initial update
+        updateStars(selectedRating);
+
+        stars.forEach((star, idx) => {
+            star.addEventListener('mouseover', () => {
+                stars.forEach((s, i) => {
+                    s.classList.toggle('hovered', i <= idx);
+                });
+            });
+
+            star.addEventListener('mouseout', () => {
+                stars.forEach((s) => s.classList.remove('hovered'));
+            });
+
+            star.addEventListener('click', () => {
+                selectedRating = idx + 1;
+                ratingInput.value = selectedRating;
+                updateStars(selectedRating);
+            });
+        });
     </script>
 
 
+    <script>
+            const stars = document.querySelectorAll('.star');
+            let selectedRating = 0;
 
-    
+            // Hover effect
+            stars.forEach((star, idx) => {
+            star.addEventListener('mouseover', () => {
+                stars.forEach((s, i) => {
+                s.classList.toggle('hovered', i <= idx);
+                });
+            });
+
+            star.addEventListener('mouseout', () => {
+                stars.forEach((s) => s.classList.remove('hovered'));
+            });
+
+            // Click to select
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.getAttribute('data-value'));
+                stars.forEach((s, i) => {
+                s.classList.toggle('filled', i < selectedRating);
+                });
+            });
+            });
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const stars = document.querySelectorAll(".star");
+            const ratingInput = document.getElementById("ratingInput");
+            const submitButton = document.getElementById("submitRating");
+
+            stars.forEach(star => {
+                star.addEventListener("click", function () {
+                    const value = this.getAttribute("data-value");
+                    ratingInput.value = value;
+
+                    stars.forEach(s => s.classList.remove("filled"));
+                    for (let i = 0; i < value; i++) {
+                        stars[i].classList.add("filled");
+                    }
+
+                    // Show the submit button
+                    submitButton.classList.remove("hidden");
+                });
+
+                star.addEventListener("mouseover", function () {
+                    const value = this.getAttribute("data-value");
+                    stars.forEach((s, index) => {
+                        s.classList.toggle("hovered", index < value);
+                    });
+                });
+
+                star.addEventListener("mouseout", function () {
+                    stars.forEach(s => s.classList.remove("hovered"));
+                });
+            });
+        });
+    </script>
 
 </body>
 

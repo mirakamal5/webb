@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'config.php';
+$isLoggedIn = isset($_SESSION['user_id']);
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -106,7 +107,7 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
     <link rel="stylesheet" href="style3.css">
 </head>
 <body>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <nav class="navbar custom-navbar sticky-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -126,12 +127,11 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
             </li>
         </ul>
         <div class="d-flex">
-            <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
-            <div id="profileIcon" class="d-none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill" viewBox="0 0 16 16">
-                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                </svg>
-            </div>
+            <?php if (!$isLoggedIn): ?>
+                <button class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
+            <?php else: ?>
+                <button class="btn btn-outline-danger me-2" onclick="window.location.href='#'"><?php echo htmlspecialchars($user['username']); ?>'s profile</button>
+            <?php endif; ?>
         </div>
     </div>
 </nav>
@@ -239,7 +239,7 @@ $ratingNumber = '<span style="color: #333; font-size: 30px; font-weight: bold;">
                     <h4>Explore</h4>
                     <ul>
                         <li><a href="#">My Profile</a></li>
-                        <li><a href="recipes.html">All Recipes</a></li>
+                        <li><a href="recipes.php">All Recipes</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">

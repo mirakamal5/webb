@@ -503,7 +503,7 @@
             <!-- Navigation Links -->
             <ul class="navbar-nav d-flex flex-row">
                 <li class="nav-item me-3">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                 </li>
                 <li class="nav-item me-3">
                     <a class="nav-link" href="about us.html">About Us</a>
@@ -514,19 +514,22 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="AddYourRecipe.php">Add</a></li>
-                        <li><a class="dropdown-item" href="recipes.html">Explore</a></li>
+                        <li><a class="dropdown-item" href="recipes.php">Explore</a></li>
                     </ul>
                 </li>
             </ul>
 
             <!-- Login Button and Profile Icon -->
             <div class="d-flex">
-                <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='loginpage.html'">Log In</button>
-                <div id="profileIcon" class="d-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill" viewBox="0 0 16 16">
-                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                    </svg>
-                </div>
+                <?php if (!$isLoggedIn): ?>
+                    <button class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
+                <?php else: ?>
+                    <div onclick="window.location.href='profile page.php'" style="cursor:pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                        </svg>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
