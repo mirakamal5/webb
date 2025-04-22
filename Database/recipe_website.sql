@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2025 at 08:42 AM
+-- Generation Time: Apr 22, 2025 at 12:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -77,6 +77,13 @@ CREATE TABLE `favorites` (
   `user_id` int(11) NOT NULL,
   `recipe_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `favorites`
+--
+
+INSERT INTO `favorites` (`user_id`, `recipe_id`) VALUES
+(3, 165);
 
 -- --------------------------------------------------------
 
@@ -212,7 +219,10 @@ INSERT INTO `recipe` (`id`, `name`, `description`, `category`, `prep_time`, `coo
 (188, 'Avocado Chocolate Mousse', 'Rich and creamy chocolate mousse using avocado — totally vegan, diabetic-friendly, and nut-free!', 'Vegan, Diabetic-Friendly, Nut-Free', 15, 0, 4, 'Easy', 'Avocado Chocolate Mousse.jpg', '[{\"ingredient\":\"Ripe avocados\",\"quantity\":\"2\"},{\"ingredient\":\"Unsweetened cocoa powder\",\"quantity\":\"1/4 cup\"},{\"ingredient\":\"Stevia\",\"quantity\":\"2 tbsp\"},{\"ingredient\":\"Vanilla extract\",\"quantity\":\"1 tsp\"},{\"ingredient\":\"Coconut milk\",\"quantity\":\"2 tbsp\"}]', '[\"Blend avocados until completely smooth.\",\"Add cocoa powder, stevia, vanilla, and coconut milk.\",\"Blend again until creamy and rich.\",\"Chill and serve with berries if desired.\"]', 'Mira Kadamani', '2025-04-21 10:40:20', 11),
 (189, 'Sweet Potato Protein Bites', 'High-protein snack balls made with roasted sweet potatoes, oats, and protein powder — gluten-free, high-protein, egg-free!', 'High-Protein, Gluten-Free, Egg-Free', 20, 0, 12, 'Medium', 'Sweet Potato Protein Bites.jpg', '[{\"ingredient\":\"Cooked mashed sweet potato\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Oats (gluten-free)\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Protein powder (vanilla)\",\"quantity\":\"1/2 cup\"},{\"ingredient\":\"Peanut butter\",\"quantity\":\"2 tbsp\"},{\"ingredient\":\"Cinnamon\",\"quantity\":\"1 tsp\"}]', '[\"Mix sweet potato, oats, protein powder, peanut butter, and cinnamon.\",\"Roll into small balls.\",\"Chill for at least 30 minutes before eating.\"]', 'Mira Kadamani', '2025-04-21 10:40:20', 11),
 (190, 'No-Bake Blueberry Coconut Bars', 'Fruity, creamy coconut bars packed with blueberries — no baking, nut-free, vegan, and diabetic-friendly!', 'No-Bake, Nut-Free, Diabetic-Friendly', 20, 0, 8, 'Medium', 'No-Bake Blueberry Coconut Bars.jpg', '[{\"ingredient\":\"Unsweetened shredded coconut\",\"quantity\":\"2 cups\"},{\"ingredient\":\"Coconut cream\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Stevia\",\"quantity\":\"1/4 cup\"},{\"ingredient\":\"Blueberries\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Coconut oil\",\"quantity\":\"2 tbsp\"}]', '[\"Mix shredded coconut, coconut cream, stevia, and coconut oil.\",\"Gently fold in blueberries.\",\"Press mixture into a lined baking dish.\",\"Chill for at least 2 hours, slice into bars, and serve.\"]', 'Mira Kadamani', '2025-04-21 10:40:20', 11),
-(191, 'Chocolate cake', 'Yummy', 'Diabetic-Friendly, Egg-Free', -1, 1, 1, 'Easy', '5minhealthymugcake.jpg', '[{\"ingredient\":\"a\",\"quantity\":\"a\"}]', '[\"a\"]', 'rim', '2025-04-21 20:26:48', 3);
+(194, 's', 's', 'Nut-Free', 1, 1, 1, 'Medium', '68074369806fe-5minmolten-lava-bites.jpg', '[{\"ingredient\":\"s\",\"quantity\":\"s\"}]', '[\"s\"]', 'rim', '2025-04-22 07:21:13', 3),
+(195, 's', 's', 'Diabetic-Friendly, High-Protein', 1, 1, 1, 'Medium', '680744067d371-5minfudgechocolate.jpg', '[{\"ingredient\":\"s\",\"quantity\":\"s\"}]', '[\"s\"]', 'rim', '2025-04-22 07:23:50', 3),
+(196, 's', 's', 'Nut-Free', 1, 1, 1, 'Medium', '68074b5f7a8ee-5minmolten-lava-bites.jpg', '[{\"ingredient\":\"s\",\"quantity\":\"a\"}]', '[\"s\"]', 'rim', '2025-04-22 07:55:11', 3),
+(197, 'ss', 's', 'Keto', 1, 1, 1, 'Medium', '68074b7f83ac9-5minfudgechocolate.jpg', '[{\"ingredient\":\"s\",\"quantity\":\"s\"}]', '[\"s\"]', 'rim', '2025-04-22 07:55:43', 3);
 
 -- --------------------------------------------------------
 
@@ -269,6 +279,15 @@ CREATE TABLE `reviews` (
   `rating` tinyint(4) NOT NULL CHECK (`rating` between 1 and 5),
   `comment` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`review_id`, `recipe_id`, `user_id`, `rating`, `comment`) VALUES
+(7, 145, 3, 4, 'rim'),
+(9, 194, 3, 3, 'kf'),
+(10, 165, 3, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -329,6 +348,14 @@ CREATE TABLE `user_ratings` (
   `rated_user_id` int(11) NOT NULL,
   `rating` tinyint(4) NOT NULL CHECK (`rating` between 1 and 5)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user_ratings`
+--
+
+INSERT INTO `user_ratings` (`id`, `user_id`, `rated_user_id`, `rating`) VALUES
+(1, 3, 3, 3),
+(2, 3, 11, 3);
 
 --
 -- Indexes for dumped tables
@@ -447,7 +474,7 @@ ALTER TABLE `ingredients`
 -- AUTO_INCREMENT for table `recipe`
 --
 ALTER TABLE `recipe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=192;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=198;
 
 --
 -- AUTO_INCREMENT for table `recipes`
@@ -465,7 +492,7 @@ ALTER TABLE `recipe_media`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `steps`
@@ -483,7 +510,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_ratings`
 --
 ALTER TABLE `user_ratings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -494,7 +521,7 @@ ALTER TABLE `user_ratings`
 --
 ALTER TABLE `favorites`
   ADD CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ingredients`
