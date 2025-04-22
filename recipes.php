@@ -574,31 +574,38 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </h2>
 
     <?php if (count($recipes) > 0): ?>
-        <div class="row">
-            <?php foreach ($recipes as $recipe): ?>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="recipe-card">
-                        <div class="favorite-container">
-                            <span class="favorite-icon"><i class="fa-regular fa-heart"></i></span>
-                        </div>
-                        <img src="images/<?= htmlspecialchars($recipe['image']) ?>" alt="<?= htmlspecialchars($recipe['name']) ?>">
-                        <div class="card-body">
-                            <h5><?= htmlspecialchars($recipe['name']) ?></h5>
-                            <p>
-                            By <a href="userpage.php?user_id=<?= urlencode($recipe['user_id']) ?>"><?= htmlspecialchars($recipe['user']) ?></a>
-                            </p>
-                            <p>Prep time: <?= htmlspecialchars($recipe['prep_time']) ?> minutes</p>
-                            <a href="individual-recipes.php?recipe_id=<?= urlencode($recipe['recipe_id']) ?>" class="btn-pink">View Recipe</a>
-                        </div>
+    <div class="row">
+        <?php foreach ($recipes as $recipe): ?>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="recipe-card">
+                    <div class="favorite-container">
+                        <span class="favorite-icon"><i class="fa-regular fa-heart"></i></span>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php else: ?>
-        <div class="alert alert-warning text-center">
-            No recipes found.
-        </div>
-    <?php endif; ?>
+                    <img src="images/<?= htmlspecialchars($recipe['image']) ?>" alt="<?= htmlspecialchars($recipe['name']) ?>">
+                    <div class="card-body">
+                        <h5><?= htmlspecialchars($recipe['name']) ?></h5>
+                        <p>
+                            By <a href="userpage.php?user_id=<?= urlencode($recipe['user_id']) ?>"><?= htmlspecialchars($recipe['user']) ?></a>
+                        </p>
+                        <p>Prep time: <?= htmlspecialchars($recipe['prep_time']) ?> minutes</p>
+
+                        <?php if (isset($recipe['id'])): ?>
+                            <a href="individual-recipes.php?recipe_id=<?= urlencode($recipe['id']) ?>" class="btn-pink">View Recipe</a>
+                        <?php else: ?>
+                            <p class="text-danger">Recipe ID missing</p>
+                        <?php endif; ?>
+
+                    </div> <!-- end of card-body -->
+                </div> <!-- end of recipe-card -->
+            </div> <!-- end of column -->
+        <?php endforeach; ?>
+    </div> <!-- end of row -->
+<?php else: ?>
+    <div class="alert alert-warning text-center">
+        No recipes found.
+    </div>
+<?php endif; ?>
+
 </div>
 
 <!-- Footer -->

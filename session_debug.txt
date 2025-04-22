@@ -1,22 +1,12 @@
 Array
 (
-<<<<<<< HEAD
-    [session_id] => csqka2bfjkqptibel00gfanh6d
+    [session_id] => tps4shkd4k9ta693bgmskh31a6
     [session_before_redirect] => Array
         (
-            [user_id] => 11
-            [username] => Mira Kadamani
-            [email] => Mira.kadamani@lau.edu
-            [success] => Login successful! Welcome, Mira Kadamani.
-=======
-    [session_id] => ff2u6q8vd6no9u7brnd6rk5s79
-    [session_before_redirect] => Array
-        (
-            [user_id] => 5
-            [username] => rorooo
-            [email] => ranimo@gmail.com
-            [success] => Login successful! Welcome, rorooo.
->>>>>>> c6284709f48c3cfcc99806b8ddb5f61a3f694249
+            [user_id] => 2
+            [username] => MiraKamal
+            [email] => mirakamal@example.com
+            [success] => Login successful! Welcome, MiraKamal.
         )
 
 )
