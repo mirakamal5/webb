@@ -67,14 +67,17 @@ $stepsJson = json_encode($stepsArray);
 
 // Upload image (first one)
 $imageName = null;
-if (isset($_FILES['recipePhotos']['tmp_name'][0]) && !empty($_FILES['recipePhotos']['tmp_name'][0])) {
-    $img = $_FILES['recipePhotos'];
-    $filename = basename($img['name'][0]);
-    $destination = 'images/' . $filename;
-    if (move_uploaded_file($img['tmp_name'][0], $destination)) {
-        $imageName = $filename;
+if (isset($_FILES['recipePhoto']) && $_FILES['recipePhoto']['error'] === 0) {
+    $img = $_FILES['recipePhoto'];
+    $filename = basename($img['name']);
+    $targetDir = 'images/';
+    $targetFile = $targetDir . uniqid() . '-' . $filename;
+
+    if (move_uploaded_file($img['tmp_name'], $targetFile)) {
+        $imageName = basename($targetFile); // store just the filename
     }
 }
+
 
 // Prepare SQL query (Notice: No video anymore!)
 $sql = "INSERT INTO recipe 

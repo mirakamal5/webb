@@ -1,7 +1,54 @@
-
 <?php
 session_start();
 $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
+include 'config.php'; 
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $recipeName = $_POST['recipeName'];
+    $description = $_POST['recipeDescription'];
+    $categories = isset($_POST['categories']) ? implode(',', $_POST['categories']) : '';
+    $preparingTime = $_POST['preparingTime'];
+    $cookingTime = $_POST['cookingTime'];
+    $servings = $_POST['servings'];
+    $difficulty = $_POST['difficulty'];
+
+    if (isset($_FILES['recipePhoto']) && $_FILES['recipePhoto']['error'] == 0) {
+        $imageName = $_FILES['recipePhoto']['name'];
+        $imageTmpName = $_FILES['recipePhoto']['tmp_name'];
+        $imageSize = $_FILES['recipePhoto']['size'];
+        $imageType = pathinfo($imageName, PATHINFO_EXTENSION);
+
+        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+        if (in_array(strtolower($imageType), $allowedTypes)) {
+            $newImageName = uniqid() . '.' . $imageType;
+            $uploadPath = 'uploads/' . $newImageName; // Make sure this folder exists and is writable
+
+            if (move_uploaded_file($imageTmpName, $uploadPath)) {
+                // Now insert into DB
+                $userId = $_SESSION['user_id']; // assuming you’re using session
+                $sql = "INSERT INTO recipes (user_id, name, description, categories, preparing_time, cooking_time, servings, difficulty, image_path)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("isssiiiss", $userId, $recipeName, $description, $categories, $preparingTime, $cookingTime, $servings, $difficulty, $uploadPath);
+
+                if ($stmt->execute()) {
+                    echo "Recipe added!";
+                } else {
+                    echo "Error saving recipe: " . $stmt->error;
+                }
+            } else {
+                echo "Failed to move uploaded file.";
+            }
+        } else {
+            echo "Invalid file type.";
+        }
+    } else {
+        echo "No image uploaded or file error.";
+    }
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -842,7 +889,6 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
                 });
             }
 
-            // Remove ingredient
             ingredientsContainer.addEventListener("click", (e) => {
                 if (e.target.classList.contains("remove-ingredient")) {
                     const groups = ingredientsContainer.querySelectorAll(".ingredient-group");
@@ -883,15 +929,13 @@ $isLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
             const lastGroup = stepsContainer.lastElementChild;
             const stepInput = lastGroup.querySelector(".step");
 
-            // Check if the current step is empty before adding a new one
             if (stepInput.value.trim() === "") {
                 alert("Please fill in the current step before adding a new one.");
                 return;
             }
 
-            // Clone the last step group and reset its value
             const newStepGroup = lastGroup.cloneNode(true);
-            newStepGroup.querySelector(".step").value = ""; // Clear the new step input
+            newStepGroup.querySelector(".step").value = "";
             stepsContainer.appendChild(newStepGroup);
         });
 
