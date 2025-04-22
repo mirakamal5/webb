@@ -1,6 +1,6 @@
 Array
 (
-    [session_id] => tps4shkd4k9ta693bgmskh31a6
+    [session_id] => 8lsfrrrsphkum8k51cisuf1kp7
     [session_before_redirect] => Array
         (
             [user_id] => 2
