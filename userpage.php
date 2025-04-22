@@ -1,65 +1,78 @@
 <?php
 session_start();
+
+// Check if the user is logged in by checking the session variable
 $isLoggedIn = isset($_SESSION['user_id']);
 
+// Establish a connection to the database
 $conn = new mysqli("localhost", "root", "", "recipe_website");
-if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
+$user_id = intval($_GET['id']); 
+// Get the user ID either from the session or the GET parameter
 if (isset($_GET['id'])) {
-    $user_id = intval($_GET['id']);
+    $user_id = intval($_GET['id']); // Get the ID from the URL
 } elseif (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
+    $user_id = $_SESSION['user_id']; // Use the ID from the session
 } else {
     die("No user specified.");
 }
 
-
+// Fetch the user data from the database
 $sql = "SELECT * FROM users WHERE user_id = $user_id";
 $result = $conn->query($sql);
 if (!$result || $result->num_rows === 0) {
-    echo "User not found."; exit();
+    echo "User not found."; exit(); // If no user found, display error and exit
 }
-$user = $result->fetch_assoc();
+$user = $result->fetch_assoc(); // Fetch the user details
 
+// Check if the rating form has been submitted
 if (isset($_POST['rating']) && isset($_SESSION['user_id'])) {
-    $userId = $_SESSION['user_id'];
-    $ratedUserId = isset($_GET['id']) ? intval($_GET['id']) : 0;
-    $rating = intval($_POST['rating']);
+    $userId = $_SESSION['user_id'];  // The logged-in user ID
+    $ratedUserId = $_POST['rated_user_id']; // The user being rated (from the hidden input)
+    $rating = intval($_POST['rating']); // The rating value
 
+    // Check if the logged-in user has already rated the user
     $checkStmt = $conn->prepare("SELECT * FROM user_ratings WHERE user_id = ? AND rated_user_id = ?");
     $checkStmt->bind_param("ii", $userId, $ratedUserId);
     $checkStmt->execute();
     $existingRating = $checkStmt->get_result();
 
     if ($existingRating->num_rows > 0) {
+        // Update the rating if the user has already rated
         $updateStmt = $conn->prepare("UPDATE user_ratings SET rating = ? WHERE user_id = ? AND rated_user_id = ?");
         $updateStmt->bind_param("iii", $rating, $userId, $ratedUserId);
         $updateStmt->execute();
         $updateStmt->close();
     } else {
+        // Insert a new rating if not already rated
         $insertStmt = $conn->prepare("INSERT INTO user_ratings (user_id, rated_user_id, rating) VALUES (?, ?, ?)");
         $insertStmt->bind_param("iii", $userId, $ratedUserId, $rating);
         $insertStmt->execute();
         $insertStmt->close();
     }
 
-
+    // Redirect back to the same page after rating
     header("Location: " . $_SERVER['PHP_SELF'] . "?id=$ratedUserId");
-    $checkStmt->close();
     exit();
 }
 
+// Fetch the average rating for the user being viewed
 $ratingSql = "SELECT AVG(rating) AS avg_rating FROM user_ratings WHERE rated_user_id = $user_id";
 $ratingResult = $conn->query($ratingSql);
 $rating = 0;
 if ($ratingResult && $ratingResult->num_rows > 0) {
     $ratingRow = $ratingResult->fetch_assoc();
-    $rating = round($ratingRow['avg_rating']);
+    $rating = round($ratingRow['avg_rating']); // Round the average rating
 }
-$fullStars = str_repeat('<span style="color: #dc889a; font-size: 22px;">★</span>', $rating);
-$emptyStars = str_repeat('<span style="color: #dc889a; font-size: 22px;">☆</span>', 5 - $rating);
+
+$fullStars = str_repeat('<span style="color: #dc889a; font-size: 22px;">★</span>', $rating); // Full stars
+$emptyStars = str_repeat('<span style="color: #dc889a; font-size: 22px;">☆</span>', 5 - $rating); // Empty stars
 $ratingStars = $fullStars . $emptyStars;
 ?>
+
 
 
 <!DOCTYPE html>
@@ -169,10 +182,14 @@ $ratingStars = $fullStars . $emptyStars;
                 </li>
             </ul>
             <div class="d-flex">
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <button class="btn btn-outline-danger me-2" onclick="window.location.href='profile page.php'"><?php echo $_SESSION['username']; ?>'s Profile</button>
+                <?php if (!$isLoggedIn): ?>
+                    <button class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
                 <?php else: ?>
-                    <button id="loginButton" class="btn btn-outline-danger me-2" onclick="window.location.href='login.php'">Log In</button>
+                    <div onclick="window.location.href='profile page.php'" style="cursor:pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#c42348" class="bi bi-person-fill">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                        </svg>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -199,8 +216,7 @@ $ratingStars = $fullStars . $emptyStars;
             <div class="user-rating">
                 <h1 class="heading">RATE:</h1>
 
-                <form id="ratingForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?id=<?php echo $ratedUserId; ?>">
-
+                <form id="ratingForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                     <div class="rating" id="user-rating">
                         <?php 
                         $rating = 0;
@@ -211,6 +227,7 @@ $ratingStars = $fullStars . $emptyStars;
                         <?php endfor; ?>
                     </div>
                     <input type="hidden" name="rating" id="ratingInput" value="<?= $rating ?>" />
+                    <input type="hidden" name="rated_user_id" value="<?= $user_id ?>" /> <!-- Hidden field with rated user's ID -->
                     <button type="submit" id="submitRating" class="hidden">Submit</button>
                 </form>
 
@@ -306,6 +323,40 @@ $ratingStars = $fullStars . $emptyStars;
             </div>
         </div>
     </footer>
+
+    <script>
+        const stars = document.querySelectorAll('.star');
+        const ratingInput = document.getElementById('ratingInput');
+        let selectedRating = parseInt(ratingInput.value) || 0;
+
+        // Highlight saved rating on load
+        function updateStars(rating) {
+            stars.forEach((s, i) => {
+                s.classList.toggle('filled', i < rating);
+            });
+        }
+
+        // Initial update
+        updateStars(selectedRating);
+
+        stars.forEach((star, idx) => {
+            star.addEventListener('mouseover', () => {
+                stars.forEach((s, i) => {
+                    s.classList.toggle('hovered', i <= idx);
+                });
+            });
+
+            star.addEventListener('mouseout', () => {
+                stars.forEach((s) => s.classList.remove('hovered'));
+            });
+
+            star.addEventListener('click', () => {
+                selectedRating = idx + 1;
+                ratingInput.value = selectedRating;
+                updateStars(selectedRating);
+            });
+        });
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
