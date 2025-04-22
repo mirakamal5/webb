@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2025 at 08:42 AM
+-- Generation Time: Apr 22, 2025 at 01:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -212,7 +212,8 @@ INSERT INTO `recipe` (`id`, `name`, `description`, `category`, `prep_time`, `coo
 (188, 'Avocado Chocolate Mousse', 'Rich and creamy chocolate mousse using avocado — totally vegan, diabetic-friendly, and nut-free!', 'Vegan, Diabetic-Friendly, Nut-Free', 15, 0, 4, 'Easy', 'Avocado Chocolate Mousse.jpg', '[{\"ingredient\":\"Ripe avocados\",\"quantity\":\"2\"},{\"ingredient\":\"Unsweetened cocoa powder\",\"quantity\":\"1/4 cup\"},{\"ingredient\":\"Stevia\",\"quantity\":\"2 tbsp\"},{\"ingredient\":\"Vanilla extract\",\"quantity\":\"1 tsp\"},{\"ingredient\":\"Coconut milk\",\"quantity\":\"2 tbsp\"}]', '[\"Blend avocados until completely smooth.\",\"Add cocoa powder, stevia, vanilla, and coconut milk.\",\"Blend again until creamy and rich.\",\"Chill and serve with berries if desired.\"]', 'Mira Kadamani', '2025-04-21 10:40:20', 11),
 (189, 'Sweet Potato Protein Bites', 'High-protein snack balls made with roasted sweet potatoes, oats, and protein powder — gluten-free, high-protein, egg-free!', 'High-Protein, Gluten-Free, Egg-Free', 20, 0, 12, 'Medium', 'Sweet Potato Protein Bites.jpg', '[{\"ingredient\":\"Cooked mashed sweet potato\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Oats (gluten-free)\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Protein powder (vanilla)\",\"quantity\":\"1/2 cup\"},{\"ingredient\":\"Peanut butter\",\"quantity\":\"2 tbsp\"},{\"ingredient\":\"Cinnamon\",\"quantity\":\"1 tsp\"}]', '[\"Mix sweet potato, oats, protein powder, peanut butter, and cinnamon.\",\"Roll into small balls.\",\"Chill for at least 30 minutes before eating.\"]', 'Mira Kadamani', '2025-04-21 10:40:20', 11),
 (190, 'No-Bake Blueberry Coconut Bars', 'Fruity, creamy coconut bars packed with blueberries — no baking, nut-free, vegan, and diabetic-friendly!', 'No-Bake, Nut-Free, Diabetic-Friendly', 20, 0, 8, 'Medium', 'No-Bake Blueberry Coconut Bars.jpg', '[{\"ingredient\":\"Unsweetened shredded coconut\",\"quantity\":\"2 cups\"},{\"ingredient\":\"Coconut cream\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Stevia\",\"quantity\":\"1/4 cup\"},{\"ingredient\":\"Blueberries\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Coconut oil\",\"quantity\":\"2 tbsp\"}]', '[\"Mix shredded coconut, coconut cream, stevia, and coconut oil.\",\"Gently fold in blueberries.\",\"Press mixture into a lined baking dish.\",\"Chill for at least 2 hours, slice into bars, and serve.\"]', 'Mira Kadamani', '2025-04-21 10:40:20', 11),
-(191, 'Chocolate cake', 'Yummy', 'Diabetic-Friendly, Egg-Free', -1, 1, 1, 'Easy', '5minhealthymugcake.jpg', '[{\"ingredient\":\"a\",\"quantity\":\"a\"}]', '[\"a\"]', 'rim', '2025-04-21 20:26:48', 3);
+(191, 'Chocolate cake', 'Yummy', 'Diabetic-Friendly, Egg-Free', -1, 1, 1, 'Easy', '5minhealthymugcake.jpg', '[{\"ingredient\":\"a\",\"quantity\":\"a\"}]', '[\"a\"]', 'rim', '2025-04-21 20:26:48', 3),
+(192, 'sdsaas', 'asa', 'Nut-Free', 12, 12, 1, 'Easy', NULL, '[{\"ingredient\":\"12\",\"quantity\":\"221121\"}]', '[\"112\"]', 'MiraKamal', '2025-04-22 06:58:25', 2);
 
 -- --------------------------------------------------------
 
@@ -270,6 +271,15 @@ CREATE TABLE `reviews` (
   `comment` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`review_id`, `recipe_id`, `user_id`, `rating`, `comment`) VALUES
+(7, 184, 2, 5, 'tayraaa'),
+(8, 95, 2, 3, ''),
+(9, 95, 12, 3, 'sds');
+
 -- --------------------------------------------------------
 
 --
@@ -315,7 +325,8 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `profile_p
 (8, 'Jad Arab', 'jad.arab@lau.edu', '$2y$10$0izMRl8gd1KmDBIUoOSN3.JoT5UUsriGO6XTUdfbWI3.aoUoGI7W2', 'images/default.png', 'No bio yet', 'Still looking for new hobbies...', 'Baker'),
 (9, 'Ranime Ibrahim', 'ranime.ibrahim@lau.edu', '$2y$10$rcCAIA0rJVuPEWE5ZaCCpOPhNHXQSbFD6L4qqhyNB.rC/MMY.EqvS', 'images/default.png', 'No bio yet', 'Still looking for new hobbies...', 'Baker'),
 (10, 'Ali Safeidine', 'Ali.safeidine@lau.edu', '$2y$10$2oN3RpJThaJo4EQmvuu.IuC8sE.hMXxpEwAnThKg0fihnEoeMgupO', 'images/default.png', 'No bio yet', 'Still looking for new hobbies...', 'Baker'),
-(11, 'Mira Kadamani', 'Mira.kadamani@lau.edu', '$2y$10$65bX31nRhy1g.2vpgJR1P.9z2bmJAG1NcxGOkezsCNgZJgrF665wC', 'images/default.png', 'No bio yet', 'Still looking for new hobbies...', 'Baker');
+(11, 'Mira Kadamani', 'Mira.kadamani@lau.edu', '$2y$10$65bX31nRhy1g.2vpgJR1P.9z2bmJAG1NcxGOkezsCNgZJgrF665wC', 'images/default.png', 'No bio yet', 'Still looking for new hobbies...', 'Baker'),
+(12, 'Mohamad mkadem', 'mkadem@lau.edu', '$2y$10$4B4BBShiXWAIyM6PBuQ1G.YwFJ486RB177035BtB/Ul7J3xCGC7B2', 'images/default.png', 'No bio yet', 'Still looking for new hobbies...', 'Baker');
 
 -- --------------------------------------------------------
 
@@ -447,7 +458,7 @@ ALTER TABLE `ingredients`
 -- AUTO_INCREMENT for table `recipe`
 --
 ALTER TABLE `recipe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=192;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=193;
 
 --
 -- AUTO_INCREMENT for table `recipes`
@@ -465,7 +476,7 @@ ALTER TABLE `recipe_media`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `steps`
@@ -477,7 +488,7 @@ ALTER TABLE `steps`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user_ratings`
