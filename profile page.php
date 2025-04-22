@@ -324,7 +324,7 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
                         <div class="recipe-card">
                             <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img">
                             <div class="card-body">
-                                <a href="individual-recipes.php?id=<?php echo $recipe['id']; ?>"><?php echo htmlspecialchars($recipe['name']); ?></a>
+                                <a href="individual-recipes.php?id=<?php echo $recipe['id']; ?>" style="font-weight: bold;"><?php echo htmlspecialchars($recipe['name']); ?></a>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -349,15 +349,9 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
                 <div class="row d-flex flex-wrap justify-content-between">
                     <?php foreach ($favRecipes as $recipe): ?>
                         <div class="recipe-card">
-                            <div class="favorite-container">
-                                <span class="favorite-icon">
-                                    <i class="fa-solid fa-heart"></i>
-                                </span>
-                            </div>
-                            <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img" style="height:200px;">
+                            <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img">
                             <div class="card-body">
-                                <h5><?php echo htmlspecialchars($recipe['name']); ?></h5>
-                                <a href="#" class="btn-pink">View Recipe</a>
+                                <a href="individual-recipes.php?id=<?php echo $recipe['id']; ?>" style="font-weight: bold;"><?php echo htmlspecialchars($recipe['name']); ?></a>
                             </div>
                         </div>
                     <?php endforeach; ?>

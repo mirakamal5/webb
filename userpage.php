@@ -12,6 +12,8 @@ if (isset($_GET['id'])) {
 } else {
     die("No user specified.");
 }
+echo "Looking up user with ID: $user_id<br>";
+
 
 $sql = "SELECT * FROM users WHERE user_id = $user_id";
 $result = $conn->query($sql);
@@ -22,7 +24,7 @@ $user = $result->fetch_assoc();
 
 if (isset($_POST['rating']) && isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
-    $ratedUserId = $user_id;
+    $ratedUserId =$_GET['id'];
     $rating = intval($_POST['rating']);
 
     $checkStmt = $conn->prepare("SELECT * FROM user_ratings WHERE user_id = ? AND rated_user_id = ?");
@@ -42,9 +44,9 @@ if (isset($_POST['rating']) && isset($_SESSION['user_id'])) {
         $insertStmt->close();
     }
 
-    $checkStmt->close();
 
-    header("Location: " . $_SERVER['PHP_SELF'] . "?id=$user_id");
+    header("Location: " . $_SERVER['PHP_SELF'] . "?id=$ratedUserId");
+    $checkStmt->close();
     exit();
 }
 

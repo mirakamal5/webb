@@ -13,11 +13,14 @@
         echo "Invalid recipe ID.";
         exit;
     }
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_favorite'])) {
-        toggleFavoriteStatus($user_id, $recipe_id);
-
-        exit("Favorite toggled!");
+    if (isset($_POST['add_favorite'], $_POST['user_id'], $_POST['recipe_id'])) {
+        $user_id = $_POST['user_id'];
+        $recipe_id = $_POST['recipe_id'];
+    
+        toggleFavoriteStatus($user_id, $recipe_id, $con);
     }
+    
+
 
     $query = "SELECT * FROM recipe WHERE id = :id";  
     $stmt = $con->prepare($query);
@@ -48,7 +51,6 @@
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
     
-        // Execute the statement
         $stmt->execute();
     
         // Check if any rows were returned
@@ -57,15 +59,18 @@
     
 
     function toggleFavoriteStatus($user_id, $recipe_id) {
-        if (checkIfFavorited($user_id, $recipe_id)) {
-            $stmt = $pdo->prepare("DELETE FROM favorites WHERE user_id = ? AND recipe_id = ?");
+        global $con; // Add this line
+        if (checkIfFavorited($user_id, $recipe_id, $con)) {
+            $stmt = $con->prepare("DELETE FROM favorites WHERE user_id = ? AND recipe_id = ?");
             $stmt->execute([$user_id, $recipe_id]);
         } else {
-            $stmt = $pdo->prepare("INSERT INTO favorites (user_id, recipe_id) VALUES (?, ?)");
+            $stmt = $con->prepare("INSERT INTO favorites (user_id, recipe_id) VALUES (?, ?)");
             $stmt->execute([$user_id, $recipe_id]);
         }
     }
+    
 
+    
     $isFavorited = checkIfFavorited($user_id, $recipe_id, $con);
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $comment = $_POST['comment'];
@@ -648,8 +653,8 @@
     </nav>
     <div class="container">
         <!-- Favorite Heart -->
-        <i class="<?php echo $isFavorited ? 'fa-solid' : 'fa-regular'; ?> fa-heart favorite-heart" id="favoriteHeart" onclick="toggleFavorite()"></i>
-
+        <i class="<?php echo $isFavorited ? 'fa-solid' : 'fa-regular'; ?> fa-heart favorite-heart" id="favoriteHeart" onclick="toggleFavorite(<?php echo $user_id; ?>, <?php echo $recipe_id; ?>)"></i>
+        <br></br>
         <div class="recipe-header">
             <h1><?= htmlspecialchars($recipe['name'] ?? 'No Name Available') ?></h1>
             <br></br>
@@ -779,7 +784,7 @@
         const favoriteHeart = document.getElementById('favoriteHeart');
         const favoriteWarning = document.getElementById('favoriteWarning');
         
-        const isRecipeFavorited = <?= $isFavorited ? 'true' : 'false' ?>;
+        const isRecipeFavorited = <?php echo $isFavorited ? 'true' : 'false'; ?>;
 
         document.addEventListener('DOMContentLoaded', function() {
             if (isRecipeFavorited) {
@@ -791,26 +796,26 @@
             }
         });
 
-        function toggleFavorite() {
+        function toggleFavorite(user_id, recipe_id) {
             const heart = document.getElementById('favoriteHeart');
-
-            // Toggle between outlined and filled heart
             heart.classList.toggle('fa-regular');
             heart.classList.toggle('fa-solid');
 
-            // Optionally: Send request to backend
+            // Send the user_id and recipe_id in the fetch request
             fetch('', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: 'add_favorite=1'
+                body: 'add_favorite=1&user_id=' + user_id + '&recipe_id=' + recipe_id
             })
-            .then(res => res.texHt())
+            .then(res => res.text())
             .then(data => {
                 console.log('Response:', data);
             });
         }
+
+
 
         const stars = document.querySelectorAll('.star');
         const message = document.getElementById('ratingMessage');

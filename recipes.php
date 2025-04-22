@@ -600,7 +600,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="card-body">
                         <h5><?= htmlspecialchars($recipe['name']) ?></h5>
                         <p>
-                            By <a href="userpage.php?user_id=<?= urlencode($recipe['user_id']) ?>"><?= htmlspecialchars($recipe['user']) ?></a>
+                            By <a href="userpage.php?id=<?= urlencode($recipe['user_id']) ?>"><?= htmlspecialchars($recipe['user']) ?></a>
                         </p>
                         <p>Prep time: <?= htmlspecialchars($recipe['prep_time']) ?> minutes</p>
 
