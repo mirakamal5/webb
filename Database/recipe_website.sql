@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2025 at 06:52 PM
+-- Generation Time: Apr 22, 2025 at 08:42 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -211,7 +211,8 @@ INSERT INTO `recipe` (`id`, `name`, `description`, `category`, `prep_time`, `coo
 (187, 'Peanut Butter Banana Ice Cream', 'Creamy, decadent ice cream made with bananas and peanut butter — no added sugar, no bake!', 'No-Bake, Sugar-Free, High-Protein', 10, 0, 6, 'Medium', 'Peanut Butter Banana Ice Cream.jpg', '[{\"ingredient\":\"Frozen ripe bananas\",\"quantity\":\"4\"},{\"ingredient\":\"Peanut butter (natural)\",\"quantity\":\"1/2 cup\"},{\"ingredient\":\"Vanilla extract\",\"quantity\":\"1 tsp\"},{\"ingredient\":\"Almond milk (optional)\",\"quantity\":\"2 tbsp\"}]', '[\"Blend frozen bananas until creamy.\",\"Add peanut butter and vanilla; blend again.\",\"If too thick, add almond milk to adjust consistency.\",\"Freeze for 1 hour before serving.\"]', 'Mira Kadamani', '2025-04-21 10:40:20', 11),
 (188, 'Avocado Chocolate Mousse', 'Rich and creamy chocolate mousse using avocado — totally vegan, diabetic-friendly, and nut-free!', 'Vegan, Diabetic-Friendly, Nut-Free', 15, 0, 4, 'Easy', 'Avocado Chocolate Mousse.jpg', '[{\"ingredient\":\"Ripe avocados\",\"quantity\":\"2\"},{\"ingredient\":\"Unsweetened cocoa powder\",\"quantity\":\"1/4 cup\"},{\"ingredient\":\"Stevia\",\"quantity\":\"2 tbsp\"},{\"ingredient\":\"Vanilla extract\",\"quantity\":\"1 tsp\"},{\"ingredient\":\"Coconut milk\",\"quantity\":\"2 tbsp\"}]', '[\"Blend avocados until completely smooth.\",\"Add cocoa powder, stevia, vanilla, and coconut milk.\",\"Blend again until creamy and rich.\",\"Chill and serve with berries if desired.\"]', 'Mira Kadamani', '2025-04-21 10:40:20', 11),
 (189, 'Sweet Potato Protein Bites', 'High-protein snack balls made with roasted sweet potatoes, oats, and protein powder — gluten-free, high-protein, egg-free!', 'High-Protein, Gluten-Free, Egg-Free', 20, 0, 12, 'Medium', 'Sweet Potato Protein Bites.jpg', '[{\"ingredient\":\"Cooked mashed sweet potato\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Oats (gluten-free)\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Protein powder (vanilla)\",\"quantity\":\"1/2 cup\"},{\"ingredient\":\"Peanut butter\",\"quantity\":\"2 tbsp\"},{\"ingredient\":\"Cinnamon\",\"quantity\":\"1 tsp\"}]', '[\"Mix sweet potato, oats, protein powder, peanut butter, and cinnamon.\",\"Roll into small balls.\",\"Chill for at least 30 minutes before eating.\"]', 'Mira Kadamani', '2025-04-21 10:40:20', 11),
-(190, 'No-Bake Blueberry Coconut Bars', 'Fruity, creamy coconut bars packed with blueberries — no baking, nut-free, vegan, and diabetic-friendly!', 'No-Bake, Nut-Free, Diabetic-Friendly', 20, 0, 8, 'Medium', 'No-Bake Blueberry Coconut Bars.jpg', '[{\"ingredient\":\"Unsweetened shredded coconut\",\"quantity\":\"2 cups\"},{\"ingredient\":\"Coconut cream\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Stevia\",\"quantity\":\"1/4 cup\"},{\"ingredient\":\"Blueberries\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Coconut oil\",\"quantity\":\"2 tbsp\"}]', '[\"Mix shredded coconut, coconut cream, stevia, and coconut oil.\",\"Gently fold in blueberries.\",\"Press mixture into a lined baking dish.\",\"Chill for at least 2 hours, slice into bars, and serve.\"]', 'Mira Kadamani', '2025-04-21 10:40:20', 11);
+(190, 'No-Bake Blueberry Coconut Bars', 'Fruity, creamy coconut bars packed with blueberries — no baking, nut-free, vegan, and diabetic-friendly!', 'No-Bake, Nut-Free, Diabetic-Friendly', 20, 0, 8, 'Medium', 'No-Bake Blueberry Coconut Bars.jpg', '[{\"ingredient\":\"Unsweetened shredded coconut\",\"quantity\":\"2 cups\"},{\"ingredient\":\"Coconut cream\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Stevia\",\"quantity\":\"1/4 cup\"},{\"ingredient\":\"Blueberries\",\"quantity\":\"1 cup\"},{\"ingredient\":\"Coconut oil\",\"quantity\":\"2 tbsp\"}]', '[\"Mix shredded coconut, coconut cream, stevia, and coconut oil.\",\"Gently fold in blueberries.\",\"Press mixture into a lined baking dish.\",\"Chill for at least 2 hours, slice into bars, and serve.\"]', 'Mira Kadamani', '2025-04-21 10:40:20', 11),
+(191, 'Chocolate cake', 'Yummy', 'Diabetic-Friendly, Egg-Free', -1, 1, 1, 'Easy', '5minhealthymugcake.jpg', '[{\"ingredient\":\"a\",\"quantity\":\"a\"}]', '[\"a\"]', 'rim', '2025-04-21 20:26:48', 3);
 
 -- --------------------------------------------------------
 
@@ -446,7 +447,7 @@ ALTER TABLE `ingredients`
 -- AUTO_INCREMENT for table `recipe`
 --
 ALTER TABLE `recipe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=192;
 
 --
 -- AUTO_INCREMENT for table `recipes`
@@ -464,7 +465,7 @@ ALTER TABLE `recipe_media`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `steps`
@@ -524,7 +525,7 @@ ALTER TABLE `recipe_media`
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
