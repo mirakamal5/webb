@@ -597,6 +597,16 @@
     </style>
 </head>
 <body>
+
+<?php if (isset($_SESSION['flash_message'])): ?>
+    <div class="alert alert-success text-center" style="background-color: #d46a7e; color: white; padding: 12px; margin: 10px; font-size: 18px; border-radius: 8px;">
+        <?php
+            echo htmlspecialchars($_SESSION['flash_message']);
+            unset($_SESSION['flash_message']); // remove after showing it
+        ?>
+    </div>
+<?php endif; ?>
+
     <nav class="navbar custom-navbar sticky-top">
         <div class="container-fluid">
             <!-- Logo -->
@@ -924,6 +934,15 @@
             return newQuantity.toFixed(2);
         }
     </script>
+
+<script>
+    setTimeout(function() {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            alert.style.display = 'none';
+        }
+    }, 3000); // Hide after 3 seconds
+</script>
 </body>
     <footer class="footer">
         <div class="container">
