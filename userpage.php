@@ -260,7 +260,6 @@ $ratingStars = $fullStars . $emptyStars;
                                 </a>";
                         }
                     } else {
-                        // no recipes are found
                         echo "<p style='text-align:center; color:#000; padding-left:10px'>Baking in progress...</p>";
                     }
                     ?>

@@ -122,10 +122,6 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="style3.css">
     <style>
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
         .tabs ul li.active-tab {
             border-radius: 10px;
             color:rgb(177, 43, 72);
@@ -158,6 +154,7 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
             padding:0px;
+            height: auto;
         }
 
         .tab-content .favorite-container {
@@ -175,7 +172,7 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .tab-content .recipe-card .recipe-img{
-            height:250px;
+            height:270px;
             width:100%;
             object-fit: cover;
             object-position: center;
@@ -210,6 +207,24 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
             box-shadow: none !important;
             border: none !important;
         }
+        a {
+            text-decoration: none; 
+            color: inherit;   
+            display: block;   
+        }
+        .recipe-card {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .recipe-card:hover {
+            transform: scale(1.02);
+        }
+
     </style>
 </head>
 <body>
@@ -221,7 +236,7 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
         </a>
         <ul class="navbar-nav d-flex flex-row">
             <li class="nav-item me-3"><a class="nav-link active" href="index.php">Home</a></li>
-            <li class="nav-item me-3"><a class="nav-link" href="about us.php">About Us</a></li>
+            <li class="nav-item me-3"><a class="nav-link" href="about us.html">About Us</a></li>
             <li class="nav-item dropdown me-3">
                 <a class="nav-link dropdown-toggle" href="#" id="recipeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Recipes
@@ -246,7 +261,7 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
     <section class="userDetails card">
         <div class="profile">
             <figure>
-                <img src="<?php echo !empty($user['profile_picture']) ? htmlspecialchars($user['profile_picture']) : 'images/default.png'; ?>" alt="Profile Picture" width="150px" height="200px">
+                <img src="<?php echo !empty($user['profile_picture']) ? htmlspecialchars($user['profile_picture']) : 'images/default.png'; ?>" alt="Profile Picture" width="150px" >
             </figure>
         </div>
 
@@ -306,17 +321,14 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
             <?php if (count($postedRecipes) > 0): ?>
                 <div class="row d-flex flex-wrap justify-content-between">
                     <?php foreach ($postedRecipes as $recipe): ?>
-                        <a href="individual-recipes.php?id=<?php echo htmlspecialchars($recipe['id']); ?>">
-                            <div class="recipe-card" style="height: auto;">
-                                <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img">
-                                <div class="card-body">
-                                    <h5><?php echo htmlspecialchars($recipe['name']); ?></h5>
-                                </div>
+                        <div class="recipe-card">
+                            <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img">
+                            <div class="card-body">
+                                <a href="individual-recipes.php?id=<?php echo $recipe['id']; ?>"><?php echo htmlspecialchars($recipe['name']); ?></a>
                             </div>
-                        </a>
+                        </div>
                     <?php endforeach; ?>
                     <?php
-                    // if less than 3 recipes
                     $count = count($postedRecipes);
                     $placeholders = 3 - $count;
                     for ($i = 0; $i < $placeholders; $i++): ?>
@@ -326,9 +338,9 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
             <?php else: ?>
                 <p style="color: grey;">You have not posted any recipes yet.</p>
             <?php endif; ?>
-            <a href="AddYourRecipe.php" style="color:inherit; text-decoration: none;">
-                <button class="heart-button" id="upload-btn" style="font-size: 25px">🩷</button>
-                <span style="font-size: 18px" >Add recipe</span>
+            <a href="AddYourRecipe.php" style="color: inherit;text-decoration: none;">
+                <button class="heart-button" id="upload-btn">🩷</button>
+                <span>Add recipe</span>
             </a>
         </div>
 
@@ -342,14 +354,9 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
                                     <i class="fa-solid fa-heart"></i>
                                 </span>
                             </div>
-                            <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img">
+                            <img src="images/<?php echo htmlspecialchars($recipe['image']); ?>" alt="<?php echo htmlspecialchars($recipe['name']); ?>" class="recipe-img" style="height:200px;">
                             <div class="card-body">
                                 <h5><?php echo htmlspecialchars($recipe['name']); ?></h5>
-                                <p>By <a href="userpage.php?user=<?php echo urlencode($recipe['user']); ?>" style="text-decoration: none; color: inherit;">
-                                    <?php echo htmlspecialchars($recipe['user']); ?>
-                                </a></p>
-
-                                <p>Prep time: <?php echo htmlspecialchars($recipe['prep_time']); ?> minutes</p>
                                 <a href="#" class="btn-pink">View Recipe</a>
                             </div>
                         </div>
@@ -374,15 +381,15 @@ $favRecipes = $favQuery->fetchAll(PDO::FETCH_ASSOC);
                 <div class="footer-col">
                     <h4>About Us</h4>
                     <ul>
-                        <li><a href="about us.php">About us</a></li>
+                        <li><a href="about us.html">About us</a></li>
                         <li><a href="contactUs.php">Contact us</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Help & Policies</h4>
                     <ul>
-                        <li><a href="faqpage.php">FAQ</a></li>
-                        <li><a href="privacy.php">Privacy Policy</a></li>
+                        <li><a href="faqpage.html">FAQ</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
