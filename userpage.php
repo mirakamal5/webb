@@ -12,7 +12,6 @@ if (isset($_GET['id'])) {
 } else {
     die("No user specified.");
 }
-echo "Looking up user with ID: $user_id<br>";
 
 
 $sql = "SELECT * FROM users WHERE user_id = $user_id";
@@ -24,7 +23,7 @@ $user = $result->fetch_assoc();
 
 if (isset($_POST['rating']) && isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
-    $ratedUserId =$_GET['id'];
+    $ratedUserId = isset($_GET['id']) ? intval($_GET['id']) : 0;
     $rating = intval($_POST['rating']);
 
     $checkStmt = $conn->prepare("SELECT * FROM user_ratings WHERE user_id = ? AND rated_user_id = ?");
@@ -200,7 +199,8 @@ $ratingStars = $fullStars . $emptyStars;
             <div class="user-rating">
                 <h1 class="heading">RATE:</h1>
 
-                <form id="ratingForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                <form id="ratingForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?id=<?php echo $ratedUserId; ?>">
+
                     <div class="rating" id="user-rating">
                         <?php 
                         $rating = 0;
@@ -307,67 +307,6 @@ $ratingStars = $fullStars . $emptyStars;
         </div>
     </footer>
 
-    <script>
-        const stars = document.querySelectorAll('.star');
-        const ratingInput = document.getElementById('ratingInput');
-        let selectedRating = parseInt(ratingInput.value) || 0;
-
-        // Highlight saved rating on load
-        function updateStars(rating) {
-            stars.forEach((s, i) => {
-                s.classList.toggle('filled', i < rating);
-            });
-        }
-
-        // Initial update
-        updateStars(selectedRating);
-
-        stars.forEach((star, idx) => {
-            star.addEventListener('mouseover', () => {
-                stars.forEach((s, i) => {
-                    s.classList.toggle('hovered', i <= idx);
-                });
-            });
-
-            star.addEventListener('mouseout', () => {
-                stars.forEach((s) => s.classList.remove('hovered'));
-            });
-
-            star.addEventListener('click', () => {
-                selectedRating = idx + 1;
-                ratingInput.value = selectedRating;
-                updateStars(selectedRating);
-            });
-        });
-    </script>
-
-
-    <script>
-            const stars = document.querySelectorAll('.star');
-            let selectedRating = 0;
-
-            // Hover effect
-            stars.forEach((star, idx) => {
-            star.addEventListener('mouseover', () => {
-                stars.forEach((s, i) => {
-                s.classList.toggle('hovered', i <= idx);
-                });
-            });
-
-            star.addEventListener('mouseout', () => {
-                stars.forEach((s) => s.classList.remove('hovered'));
-            });
-
-            // Click to select
-            star.addEventListener('click', () => {
-                selectedRating = parseInt(star.getAttribute('data-value'));
-                stars.forEach((s, i) => {
-                s.classList.toggle('filled', i < selectedRating);
-                });
-            });
-            });
-
-    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const stars = document.querySelectorAll(".star");
